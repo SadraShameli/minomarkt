@@ -27,6 +27,9 @@ services:
             - 'traefik.http.routers.wordpress.rule=Host(`minomarktnl.test`)'
             - 'traefik.http.routers.wordpress.entrypoints=web'
             - 'traefik.http.services.wordpress.loadbalancer.server.port=80'
+            - 'traefik.http.routers.wordpress-secure.rule=Host(`minomarktnl.test`)'
+            - 'traefik.http.routers.wordpress-secure.entrypoints=websecure'
+            - 'traefik.http.routers.wordpress-secure.tls=true'
 
     db:
         image: mariadb
@@ -57,19 +60,29 @@ services:
             - 'traefik.http.routers.phpmyadmin.rule=Host(`pma.minomarktnl.test`)'
             - 'traefik.http.routers.phpmyadmin.entrypoints=web'
             - 'traefik.http.services.phpmyadmin.loadbalancer.server.port=80'
+            - 'traefik.http.routers.phpmyadmin-secure.rule=Host(`pma.minomarktnl.test`)'
+            - 'traefik.http.routers.phpmyadmin-secure.entrypoints=websecure'
+            - 'traefik.http.routers.phpmyadmin-secure.tls=true'
 
     traefik:
         image: traefik
         ports:
             - '80:80'
+            - '443:443'
             - '8082:8080'
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ./.wordpress/certs:/etc/traefik/certs
         command:
             - '--api.insecure=true'
             - '--providers.docker=true'
             - '--providers.docker.exposedbydefault=false'
             - '--entrypoints.web.address=:80'
+            - '--entrypoints.websecure.address=:443'
+            - '--certificatesresolvers.myresolver.acme.tlschallenge=true'
+            - '--certificatesresolvers.myresolver.acme.storage=/etc/traefik/acme.json'
+            - '--providers.file.directory=/etc/traefik/certs'
+            - '--providers.file.watch=true'
 
 volumes:
     wordpress:
@@ -78,3 +91,4 @@ volumes:
 networks:
     default:
         name: traefik_network
+        external: true

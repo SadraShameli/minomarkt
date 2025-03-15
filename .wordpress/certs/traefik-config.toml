@@ -1,0 +1,7 @@
+[[tls.certificates]]
+    certFile = "/etc/traefik/certs/minomarktnl.test.crt"
+    keyFile  = "/etc/traefik/certs/minomarktnl.test.key"
+
+[tls.options]
+    [tls.options.default]
+        minVersion = "VersionTLS12"

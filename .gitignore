@@ -11,8 +11,12 @@ Thumbs.db
 .env
 .env.*
 
+/certs/
+
 .php-cs-fixer.cache
 .twig-cs-fixer.cache
 
-.wordpress/uploads/*
 !.wordpress/uploads/.gitkeep
+.wordpress/uploads/*
+.wordpress/certs/*.key
+.wordpress/certs/*.crt

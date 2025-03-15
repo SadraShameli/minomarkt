@@ -46,6 +46,20 @@ export default defineConfig(function () {
         server: {
             host: 'minomarktnl.test',
             cors: true,
+            https: {
+                key: fs.readFileSync(
+                    path.resolve(
+                        __dirname,
+                        '.wordpress/certs/minomarktnl.test.key',
+                    ),
+                ),
+                cert: fs.readFileSync(
+                    path.resolve(
+                        __dirname,
+                        '.wordpress/certs/minomarktnl.test.crt',
+                    ),
+                ),
+            },
         },
     };
 });
