@@ -18,6 +18,7 @@ services:
             - wordpress:/var/www/html
             - ./:/var/www/html/wp-content/themes/${THEME_NAME}
             - .wordpress/plugins/:/var/www/html/wp-content/plugins/
+            - .wordpress/uploads/:/var/www/html/wp-content/uploads/
             - .wordpress/config/php-custom.ini:/usr/local/etc/php/conf.d/99-php-custom.ini
             - .wordpress/config/php-xdebug.ini:/usr/local/etc/php/conf.d/99-php-xdebug.ini
             - .wordpress/config/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini
