@@ -1,0 +1,84 @@
+name: Deploy WordPress Theme
+
+on:
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: 'Environment to deploy to'
+                required: true
+                default: 'production'
+                type: choice
+                options:
+                    - production
+                    - staging
+    push:
+        branches:
+            - release/*
+            - release
+            - master
+            - main
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '23.9'
+                  cache: 'npm'
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, json
+                  tools: composer:v2
+
+            - name: Install PHP dependencies
+              run: composer install --no-dev --optimize-autoloader
+
+            - name: Install Node.js dependencies
+              run: npm ci
+
+            - name: Build theme assets
+              run: npm run build
+
+            - name: Setup SSH key
+              uses: shimataro/ssh-key-action@v2
+              with:
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  name: id_rsa
+                  known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+                  if_key_exists: replace
+
+            - name: Deploy to server
+              env:
+                  SSH_HOST: ${{ secrets.SSH_HOST }}
+                  SSH_USER: ${{ secrets.SSH_USER }}
+                  SSH_PORT: ${{ secrets.SSH_PORT }}
+                  SSH_DOMAIN: ${{ secrets.SSH_DOMAIN }}
+                  ENVIRONMENT: ${{ inputs.environment }}
+              run: |
+                  echo "Deploying to $ENVIRONMENT environment"
+
+                  # Verify SSH connection
+                  ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "echo 'SSH connection successful!'"
+
+                  # Update theme files via Git
+                  ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd domains/$SSH_DOMAIN/public_html/wp-content/themes/minomarkt && git pull origin"
+
+                  # Install PHP dependencies on server
+                  ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd domains/$SSH_DOMAIN/public_html/wp-content/themes/minomarkt && composer install --no-dev --optimize-autoloader"
+
+                  # Deploy compiled assets
+                  rsync -avz --delete -e "ssh -p $SSH_PORT" \
+                    dist/ \
+                    $SSH_USER@$SSH_HOST:domains/$SSH_DOMAIN/public_html/wp-content/themes/minomarkt/dist/
+
+            - name: Deployment Status
+              run: echo "Theme successfully deployed!"
