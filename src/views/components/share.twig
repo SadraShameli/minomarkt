@@ -1,0 +1,60 @@
+<ul {{ cs('mino-share__list', listOrder == 'reverse' ? 'flex-row-reverse') }}>
+    {% if showLinkedin %}
+        <li class="mino-share__list-item">
+            <a
+                class="mino-share__list-link"
+                href="https://www.linkedin.com/sharing/share-offsite/?url={{ permalink }}"
+                target="_blank"
+                title="{{ __('LinkedIn', 'mino') }}"
+                rel="noindex nofollow"
+            >
+                {{ fetch_svg('default/linkedin') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if showFacebook %}
+        <li class="mino-share__list-item">
+            <a
+                class="mino-share__list-link"
+                href="https://www.facebook.com/sharer.php?u={{ permalink }}"
+                target="_blank"
+                title="{{ __('Facebook', 'mino') }}"
+                rel="noindex nofollow"
+            >
+                {{ fetch_svg('default/facebook') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if showX %}
+        <li class="mino-share__list-item">
+            <a
+                class="mino-share__list-link"
+                href="https://twitter.com/intent/tweet?text={{ permalink }}"
+                title="{{ __('X', 'mino') }}"
+                target="_blank" rel="noindex nofollow"
+            >
+                {{ fetch_svg('default/twitter') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if showEmail %}
+        <li class="mino-share__list-item">
+            <a
+                class="mino-share__list-link"
+                href="mailto:?subject={{ __('Look at this', 'mino') }}&amp;body={{ permalink }}"
+                target="_blank"
+                title="{{ __('Mail', 'mino') }}"
+                rel="noindex nofollow"
+            >
+                {{ fetch_svg('default/envelope') }}
+            </a>
+        </li>
+    {% endif %}
+
+    <li class="mino-share__list-label">
+        {{ __('Share', 'mino') }}
+    </li>
+</ul>

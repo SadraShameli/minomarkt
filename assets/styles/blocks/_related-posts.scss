@@ -1,0 +1,19 @@
+.mino-related-posts {
+    padding-bottom: var(--spacing-40);
+    padding-top: var(--spacing-24);
+
+    @include media-breakpoint-up(lg) {
+        padding-bottom: var(--spacing-80);
+        padding-top: var(--spacing-40);
+    }
+
+    &__title {
+        margin-bottom: var(--spacing-24);
+        margin-top: var(--spacing-24);
+
+        @include media-breakpoint-up(lg) {
+            margin-bottom: var(--spacing-64);
+            margin-top: var(--spacing-64);
+        }
+    }
+}

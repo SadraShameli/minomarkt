@@ -1,0 +1,49 @@
+<section {{ cs('mino-banner block-padding', block_layout(blockLayout), fields.content_order ? 'mino-banner--reversed') }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mino-banner__inner block-shadow">
+                    <div class="mino-banner__content">
+                        {% if bannerTitle %}
+                            <h2 class="mino-banner__title">
+                                {{ bannerTitle }}
+                            </h2>
+                        {% endif %}
+
+                        {% if bannerContent %}
+                            <div class="mino-banner__description">
+                                {{ bannerContent }}
+                            </div>
+                        {% endif %}
+
+                        {% if bannerButton %}
+                            <div class="mino-banner__button-wrapper">
+                                {{ include('components/button.twig', {
+                                    type: 'primary',
+                                    url: bannerButton.url,
+                                    target: bannerButton.target,
+                                    title: bannerButton.title,
+                                }) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if bannerImage %}
+                        {% set image = get_image(bannerImage) %}
+                        {% if image %}
+                            <div class="mino-banner__image">
+                                <img
+                                    src="{{ image.src('medium') }}"
+                                    srcset="{{ image.srcset }}"
+                                    sizes="{{ image.img_sizes }}"
+                                    alt="{{ image.alt }}"
+                                    loading="lazy"
+                                />
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

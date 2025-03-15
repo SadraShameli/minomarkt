@@ -1,0 +1,68 @@
+<section {{ cs('mino-slider-quote block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mino-slider-quote__header">
+                    {% if fields.title %}
+                        <h2 class="mino-slider-quote__title">{{ fields.title }}</h2>
+                    {% endif %}
+
+                    {% if fields.button %}
+                        {{ include('components/button.twig', {
+                            class: 'block-shadow',
+                        }) }}
+                    {% endif %}
+                </div>
+
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="swiper-slide">
+                                <div class="mino-slider-quote__item block-shadow">
+                                    {% if item.image %}
+                                        {% set image = get_image(item.image) %}
+
+                                        {% if image %}
+                                            <div class="mino-slider-quote__image-wrapper">
+                                                <img
+                                                    class="mino-slider-quote__image"
+                                                    src="{{ image.src('medium') }}"
+                                                    srcset="{{ image.srcset }}"
+                                                    sizes="{{ image.img_sizes }}"
+                                                    alt="{{ image.alt }}"
+                                                    loading="lazy"
+                                                />
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if item.quote %}
+                                        <blockquote class="mino-slider-quote__quote">
+                                            <p class="mino-slider-quote__text">{{ item.quote }}</p>
+
+                                            {% if item.name %}
+                                                <cite class="mino-slider-quote__author">
+                                                    {{ item.name }}{{ item.role ? ', ' ~ item.role : '' }}
+                                                </cite>
+                                            {% endif %}
+                                        </blockquote>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mino-slider-quote__button-wrapper">
+                        <div class="mino-slider-quote__button-prev js-swiper-button-prev">
+                            {{ fetch_svg('arrow-left-circle') }}
+                        </div>
+
+                        <div class="mino-slider-quote__button-next js-swiper-button-next">
+                            {{ fetch_svg('arrow-right-circle') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

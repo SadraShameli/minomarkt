@@ -1,0 +1,16 @@
+{% if options.socials.socials %}
+    <div class="mino-social-list">
+        {% for item in options.socials.socials %}
+            {% if item.social.url %}
+                <a
+                    class="mino-social-list__item"
+                    href="{{ item.social.url }}"
+                    target="{{ item.social.target }}"
+                    aria-label="{{ __('Click to go to our %s profile', 'mino')|format(item.social.title) }}"
+                >
+                    {{ fetch_svg(item.icon) }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

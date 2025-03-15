@@ -1,0 +1,123 @@
+/**
+ * Typography
+ */
+
+body {
+    color: var(--color-body);
+    font-family: var(--font-family-body);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.75;
+
+    /* stylelint-disable-next-line */
+    &.mceContentBody {
+        color: var(--bs-body-color);
+        font-family: var(--bs-body-font-family);
+        font-size: var(--bs-body-font-size);
+        font-weight: var(--bs-body-font-weight);
+        line-height: var(--bs-body-line-height);
+        margin: 9px 10px;
+    }
+
+    .wp-switch-editor {
+        box-sizing: content-box;
+        margin: 5px 0 0 5px;
+    }
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+    color: var(--color-heading);
+    font-family: var(--font-family-heading);
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%;
+    margin-top: 0;
+}
+
+h1,
+.h1 {
+    font-size: 32px;
+
+    @include media-breakpoint-up(lg) {
+        font-size: 50px;
+    }
+}
+
+h2,
+.h2 {
+    font-size: 30px;
+
+    @include media-breakpoint-up(lg) {
+        font-size: 48px;
+    }
+}
+
+h3,
+.h3 {
+    font-size: 26px;
+
+    @include media-breakpoint-up(lg) {
+        font-size: 40px;
+    }
+}
+
+h4,
+.h4 {
+    font-size: 20px;
+
+    @include media-breakpoint-up(lg) {
+        font-size: 32px;
+    }
+}
+
+h5,
+.h5,
+.is-text-large {
+    font-size: 18px;
+
+    @include media-breakpoint-up(lg) {
+        font-size: 22px;
+    }
+}
+
+h6,
+.h6 {
+    font-size: 16px;
+
+    @include media-breakpoint-up(lg) {
+        font-size: 18px;
+    }
+}
+
+.is-body-base {
+    font-size: 16px;
+}
+
+.is-body-small {
+    font-size: 14px;
+}
+
+.is-body-xsmall {
+    font-size: 12px;
+}
+
+p {
+    margin-bottom: 12px;
+
+    &:not(:empty) {
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

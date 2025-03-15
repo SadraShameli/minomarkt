@@ -1,0 +1,45 @@
+<section {{ cs('mino-heading', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% if fields.type == 'h1' %}
+                    <h1
+                        {{ cs('mino-heading__element', 'is--size-' ~ fields.size) }}
+                    >
+                        {{ fields.title }}
+                    </h1>
+                {% elseif fields.type == 'h2' %}
+                    <h2
+                        {{ cs('mino-heading__element', 'is--size-' ~ fields.size) }}
+                    >
+                        {{ fields.title }}
+                    </h2>
+                {% elseif fields.type == 'h3' %}
+                    <h3
+                        {{ cs('mino-heading__element', 'is--size-' ~ fields.size) }}
+                    >
+                        {{ fields.title }}
+                    </h3>
+                {% elseif fields.type == 'h4' %}
+                    <h4
+                        {{ cs('mino-heading__element', 'is--size-' ~ fields.size) }}
+                    >
+                        {{ fields.title }}
+                    </h4>
+                {% elseif fields.type == 'h5' %}
+                    <h5
+                        {{ cs('mino-heading__element', 'is--size-' ~ fields.size) }}
+                    >
+                        {{ fields.title }}
+                    </h5>
+                {% elseif fields.type == 'h6' %}
+                    <h6
+                        {{ cs('mino-heading__element', 'is--size-' ~ fields.size) }}
+                    >
+                        {{ fields.title }}
+                    </h6>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>

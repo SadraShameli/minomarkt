@@ -1,0 +1,47 @@
+<section {{ cs('mino-slider-logo block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        {% for item in fields.items %}
+                            <div class="swiper-slide">
+                                <a
+                                    class="mino-slider-logo__item"
+                                    href="{{ item.link.url }}"
+                                    title="{{ item.link.title }}"
+                                    target="{{ item.link.target }}"
+                                >
+                                    <div class="mino-slider-logo__image-wrapper">
+                                        {% set image = get_image(item.image) %}
+
+                                        {% if image %}
+                                            <img
+                                                class="mino-slider-logo__image"
+                                                src="{{ image.src('medium') }}"
+                                                srcset="{{ image.srcset }}"
+                                                sizes="{{ image.img_sizes }}"
+                                                alt="{{ image.alt }}"
+                                                loading="lazy"
+                                            />
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mino-slider-logo__button-wrapper">
+                        <div class="mino-slider-logo__button-prev js-swiper-button-prev">
+                            {{ fetch_svg('arrow-left-circle') }}
+                        </div>
+
+                        <div class="mino-slider-logo__button-next js-swiper-button-next">
+                            {{ fetch_svg('arrow-right-circle') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,51 @@
+<section {{ cs('mino-split-icon block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        {% if fields.title %}
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8">
+                    <h2 class="mino-split-icon__title">
+                        {{ fields.title }}
+                    </h2>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row">
+            {% for item in fields.icons %}
+                <div class="col-lg-4">
+                    <div class="mino-split-icon__card block-shadow">
+                        <div class="mino-split-icon__card-header">
+                            {% if item.icon %}
+                                <div class="mino-split-icon__icon-wrapper">
+                                    {{ fetch_svg(item.icon) }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mino-split-icon__card-content">
+                            {% if item.title %}
+                                <h3 class="mino-split-icon__icon-title">
+                                    {{ item.title }}
+                                </h3>
+                            {% endif %}
+
+                            {% if item.content %}
+                                <div class="mino-split-icon__icon-content">
+                                    {{ item.content }}
+                                </div>
+                            {% endif %}
+
+                            {% if item.button %}
+                                <div class="mino-split-icon__icon-link-wrapper">
+                                    {{ include('components/button.twig', {
+                                        button: item.button,
+                                    }) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

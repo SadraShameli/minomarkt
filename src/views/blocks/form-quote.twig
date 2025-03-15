@@ -1,0 +1,96 @@
+<section {{ cs('mino-form-quote', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mino-form-quote__inner">
+                    <div class="mino-form-quote__content">
+                        <div class="mino-form-quote__header">
+                            {% if fields.title %}
+                                <h2 class="mino-form-quote__title">{{ fields.title }}</h2>
+                            {% endif %}
+
+                            {% if fields.description %}
+                                <p class="mino-form-quote__description">{{ fields.description }}</p>
+                            {% endif %}
+                        </div>
+
+                        {% if fields.person %}
+                            <div class="mino-form-quote__person">
+                                {% if fields.person.description %}
+                                    <h3 class="mino-form-quote__person-description">
+                                        {{ fields.person.description }}
+
+                                        {% if fields.person.name %}
+                                            <span class="mino-form-quote__person-name-highlight">
+                                                {{ fields.person.name }}
+                                            </span>
+                                        {% endif %}
+                                    </h3>
+                                {% endif %}
+
+                                <div class="mino-form-quote__person-info">
+                                    {% if fields.person.image %}
+                                        {% set image = get_image(fields.person.image) %}
+
+                                        {% if image %}
+                                            <img
+                                                class="mino-form-quote__person-image"
+                                                src="{{ image.src('medium') }}"
+                                                srcset="{{ image.srcset }}"
+                                                sizes="{{ image.img_sizes }}"
+                                                alt="{{ image.alt }}"
+                                                loading="lazy"
+                                            />
+                                        {% endif %}
+                                    {% endif %}
+
+                                    <div class="mino-form-quote__person-details">
+                                        <div class="mino-form-quote__person-main">
+                                            {% if fields.person.name %}
+                                                <p class="mino-form-quote__person-name">{{ fields.person.name }}</p>
+                                            {% endif %}
+
+                                            {% if fields.person.title %}
+                                                <p class="mino-form-quote__person-title">{{ fields.person.title }}</p>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="mino-form-quote__person-contact">
+                                            {% if fields.person.email %}
+                                                <a
+                                                    class="mino-form-quote__person-link"
+                                                    href="mailto:{{ fields.person.email }}"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {{ fields.person.email }}
+                                                </a>
+                                            {% endif %}
+
+                                            {% if fields.person.phone %}
+                                                <a
+                                                    class="mino-form-quote__person-link"
+                                                    href="tel:{{ fields.person.phone }}"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {{ fields.person.phone }}
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mino-form-quote__form">
+                        {{ include('components/form-quote.twig', {
+                            form: fields.form,
+                        }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

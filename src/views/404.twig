@@ -1,0 +1,55 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+    <section class="error-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    {% if options.error_image %}
+                        {% set imageObj = get_image(options.error_image) %}
+                        {% if imageObj %}
+                            <div class="error-container__image-wrapper">
+                                <img
+                                    src="{{ imageObj.src('medium') }}"
+                                    srcset="{{ imageObj.srcset }}"
+                                    sizes="{{ imageObj.img_sizes }}"
+                                    alt="{{ imageObj.alt }}"
+                                    title="{{ __('404 page image %s')|format(options.error_title) }}"
+                                    loading="lazy"
+                                />
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <div class="error-container__content-wrapper">
+                        {% if options.error_title %}
+                            <h1 class="error-container__title">
+                                {{ options.error_title }}
+                            </h1>
+                        {% endif %}
+
+                        {% if options.error_description %}
+                            <div class="error-container__content">
+                                {{ options.error_description }}
+                            </div>
+                        {% endif %}
+
+                        <div class="error-container__cta">
+                            {{ include('components/button.twig', {
+                                url: '/',
+                                title: __('Back to home', 'mino'),
+                                type: 'primary',
+                            }) }}
+
+                            {{ include('components/button.twig', {
+                                url: '/?_search=',
+                                title: __('Search again', 'mino'),
+                                type: 'secondary',
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

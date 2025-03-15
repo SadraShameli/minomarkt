@@ -1,0 +1,31 @@
+.site-branding {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    line-height: var(--line-height-100);
+
+    .site-logo-wrap {
+        color: var(--color-black);
+        display: inline-block;
+        font-size: 22px;
+        font-weight: 700;
+        height: auto;
+        line-height: 1.2;
+        text-decoration: none;
+        width: 100%;
+
+        &:hover {
+            color: var(--color-primary-500);
+        }
+
+        img {
+            max-height: 48px;
+            object-fit: contain;
+            width: fit-content;
+        }
+    }
+
+    .site-logo {
+        width: 100%;
+    }
+}

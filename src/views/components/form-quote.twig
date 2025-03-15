@@ -1,0 +1,58 @@
+<form class="mino-form-quote__form-inner" action="/quote/submit" method="POST">
+    <div class="mino-form-quote__form-group">
+        <label class="mino-form-quote__label" for="name">Name *</label>
+        <input class="mino-form-quote__input"
+               type="text"
+               id="name"
+               name="name"
+               required>
+    </div>
+
+    <div class="mino-form-quote__form-group">
+        <label class="mino-form-quote__label" for="email">Email *</label>
+        <input class="mino-form-quote__input"
+               type="email"
+               id="email"
+               name="email"
+               required>
+    </div>
+
+    <div class="mino-form-quote__form-group">
+        <label class="mino-form-quote__label" for="phone">Phone</label>
+        <input class="mino-form-quote__input"
+               type="tel"
+               id="phone"
+               name="phone">
+    </div>
+
+    <div class="mino-form-quote__form-group">
+        <label class="mino-form-quote__label" for="company">Company</label>
+        <input class="mino-form-quote__input"
+               type="text"
+               id="company"
+               name="company">
+    </div>
+
+    <div class="mino-form-quote__form-group">
+        <label class="mino-form-quote__label" for="message">Message *</label>
+        <textarea class="mino-form-quote__textarea"
+                  id="message"
+                  name="message"
+                  rows="5"
+                  required></textarea>
+    </div>
+
+    <div class="mino-form-quote__form-group">
+        <label class="mino-form-quote__checkbox-label">
+            <input class="mino-form-quote__checkbox"
+                   type="checkbox"
+                   name="privacy"
+                   required>
+            <span>I agree to the <a href="/privacy-policy" target="_blank">privacy policy</a> *</span>
+        </label>
+    </div>
+
+    <button class="mino-form-quote__submit" type="submit">
+        Send Request
+    </button>
+</form>

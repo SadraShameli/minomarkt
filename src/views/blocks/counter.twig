@@ -1,0 +1,30 @@
+<section {{ cs('mino-counter block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mino-counter__grid">
+                    {% for item in fields.items %}
+                        <div class="mino-counter__item">
+                            <div class="mino-counter__number">
+                                {% if item.prefix %}{{ item.prefix }}{% endif %}
+                                <span
+                                    class="js-counter__number"
+                                    data-decimals="{{ item.number|split('.')|length > 1 ? 1 : 0 }}"
+                                    data-number="{{ item.number }}"
+                                    data-separator="{{ item.separator }}"
+                                >
+                                    {{ item.number }}
+                                </span>
+                                {% if item.suffix %}{{ item.suffix }}{% endif %}
+                            </div>
+
+                            {% if item.text %}
+                                <p class="mino-counter__text">{{ item.text }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

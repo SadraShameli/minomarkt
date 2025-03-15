@@ -1,0 +1,126 @@
+/**
+ * Button
+ */
+
+.btn {
+    --button-padding: 12px 24px;
+
+    $block: &;
+
+    align-items: center;
+    border-radius: 360px;
+    box-shadow: unset;
+    color: var(--color-white);
+    cursor: pointer;
+    display: flex;
+    font-size: 14px;
+    font-weight: 600;
+    gap: 8px;
+    height: 44px;
+    line-height: 130%;
+    margin: 0;
+    padding: var(--button-padding);
+    text-decoration: none;
+    user-select: none;
+    width: fit-content;
+
+    @include media-breakpoint-up(lg) {
+        --button-padding: 24px;
+
+        font-size: 16px;
+
+        &--link {
+            --button-padding: 0;
+        }
+    }
+
+    svg {
+        height: 100%;
+        width: auto;
+    }
+
+    &:is(:focus-visible) {
+        outline: var(--color-black) solid var(--outline-width);
+        outline-offset: var(--outline-offset);
+    }
+
+    svg,
+    img {
+        transition: transform 0.3s;
+    }
+
+    &--link {
+        --button-padding: 0;
+    }
+
+    &--icon-left {
+        --button-padding: 8px 24px 8px 10px;
+
+        @include media-breakpoint-up(lg) {
+            --button-padding: 4px 32px 4px 20px;
+        }
+
+        &:is(:hover, :focus) {
+            svg,
+            img {
+                transform: translateX(-2px);
+            }
+        }
+    }
+
+    &--icon-right {
+        --button-padding: 8px 10px 8px 24px;
+
+        @include media-breakpoint-up(lg) {
+            --button-padding: 4px 20px 4px 32px;
+        }
+
+        &:is(:hover, :focus) {
+            svg,
+            img {
+                transform: translateX(2px);
+            }
+        }
+    }
+
+    &--primary {
+        --color-link: var(--color-white);
+        --color-link-hover: var(--color-white);
+
+        background-color: var(--color-primary-500);
+        color: var(--color-white);
+
+        &:hover {
+            background: var(--color-primary-800);
+            color: var(--color-white);
+        }
+    }
+
+    &--secondary {
+        --color-link: var(--color-black);
+        --color-link-hover: var(--color-black);
+
+        background-color: var(--color-white);
+        color: var(--color-black);
+
+        &-outline {
+            border: 2px solid var(--color-primary-300);
+            color: var(--color-black);
+        }
+
+        &:hover {
+            background: var(--color-primary-200);
+            color: var(--color-black);
+        }
+    }
+
+    &--svg {
+        height: 18px;
+        width: 18px;
+
+        @include media-breakpoint-up(lg) {
+            height: 24px;
+            width: 24px;
+        }
+    }
+}

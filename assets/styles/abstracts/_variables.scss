@@ -1,0 +1,102 @@
+/**
+ * Variables
+ */
+
+$mino-font-sizes: (
+    10: 10px,
+    12: 12px,
+    14: 14px,
+    16: 16px,
+    18: 18px,
+    20: 20px,
+    22: 22px,
+    24: 24px,
+    26: 26px,
+    32: 32px,
+    40: 40px,
+    56: 56px,
+    72: 72px,
+);
+
+$mino-font-weights: (
+    100: 100,
+    200: 200,
+    300: 300,
+    400: 400,
+    500: 500,
+    600: 600,
+    700: 700,
+    800: 800,
+    900: 900,
+);
+
+$mino-line-heights: (
+    100: 1,
+    120: 1.2,
+    140: 1.4,
+    150: 1.5,
+    160: 1.6,
+    180: 1.8,
+    200: 2,
+);
+
+$mino-spacings: (
+    0: 0,
+    2: 2px,
+    4: 4px,
+    8: 8px,
+    12: 12px,
+    16: 16px,
+    20: 20px,
+    24: 24px,
+    32: 32px,
+    40: 40px,
+    48: 48px,
+    56: 56px,
+    64: 64px,
+    72: 72px,
+    80: 80px,
+    88: 88px,
+    96: 96px,
+    112: 112px,
+    128: 128px,
+    256: 256px,
+);
+
+$mino-border-radius: (
+    0: 0,
+    4: 4px,
+    6: 6px,
+    8: 8px,
+    12: 12px,
+    32: 32px,
+    round: 50rem,
+);
+
+$mino-transitions: (
+    150: all 0.15s ease-in-out,
+    300: all 0.3s ease-in-out,
+    500: all 0.5s ease-in-out,
+    1000: all 1s ease-in-out,
+    2000: all 2s ease-in-out,
+);
+
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px,
+);
+
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1376px,
+);
+
+$grid-gutter-width: 2rem;
+$grid-gutter-width-mobile: 4rem;

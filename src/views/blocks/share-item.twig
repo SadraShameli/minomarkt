@@ -1,0 +1,19 @@
+<div {{ cs('mino-share-item', block_layout(blockLayout)) }}>
+    {% if fields.text %}
+        <span class="mino-share-item__text">{{ fields.text }}</span>
+    {% endif %}
+
+    <div class="mino-share-item__list">
+        {% for item in fields.items %}
+            <a
+                class="mino-share-item__link"
+                href="{{ item.url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on {{ item.name }}"
+            >
+                <i class="mino-share-item__icon {{ item.icon }}"></i>
+            </a>
+        {% endfor %}
+    </div>
+</div>

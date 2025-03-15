@@ -1,0 +1,39 @@
+<section {{ cs ('mino-hero', block_layout(blockLayout)) }}>
+    <div class="mino-hero__media-wrapper">
+        {% set imageObj = get_image(fields.image) %}
+        {% if imageObj %}
+            <img
+                class="mino-hero__image"
+                src="{{ imageObj.src('medium') }}"
+                srcset="{{ imageObj.srcset }}"
+                sizes="{{ imageObj.img_sizes }}"
+                alt="{{ imageObj.alt }}"
+                loading="lazy"
+            />
+        {% endif %}
+    </div>
+
+    <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+        <div class="mino-hero__content-wrapper">
+            {% if fields.title %}
+                <h1 class="mino-hero__title">
+                    {{ fields.title }}
+                </h1>
+            {% endif %}
+            {% if fields.buttons %}
+                <div class="mino-hero__cta-wrapper">
+                    {% for buttonFields in fields.buttons %}
+                        {{ include('components/button.twig', {
+                            url: buttonFields.button.link.url,
+                            target: buttonFields.button.link.target,
+                            title: buttonFields.button.link.title,
+                            type: buttonFields.button.type,
+                            iconBefore: buttonFields.button.icon_before,
+                            iconAfter: buttonFields.button.icon_after,
+                        }) }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>

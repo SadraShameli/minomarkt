@@ -1,0 +1,8 @@
+.mino-divider {
+    &__element {
+        background-color: var(--color-dark-100);
+        height: 1px;
+        position: relative;
+        width: 100%;
+    }
+}

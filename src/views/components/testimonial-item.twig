@@ -1,0 +1,48 @@
+<div class="mino-testimonial__item">
+    {% if image %}
+        {% set image = get_image(image) %}
+
+        {% if image %}
+            <div class="mino-testimonial__item-photo">
+                <img
+                    class="mino-testimonial__item-image"
+                    src="{{ image.src('medium') }}"
+                    srcset="{{ image.srcset }}"
+                    sizes="{{ image.img_sizes }}"
+                    alt="{{ image.alt ?? name }}"
+                    loading="lazy"
+                />
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% if quote %}
+        <div class="mino-testimonial__item-quote">
+            <p>{{ quote }}</p>
+        </div>
+    {% endif %}
+
+    <div class="mino-testimonial__item-meta">
+        {% if rating and show_rating %}
+            <div class="mino-testimonial__item-rating">
+                {% for i in 1..5 %}
+                    <span class="mino-testimonial__item-star">
+                        {% if i <= rating %}
+                            {{ fetch_svg('star-fill') }}
+                        {% else %}
+                            {{ fetch_svg('star') }}
+                        {% endif %}
+                    </span>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if name %}
+            <h3 class="mino-testimonial__item-name">{{ name }}</h3>
+        {% endif %}
+
+        {% if author %}
+            <div class="mino-testimonial__item-author">{{ author }}</div>
+        {% endif %}
+    </div>
+</div>

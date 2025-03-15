@@ -1,0 +1,35 @@
+<section {{ cs('mino-quote block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mino-quote__wrapper block-shadow">
+                    <div class="mino-quote__card-header">
+                        <div class="mino-quote__icon-wrapper">
+                            {{ fetch_svg('quotes') }}
+                        </div>
+                    </div>
+
+                    <div class="mino-quote__card-content">
+                        <blockquote>
+                            <p class="mino-quote__text">
+                                "{{ fields.text }}"
+
+                                {% if fields.subtitle %}
+                                    <span class="mino-quote__subtitle-wrapper">
+                                        <cite class="mino-quote__subtitle">{{ fields.subtitle }}</cite>
+                                    </span>
+                                {% endif %}
+                            </p>
+
+                            {% if fields.button %}
+                                <div class="mino-quote__link-wrapper">
+                                    {{ include('components/button.twig') }}
+                                </div>
+                            {% endif %}
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

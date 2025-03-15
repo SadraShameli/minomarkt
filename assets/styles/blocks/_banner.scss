@@ -1,0 +1,99 @@
+.mino-banner {
+    &__inner {
+        background-color: var(--color-white);
+        border-radius: var(--border-radius-default);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            min-height: 300px;
+
+            .mino-banner--reversed & {
+                flex-direction: row-reverse;
+            }
+        }
+
+        &::before {
+            background-color: var(--color-primary-500);
+            content: '';
+            height: 15px;
+            position: absolute;
+            width: 100%;
+            z-index: 2;
+
+            @include media-breakpoint-up(lg) {
+                height: 100%;
+                left: 0;
+                top: 0;
+                width: 15px;
+            }
+
+            .mino-banner--reversed & {
+                @include media-breakpoint-up(lg) {
+                    left: auto;
+                    right: 0;
+                }
+            }
+        }
+    }
+
+    &__content {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 38px 16px;
+        width: 100%;
+
+        @include media-breakpoint-up(lg) {
+            padding-left: 48px;
+            padding-right: 48px;
+            width: 50%;
+        }
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 16px;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 32px;
+        }
+    }
+
+    &__description {
+        font-size: 16px;
+    }
+
+    &__button-wrapper {
+        margin-top: 24px;
+    }
+
+    &__button-icon {
+        align-items: center;
+        display: flex;
+        height: 20px;
+        justify-content: center;
+        width: 20px;
+    }
+
+    &__image {
+        max-height: 300px;
+        width: 100%;
+
+        @include media-breakpoint-up(lg) {
+            width: 50%;
+        }
+
+        img {
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            width: 100%;
+        }
+    }
+}

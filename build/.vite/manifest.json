@@ -1,0 +1,85 @@
+{
+  "assets/admin/admin-script.ts": {
+    "file": "assets/adminScripts-l0sNRNKZ.js",
+    "name": "adminScripts",
+    "src": "assets/admin/admin-script.ts",
+    "isEntry": true
+  },
+  "assets/admin/admin-style.scss": {
+    "file": "assets/adminStyles-l0sNRNKZ.js",
+    "name": "adminStyles",
+    "src": "assets/admin/admin-style.scss",
+    "isEntry": true
+  },
+  "assets/fonts/circular-std/circular-std-black-italic.woff": {
+    "file": "assets/circular-std-black-italic-BRRuKxrl.woff",
+    "src": "assets/fonts/circular-std/circular-std-black-italic.woff"
+  },
+  "assets/fonts/circular-std/circular-std-black-italic.woff2": {
+    "file": "assets/circular-std-black-italic-CdneFhzz.woff2",
+    "src": "assets/fonts/circular-std/circular-std-black-italic.woff2"
+  },
+  "assets/fonts/circular-std/circular-std-black.woff": {
+    "file": "assets/circular-std-black-A0B_tNwT.woff",
+    "src": "assets/fonts/circular-std/circular-std-black.woff"
+  },
+  "assets/fonts/circular-std/circular-std-black.woff2": {
+    "file": "assets/circular-std-black-Csmca5wr.woff2",
+    "src": "assets/fonts/circular-std/circular-std-black.woff2"
+  },
+  "assets/fonts/circular-std/circular-std-bold-italic.woff": {
+    "file": "assets/circular-std-bold-italic-CefpetMz.woff",
+    "src": "assets/fonts/circular-std/circular-std-bold-italic.woff"
+  },
+  "assets/fonts/circular-std/circular-std-bold-italic.woff2": {
+    "file": "assets/circular-std-bold-italic-rKh1f032.woff2",
+    "src": "assets/fonts/circular-std/circular-std-bold-italic.woff2"
+  },
+  "assets/fonts/circular-std/circular-std-bold.woff": {
+    "file": "assets/circular-std-bold-D_4XRMFP.woff",
+    "src": "assets/fonts/circular-std/circular-std-bold.woff"
+  },
+  "assets/fonts/circular-std/circular-std-bold.woff2": {
+    "file": "assets/circular-std-bold-Dc1UjD_4.woff2",
+    "src": "assets/fonts/circular-std/circular-std-bold.woff2"
+  },
+  "assets/fonts/circular-std/circular-std-book-italic.woff": {
+    "file": "assets/circular-std-book-italic-C6abCu17.woff",
+    "src": "assets/fonts/circular-std/circular-std-book-italic.woff"
+  },
+  "assets/fonts/circular-std/circular-std-book-italic.woff2": {
+    "file": "assets/circular-std-book-italic-nAFgPn4S.woff2",
+    "src": "assets/fonts/circular-std/circular-std-book-italic.woff2"
+  },
+  "assets/fonts/circular-std/circular-std-book.woff": {
+    "file": "assets/circular-std-book-B7BtChRp.woff",
+    "src": "assets/fonts/circular-std/circular-std-book.woff"
+  },
+  "assets/fonts/circular-std/circular-std-book.woff2": {
+    "file": "assets/circular-std-book-BG8txpCl.woff2",
+    "src": "assets/fonts/circular-std/circular-std-book.woff2"
+  },
+  "assets/fonts/circular-std/circular-std-medium.woff": {
+    "file": "assets/circular-std-medium-iMItBTvO.woff",
+    "src": "assets/fonts/circular-std/circular-std-medium.woff"
+  },
+  "assets/fonts/circular-std/circular-std-medium.woff2": {
+    "file": "assets/circular-std-medium-DotlbbeB.woff2",
+    "src": "assets/fonts/circular-std/circular-std-medium.woff2"
+  },
+  "assets/fonts/manrope/Manrope.ttf": {
+    "file": "assets/Manrope-CZfUxJDf.ttf",
+    "src": "assets/fonts/manrope/Manrope.ttf"
+  },
+  "assets/scripts/app.ts": {
+    "file": "assets/appScripts-D3mF7Oee.js",
+    "name": "appScripts",
+    "src": "assets/scripts/app.ts",
+    "isEntry": true
+  },
+  "assets/styles/app.scss": {
+    "file": "assets/appStyles-uStOPlqs.css",
+    "src": "assets/styles/app.scss",
+    "isEntry": true
+  }
+}

@@ -1,0 +1,118 @@
+/* stylelint-disable selector-class-pattern */
+.gform_wrapper.gravity-theme {
+    @include media-breakpoint-up(lg) {
+        .gform_body {
+            position: relative;
+
+            &::after {
+                background-color: var(--color-white);
+                border-radius: 100px;
+                content: '';
+                inset: 0;
+                position: absolute;
+                width: 80%;
+            }
+        }
+
+        .gform_fields {
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    .gfield:not(.gfield--width-full) {
+        @include media-breakpoint-only(md) {
+            grid-column: 1 / -1;
+        }
+    }
+
+    .ginput_container_email {
+        height: 100%;
+        width: 100%;
+    }
+
+    input[type='email'] {
+        background-color: var(--color-white);
+        border-radius: 100px;
+        height: 100%;
+        padding: 12px 26px;
+        text-align: center;
+
+        @include media-breakpoint-up(lg) {
+            text-align: left;
+        }
+
+        &::placeholder {
+            color: var(--color-gray-stronger);
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .gfield_error & {
+            border: 2px solid var(--color-system-error-900);
+        }
+    }
+
+    .gfield--type-submit .btn {
+        width: 100%;
+
+        @include media-breakpoint-up(lg) {
+            width: auto;
+        }
+    }
+
+    .gform_footer {
+        display: none;
+    }
+
+    .gform_validation_errors {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .gfield_validation_message {
+        background-color: var(--color-system-error-100);
+        border: 1px solid var(--color-system-error-100);
+        border-radius: 8px;
+        color: var(--color-system-error-900);
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        max-width: 90vw;
+        padding: 8px;
+        position: absolute;
+
+        @include media-breakpoint-up(lg) {
+            max-width: 365px;
+        }
+    }
+}
+
+.gform_confirmation_wrapper.gravity-theme {
+    .gform_confirmation_message {
+        color: var(--color-white);
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 2;
+        padding-left: 30px;
+        position: relative;
+
+        &::before {
+            background-color: var(--color-tertiary-base);
+            background-image: url('../../svg/custom/check-circle-green.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            border-radius: 100%;
+            content: '';
+            height: 22px;
+            left: 0;
+            position: absolute;
+            top: 0;
+            transform: translateY(4px);
+            width: 22px;
+        }
+    }
+}

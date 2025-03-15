@@ -1,0 +1,124 @@
+.mino-quote {
+    &__wrapper {
+        background-color: var(--color-white);
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+        }
+    }
+
+    &__card-header {
+        align-items: center;
+        background-color: var(--color-primary-100);
+        display: flex;
+        justify-content: center;
+        padding: 64px;
+
+        @include media-breakpoint-up(lg) {
+            border-bottom: 0;
+            border-right: 1px solid var(--color-primary-100);
+            flex: 0 0 200px;
+            padding: 40px 32px;
+        }
+    }
+
+    &__header-content {
+        align-items: center;
+        display: flex;
+        gap: 16px;
+
+        @include media-breakpoint-up(lg) {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 24px;
+        }
+    }
+
+    &__card-content {
+        flex: 1;
+        padding: 32px;
+
+        @include media-breakpoint-up(lg) {
+            padding: 48px;
+        }
+    }
+
+    &__section-title {
+        color: var(--color-dark-500);
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 20px;
+        }
+    }
+
+    &__icon-wrapper {
+        border-radius: 16px;
+        display: flex;
+        flex-shrink: 0;
+        height: 80px;
+        justify-content: center;
+        width: 80px;
+
+        @include media-breakpoint-up(lg) {
+            border-radius: 24px;
+            height: 120px;
+            padding: 28px;
+            width: 120px;
+        }
+
+        svg {
+            height: 100%;
+            width: 100%;
+
+            path {
+                fill: var(--color-primary-500);
+            }
+        }
+    }
+
+    blockquote {
+        margin: 0;
+        padding: 0;
+    }
+
+    &__text {
+        color: var(--color-dark-450);
+        font-size: 18px;
+        font-style: italic;
+        line-height: 1.6;
+        margin: 0;
+        position: relative;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 20px;
+        }
+    }
+
+    &__subtitle-wrapper {
+        display: block;
+        margin-top: 24px;
+    }
+
+    &__subtitle {
+        color: var(--color-dark-500);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    &__link-wrapper {
+        margin-top: 32px;
+    }
+
+    &__link-icon {
+        font-size: 20px;
+        margin-left: 4px;
+    }
+}

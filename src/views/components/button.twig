@@ -1,0 +1,60 @@
+{% if button or fields.button %}
+    {% set url = button.link.url ?? fields.button.link.url %}
+    {% set title = button.link.title ?? fields.button.link.title %}
+    {% set target = button.link.target ?? fields.button.link.target %}
+    {% set type = button.type ?? fields.button.type %}
+    {% set iconBefore = button.icon_before ?? fields.button.icon_before %}
+    {% set iconAfter = button.icon_after ?? fields.button.icon_after %}
+{% endif %}
+
+<a
+    {{ cs (
+        'btn',
+        class ? class,
+        size ? 'btn--' ~ size,
+        type ? 'btn--' ~ type : 'btn--primary',
+        iconBefore or iconAfter ? 'btn--icon',
+    ) }}
+
+    {% if id %}
+        id="{{ id }}"
+    {% endif %}
+
+    {% if url %}
+        href="{{ url }}"
+    {% endif %}
+
+    {% if target %}
+        target="{{ target ? target : '_self' }}"
+    {% endif %}
+
+    {% if title %}
+        title="{{ title }}"
+    {% endif %}
+
+    {% if extra %}
+        {{ extra }}
+    {% endif %}
+>
+    {% if iconBefore %}
+        {% set iconBeforeSVG = fetch_svg(iconBefore) %}
+        {% if iconBeforeSVG %}
+            <span class="btn--svg">
+                {{ iconBeforeSVG }}
+            </span>
+        {% endif %}
+    {% endif %}
+
+    {% if title %}
+        {{ title }}
+    {% endif %}
+
+    {% if target == '_blank' or iconAfter %}
+        {% set iconAfterSVG = fetch_svg(target == '_blank' ? 'link-alt-1' : iconAfter) %}
+        {% if iconAfterSVG %}
+            <span class="btn--svg">
+                {{ iconAfterSVG }}
+            </span>
+        {% endif %}
+    {% endif %}
+</a>

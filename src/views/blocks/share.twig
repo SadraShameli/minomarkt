@@ -1,0 +1,16 @@
+<section {{ cs('mino-share', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {{ include('components/share.twig', {
+                    permalink: function('get_permalink', post.ID)|url_encode,
+                    listOrder: fields.list_order,
+                    showLinkedin: fields.show_linkedin,
+                    showFacebook: fields.show_facebook,
+                    showX: fields.show_x,
+                    showEmail: fields.show_email,
+                }) }}
+            </div>
+        </div>
+    </div>
+</section>

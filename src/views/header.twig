@@ -1,0 +1,88 @@
+<header id="masthead" class="site-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-9 col-md-3">
+                <div class="site-branding">
+                    <a href="{{ site.url }}" class="site-logo-wrap">
+                        {% if options.site_logo and options.header.settings.show_logo %}
+                            {% set imageObj = get_image(options.site_logo) %}
+                            {% if imageObj %}
+                                <img
+                                    class="site-logo"
+                                    src="{{ imageObj.src('medium') }}"
+                                    srcset="{{ imageObj.srcset }}"
+                                    sizes="{{ imageObj.img_sizes }}"
+                                    alt="{{ imageObj.alt }}"
+                                    loading="lazy"
+                                />
+                            {% endif %}
+                        {% elseif options.header.settings.show_site_name %}
+                            {{ site.title }}
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-3 col-md-9">
+                <div class="site-header__desktop">
+                    <div class="site-navigation">
+                        {{ include('navigations/navigation-main.twig') }}
+                    </div>
+
+                    {% if options.header.menu_buttons %}
+                        <div class="site-header__widget">
+                            {% for buttonFields in options.header.menu_buttons %}
+                                {{ include('components/button.twig', {
+                                    class: 'btn--small',
+                                    url: buttonFields.button.link.url,
+                                    target: buttonFields.button.link.target,
+                                    title: buttonFields.button.link.title,
+                                    type: buttonFields.button.type,
+                                    iconBefore: buttonFields.button.icon_before,
+                                    iconAfter: buttonFields.button.icon_after,
+                                }) }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="site-header__mobile">
+                    <button class="mobile-navigation__toggler">
+                        <div class="mobile-navigation__toggler-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="site-navigation-mobile">
+    {{ include('navigations/navigation-mobile.twig') }}
+
+    {% if options.header.menu_buttons %}
+        <div class="site-navigation-mobile__widget">
+            {% for buttonFields in options.header.menu_buttons %}
+                {{ include('components/button.twig', {
+                    class: 'btn--small',
+                    url: buttonFields.button.link.url,
+                    target: buttonFields.button.link.target,
+                    title: buttonFields.button.link.title,
+                    type: buttonFields.button.type,
+                    iconBefore: buttonFields.button.icon_before,
+                    iconAfter: buttonFields.button.icon_after,
+                }) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if function('shortcode_exists', 'wpml_language_selector_widget') %}
+        {% apply shortcodes %}
+            [wpml_language_selector_widget]
+        {% endapply %}
+    {% endif %}
+</div>

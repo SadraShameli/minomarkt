@@ -1,0 +1,120 @@
+.mino-story {
+    $block: &;
+
+    &__grid {
+        --grid-columns: 1;
+
+        display: grid;
+        grid-template-columns: repeat(var(--grid-columns), 1fr);
+
+        @include media-breakpoint-up(md) {
+            --grid-columns: 2;
+        }
+
+        @include media-breakpoint-up(lg) {
+            .btn__text {
+                display: none;
+            }
+
+            .btn__slide {
+                min-width: 58px;
+                padding: 0;
+            }
+        }
+
+        &.has--gap {
+            gap: var(--spacing-16);
+
+            @include media-breakpoint-up(lg) {
+                gap: var(--spacing-24);
+            }
+        }
+    }
+
+    &__item {
+        overflow: hidden;
+        padding: 24px;
+        position: relative;
+
+        @include media-breakpoint-up(lg) {
+            min-height: 464px;
+            padding: 64px 55px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            min-height: 520px;
+        }
+
+        &:hover,
+        &:focus {
+            #{$block}__item-image {
+                transform: scale(1.04);
+            }
+        }
+
+        .click-url {
+            z-index: 3;
+        }
+
+        picture {
+            inset: 0;
+            position: absolute;
+            z-index: 1;
+
+            &::after {
+                background-color: rgb(0 0 0 / 45%);
+                content: '';
+                inset: 0;
+                position: absolute;
+            }
+        }
+    }
+
+    &__item-inner {
+        gap: var(--spacing-24);
+        z-index: 2;
+
+        @include media-breakpoint-up(lg) {
+            gap: unset;
+        }
+    }
+
+    &__item-separator {
+        background-color: var(--color-primary-500);
+        display: inline-block;
+        height: 19px;
+        margin: 0 8px;
+        position: relative;
+        top: 4px;
+        width: 1px;
+
+        @include media-breakpoint-up(lg) {
+            margin: 0 16px;
+        }
+    }
+
+    &__item-footer {
+        gap: var(--spacing-32);
+
+        @include media-breakpoint-up(xxl) {
+            gap: var(--spacing-96);
+        }
+    }
+
+    &__item-quote {
+        font-size: var(--spacing-24);
+        line-height: var(--line-height-150);
+
+        @include media-breakpoint-up(lg) {
+            font-size: var(--spacing-32);
+        }
+    }
+
+    &__item-image {
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition-300);
+        width: 100%;
+        will-change: auto;
+    }
+}

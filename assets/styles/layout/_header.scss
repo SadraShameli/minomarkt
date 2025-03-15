@@ -1,0 +1,91 @@
+.site-header {
+    backdrop-filter: blur(15px) saturate(200%) brightness(1.25);
+    padding: 24px 0;
+    position: relative;
+    z-index: 50;
+
+    @include media-breakpoint-up(lg) {
+        padding: 16px 0;
+    }
+
+    &::after {
+        background-color: color-mix(
+            in srgb,
+            var(--body-bg-color) 85%,
+            transparent
+        );
+        content: '';
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: -1;
+    }
+
+    &--sticky {
+        border-bottom: 1px solid var(--color-dark-50);
+        position: sticky;
+        top: 0;
+
+        .admin-bar & {
+            @include media-breakpoint-between(sm, lg) {
+                top: 46px;
+            }
+
+            @include media-breakpoint-up(lg) {
+                top: 32px;
+            }
+        }
+    }
+
+    &__desktop {
+        display: none;
+
+        @include media-breakpoint-up(lg) {
+            align-items: center;
+            display: flex;
+            gap: 32px;
+            justify-content: flex-end;
+        }
+
+        .dropdown-menu {
+            --bs-dropdown-border-width: 1px;
+            --bs-dropdown-border-color: transparent;
+            --bs-dropdown-border-radius: 8px;
+            --bs-dropdown-box-shadow: 0px 8px 56px 0px #0000001a;
+            --bs-dropdown-min-width: 200px;
+            --bs-dropdown-padding-y: 1rem;
+            --navigation-link-padding-y: 0.75rem;
+            --navigation-link-padding-x: 1.25rem;
+
+            box-shadow: var(--bs-dropdown-box-shadow);
+
+            @include media-breakpoint-up(lg) {
+                --bs-dropdown-min-width: 320px;
+            }
+        }
+    }
+
+    &__mobile {
+        display: flex;
+        justify-content: flex-end;
+
+        @include media-breakpoint-up(lg) {
+            display: none;
+        }
+    }
+
+    &__widget {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        @include media-breakpoint-up(lg) {
+            .dropdown-menu {
+                --bs-dropdown-min-width: 188px;
+            }
+        }
+    }
+}

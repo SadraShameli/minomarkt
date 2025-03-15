@@ -1,0 +1,131 @@
+<section {{ cs('mino-google-map block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row row-gap-3">
+            <div class="col-12">
+                <div class="mino-google-map__info block-shadow">
+                    {% if fields.title and fields.show_content %}
+                        <h2 class="mino-google-map__title">{{ fields.title }}</h2>
+                    {% endif %}
+
+                    {% if fields.description and fields.show_content %}
+                        <div class="mino-google-map__description col-12 col-lg-6">
+                            {{ fields.description }}
+                        </div>
+                    {% endif %}
+
+                    {% if fields.show_directions %}
+                        <div class="mino-google-map__button">
+                            {% set linkDirections = get_link_directions() %}
+
+                            {{ include('components/button.twig', {
+                                url: linkDirections,
+                                title: __('Routebeschrijving', 'mino'),
+                                target: '_blank',
+                                type: 'secondary',
+                            }) }}
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-12 col-lg-4 d-flex flex-column row-gap-4">
+                            {% if (fields.address or fields.postcode or fields.city) or (fields.show_address and fields.show_contact) %}
+                                <div class="mino-google-map__contact block-shadow">
+                                    <div class="mino-google-map__card-header">
+                                        <div class="mino-google-map__icon-wrapper">
+                                            {{ fetch_svg('map-pin') }}
+                                        </div>
+                                        <h3 class="mino-google-map__section-title">{{ __('Contactgegevens', 'mino') }}</h3>
+                                    </div>
+
+                                    <div class="mino-google-map__card-content">
+                                        <table class="mino-google-map__contact-table">
+                                            {% if options.contact.phone and fields.show_phone %}
+                                                <tr class="mino-google-map__contact-row">
+                                                    <td class="mino-google-map__contact-label">{{ __('Telefoon', 'mino') }}</td>
+                                                    <td class="mino-google-map__contact-value">
+                                                        <a href="tel:{{ options.contact.phone|replace({' ': ''}) }}">{{ options.contact.phone }}</a>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+
+                                            {% if options.contact.email and fields.show_email %}
+                                                <tr class="mino-google-map__contact-row">
+                                                    <td class="mino-google-map__contact-label">{{ __('Email', 'mino') }}</td>
+                                                    <td class="mino-google-map__contact-value">
+                                                        <a href="mailto:{{ options.contact.email }}">{{ options.contact.email }}</a>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+
+                                            {% if options.address.address or options.address.postcode or options.address.city %}
+                                                <tr class="mino-google-map__contact-row">
+                                                    <td class="mino-google-map__contact-label">{{ __('Adres', 'mino') }}</td>
+                                                    <td class="mino-google-map__contact-value">
+                                                        {% if options.address.address %}
+                                                            <p>{{ options.address.address }}</p>
+                                                        {% endif %}
+                                                        {% if options.address.postcode or options.address.city %}
+                                                            <p>{{ options.address.postcode }} {{ options.address.city }}</p>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        </table>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if options.opening_times.days and fields.show_opening_times %}
+                                <div class="mino-google-map__opening-times block-shadow">
+                                    <div class="mino-google-map__card-header">
+                                        <div class="mino-google-map__icon-wrapper">
+                                            {{ fetch_svg('clock') }}
+                                        </div>
+                                        <h3 class="mino-google-map__section-title">{{ __('Openingstijden', 'mino') }}</h3>
+                                    </div>
+
+                                    <div class="mino-google-map__card-content">
+                                        <table class="mino-google-map__times-table">
+                                            {% for day in options.opening_times.days %}
+                                                <tr {{ cs('mino-google-map__time-row', currentDay == day.day ? 'mino-google-map__time-row--is-current') }}>
+                                                    <td class="mino-google-map__day">
+                                                        <div class="mino-google-map__time-content">
+                                                            {{ __(day.day|capitalize, 'mino') }}
+                                                        </div>
+                                                    </td>
+                                                    <td class="mino-google-map__hours">
+                                                        <div class="mino-google-map__time-content">
+                                                            {% if day.closed %}
+                                                                <span class="mino-google-map__hours-closed">{{ __('Gesloten', 'mino') }}</span>
+                                                            {% else %}
+                                                                {{ day.open }} – {{ day.close }}
+                                                            {% endif %}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12 col-lg-8">
+                            {% if fields.show_map %}
+                                <div
+                                    class="mino-google-map__container block-shadow js-google-map"
+                                    data-api-key="{{ options.api.google_maps_api_key }}"
+                                    data-map-id="{{ options.api.google_maps_id }}"
+                                    data-place-id="{{ options.api.google_maps_place_id }}"
+                                    data-latitude="{{ options.address.latitude }}"
+                                    data-longitude="{{ options.address.longitude }}"
+                                    data-zoom="{{ fields.zoom }}"
+                                ></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

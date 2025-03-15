@@ -1,0 +1,55 @@
+<nav class="main-navigation" role="navigation">
+    <ul class="menu navigation" id="primary-menu">
+        {% for menuItem in primaryMenu.get_items %}
+            <li
+                {{ cs(menuItem.classes|join(' '), 'menu-item-level-1', menuItem.children ? 'dropdown has-megamenu') }}
+                id="menu-item-{{ menuItem.id }}"
+            >
+                <a
+                    class="site-navigation__link"
+                    href="{{ menuItem.link }}"
+                    target="{{ menuItem.target }}"
+
+                    {% if menuItem.children %}
+                        id="mainNavDropdown-{{ menuItem.id }}"
+                        aria-expanded="false"
+                        data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside"
+                    {% endif %}
+                >
+                    {{ menuItem.title }}
+
+                    {% if menuItem.children %}
+                        {{ fetch_svg('chevron-down') }}
+                    {% endif %}
+                </a>
+
+                {% if menuItem.children|length > 0 %}
+                    <ul
+                        class="sub-menu dropdown-menu"
+                        aria-labelledby="mainNavDropdown-{{ menuItem.id }}"
+                    >
+                        {% for menuItem in menuItem.children %}
+                            <li
+                                {{ cs(menuItem.classes|join(' '), 'menu-item-level-2') }}
+                                id="menu-item-{{ menuItem.id }}"
+                            >
+                                <a
+                                    class="site-navigation__link"
+                                    href="{{ menuItem.link }}"
+                                    target="{{ menuItem.target }}"
+                                >
+                                    {{ menuItem.title }}
+
+                                    <span class="site-navigation__link-icon">
+                                        {{ fetch_svg('arrow-right') }}
+                                    </span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</nav>

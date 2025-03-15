@@ -1,0 +1,15 @@
+<section {{ cs('mino-button', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mino-button__wrapper">
+                    {% for buttonFields in fields.buttons %}
+                        {{ include('components/button.twig', {
+                            button: buttonFields.button,
+                        }) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,38 @@
+.mino-share-item {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-16);
+
+    &__text {
+        font-weight: var(--font-weight-600);
+    }
+
+    &__list {
+        align-items: center;
+        display: flex;
+        gap: var(--spacing-12);
+    }
+
+    &__link {
+        align-items: center;
+        border-radius: var(--border-radius-default);
+        color: var(--color-gray-700);
+        display: flex;
+        height: var(--spacing-32);
+        justify-content: center;
+        transition:
+            color var(--transition-default),
+            background-color var(--transition-default);
+        width: var(--spacing-32);
+
+        &:hover {
+            background-color: var(--color-gray-100);
+            color: var(--color-primary-500);
+        }
+    }
+
+    &__icon {
+        height: var(--spacing-20);
+        width: var(--spacing-20);
+    }
+}

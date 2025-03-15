@@ -1,0 +1,60 @@
+.mino-slider-logo {
+    &__image {
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+        transition: var(--transition-default);
+        user-select: none;
+        width: 100%;
+    }
+
+    &__item {
+        border-radius: var(--border-radius-default);
+        display: block;
+        overflow: hidden;
+        text-decoration: none;
+
+        &:hover {
+            .mino-slider-logo__image {
+                transform: scale(1.05);
+            }
+        }
+    }
+
+    &__image-wrapper {
+        height: 96px;
+        position: relative;
+        width: 100%;
+    }
+
+    &__button-wrapper {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 12px;
+    }
+
+    &__button-prev,
+    &__button-next {
+        align-items: center;
+        border-radius: 50%;
+        color: var(--color-primary-500);
+        cursor: pointer;
+        display: flex;
+        height: fit-content;
+        justify-content: center;
+        width: fit-content;
+
+        svg {
+            height: 48px;
+            width: 48px;
+        }
+    }
+
+    .swiper {
+        .swiper-wrapper {
+            gap: 16px;
+        }
+    }
+}

@@ -1,0 +1,52 @@
+/**
+ * Generate variables
+ */
+
+body {
+    --font-family-heading: #{$font-circular-std};
+    --font-family-body: #{$font-manrope};
+    --color-heading: var(--color-primary-950);
+    --color-body: var(--color-black);
+    --color-link: var(--color-primary-600);
+    --color-link-hover: var(--color-primary-700);
+
+    @each $key, $value in $mino-colors {
+        --color-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $mino-font-sizes {
+        --font-size-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $mino-font-weights {
+        --font-weight-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $mino-line-heights {
+        --line-height-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $mino-spacings {
+        --spacing-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $mino-border-radius {
+        --border-radius-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $mino-transitions {
+        --transition-#{$key}: #{$value};
+    }
+}
+
+@each $key, $value in $mino-colors {
+    .c-#{$key} {
+        color: var(--color-#{$key});
+    }
+}
+
+@each $key, $value in $mino-colors {
+    .bg-#{$key} {
+        background-color: var(--color-#{$key});
+    }
+}

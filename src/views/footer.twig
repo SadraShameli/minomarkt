@@ -1,0 +1,211 @@
+<footer class="site-footer">
+    {% if options.footer.settings.show_logo %}
+        {% set imageObj = get_image(options.site_logo) %}
+        {% if imageObj %}
+            <div class="site-footer__logo-container">
+                <img
+                    class="site-footer__logo"
+                    src="{{ imageObj.src('medium') }}"
+                    srcset="{{ imageObj.srcset }}"
+                    sizes="{{ imageObj.img_sizes }}"
+                    alt="{{ imageObj.alt }}"
+                    loading="lazy"
+                />
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="site-footer__content">
+                    {% if options.footer.title %}
+                        <div class="site-footer__content-title">
+                            {{ options.footer.title }}
+                        </div>
+                    {% endif %}
+
+                    {% if options.footer.description %}
+                        <div class="site-footer__content-description">
+                            {{ options.footer.description }}
+                        </div>
+                    {% endif %}
+
+                    {% if options.footer.form.id %}
+                        <div class="site-footer__content-form">
+                            {% apply shortcodes %}
+                                [gravityform id="{{ options.footer.form.id }}" title="false" description="false" ajax="true"]
+                            {% endapply %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-7 offset-lg-1">
+                <div class="row">
+                    <div class="col-12 col-lg-4">
+                        {% if footerMenuOne %}
+                            <nav class="site-footer__navigation" role="navigation">
+                                <div class="site-footer__navigation-title">
+                                    {{ footerMenuOne.title }}
+                                </div>
+
+                                <ul id="secondary-menu" class="site-footer__navigation-items">
+                                    {% for item in footerMenuOne.items %}
+                                        <li><a href="{{ item.link }}">{{ item.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </nav>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                        {% if footerMenuTwo %}
+                            <nav class="site-footer__navigation" role="navigation">
+                                <div class="site-footer__navigation-title">
+                                    {{ footerMenuTwo.title }}
+                                </div>
+
+                                <ul id="secondary-menu" class="site-footer__navigation-items">
+                                    {% for item in footerMenuTwo.items %}
+                                        <li><a href="{{ item.link }}">{{ item.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </nav>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                        <div class="site-footer__contact">
+                            <div class="site-footer__navigation-title">
+                                {{ __('Contact', 'mino') }}
+                            </div>
+
+                            {% if options.contact.phone or options.contact.email %}
+                                <ul class="site-footer__contact-list">
+                                    {% if options.contact.phone %}
+                                        <li class="site-footer__contact-item">
+                                            <a class="site-footer__contact-link" href="tel:{{ options.contact.phone }}" title="{{ __('Call:', 'mino') }} {{ options.contact.phone }}" rel="nofollow">
+                                                {{ fetch_svg('phone') }}
+                                                {{ options.contact.phone }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if options.contact.email %}
+                                        <li class="site-footer__contact-item">
+                                            <a class="site-footer__contact-link" href="mailto:{{ options.contact.email }}" title="{{ __('Email:', 'mino') }} {{ options.contact.email }}" rel="nofollow">
+                                                {{ fetch_svg('mail') }}
+                                                {{ options.contact.email }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if options.address.address %}
+                                        {% set linkDirections = get_link_directions() %}
+
+                                        <li class="site-footer__contact-item">
+                                            <a
+                                                class="site-footer__contact-link"
+                                                href="{{ linkDirections }}"
+                                                target="_blank"
+                                                title="{{ __('Visit:', 'mino') }} {{ options.address.address }}"
+                                                rel="nofollow noopener"
+                                            >
+                                                {{ fetch_svg('map-pin') }}
+                                                <span>
+                                                    {{ options.address.address }}{% if options.address.postcode %},{% endif %}
+                                                    {% if options.address.postcode %}{{ options.address.postcode }}{% endif %}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% for item in options.footer.contact.items %}
+                                        {% if item.text %}
+                                            <li class="site-footer__contact-item">
+                                                {{ fetch_svg(item.icon) }}
+                                                {{ item.text }}
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+
+                            {% if options.footer.contact.content %}
+                                <div class="site-footer__contact-content">
+                                    {{ options.footer.contact.content }}
+                                </div>
+                            {% endif %}
+
+                            {% if options.footer.contact.button %}
+                                <div class="site-footer__contact-button">
+                                    {{ include('components/button.twig', {
+                                        class: 'is-focus-light',
+                                        button: options.footer.contact.button,
+                                    }) }}
+                                </div>
+                            {% endif %}
+
+                            {% if options.footer.settings.show_socials and options.socials %}
+                                <div class="site-footer__socials">
+                                    {{ include('components/social-list.twig') }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if options.footer.settings.show_logos and options.footer.footer_logos %}
+        <div class="site-footer__logos-container">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="site-footer__logos">
+                            {% for item in options.footer.footer_logos %}
+                                {% set imageObj = get_image(item.logo) %}
+                                {% if imageObj %}
+                                    <img
+                                        class="site-footer__logos-item"
+                                        src="{{ imageObj.src('medium') }}"
+                                        srcset="{{ imageObj.srcset }}"
+                                        sizes="{{ imageObj.img_sizes }}"
+                                        alt="{{ imageObj.alt }}"
+                                        loading="lazy"
+                                    />
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if pageMicroMenu %}
+        <div class="page-micro">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <ul id="page-micro-menu" class="page-micro__menu">
+                            <li class="page-micro__menu-item">
+                                &copy; {{ 'now'|date('Y') }} {{ site.title }}
+                            </li>
+
+                            {% for item in pageMicroMenu.items %}
+                                <li class="page-micro__menu-item">
+                                    <a
+                                        class="page-micro__menu-link"
+                                        href="{{ item.link }}"
+                                    >
+                                        {{ item.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</footer>

@@ -1,0 +1,48 @@
+.mino-counter {
+    &__grid {
+        display: grid;
+        gap: 40px;
+        grid-template-columns: 1fr;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include media-breakpoint-up(lg) {
+            gap: 60px;
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    &__item {
+        text-align: center;
+    }
+
+    &__number {
+        display: inline-flex;
+        font-size: 38px;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 8px;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 56px;
+            margin-bottom: 16px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            font-size: 72px;
+        }
+    }
+
+    &__text {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.6;
+        margin-bottom: 0;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 24px;
+        }
+    }
+}

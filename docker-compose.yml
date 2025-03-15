@@ -1,0 +1,38 @@
+services:
+    wordpress:
+        image: wordpress
+        user: 1000:1000
+        ports:
+            - 8080:80
+        depends_on:
+            - db
+        environment:
+            WORDPRESS_DB_HOST: db
+            WORDPRESS_DB_USER: wp_user
+            WORDPRESS_DB_PASSWORD: wp_pass
+            WORDPRESS_DB_NAME: wordpress
+            WORDPRESS_DEBUG: 1
+        volumes:
+            - wordpress:/var/www/html
+            - ./:/var/www/html/wp-content/themes/theme-dev
+            - .wordpress/plugins/:/var/www/html/wp-content/plugins/
+            - .wordpress/config/php-custom.ini:/usr/local/etc/php/conf.d/99-php-custom.ini
+            - .wordpress/config/php-xdebug.ini:/usr/local/etc/php/conf.d/99-php-xdebug.ini
+            - .wordpress/config/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini
+
+    db:
+        image: mariadb
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: wordpress
+            MYSQL_USER: wp_user
+            MYSQL_PASSWORD: wp_pass
+            MYSQL_RANDOM_ROOT_PASSWORD: '1'
+        ports:
+            - 3306:3306
+        volumes:
+            - db:/var/lib/mysql
+
+volumes:
+    wordpress:
+    db:

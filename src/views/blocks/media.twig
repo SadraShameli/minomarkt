@@ -1,0 +1,36 @@
+<section {{ cs('mino-media', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="{{ mediaWidth }}">
+                <div class="mino-media__inner">
+                    <div {{ cs('mino-media__wrapper', fields.media_ratio ? 'mino-media__wrapper--' ~ fields.media_ratio) }}>
+                        {% if fields.media_type %}
+                            {{ fields.video }}
+                        {% else %}
+                            {% if fields.image %}
+                                {% set image = get_image(fields.image) %}
+
+                                {% if image %}
+                                    <picture class="mino-media__image-wrapper">
+                                        <img
+                                            class="mino-media__image img-fluid"
+                                            src="{{ image.src('medium') }}"
+                                            srcset="{{ image.srcset }}"
+                                            sizes="{{ image.img_sizes }}"
+                                            alt="{{ image.alt }}"
+                                            loading="lazy"
+                                        />
+                                    </picture>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    {% if fields.caption %}
+                        <div class="mino-media__caption">{{ fields.caption }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

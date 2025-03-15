@@ -1,0 +1,187 @@
+.mino-google-map {
+    &__info {
+        background-color: var(--color-primary-100);
+        border-radius: var(--border-radius-default);
+        height: 100%;
+        padding: 40px 20px;
+        position: relative;
+
+        @include media-breakpoint-up(lg) {
+            padding: 40px;
+        }
+    }
+
+    &__title {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 16px;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 42px;
+        }
+    }
+
+    &__description {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 24px;
+    }
+
+    .row {
+        padding-top: 24px;
+    }
+
+    &__contact,
+    &__opening-times {
+        background-color: var(--color-white);
+        border-radius: var(--border-radius-default);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    &__contact-table {
+        border-spacing: 0;
+        font-size: 15px;
+        width: 100%;
+    }
+
+    &__contact-row {
+        &:not(:last-child) td {
+            padding-bottom: 16px;
+        }
+    }
+
+    &__contact-label {
+        color: var(--color-dark-500);
+        font-weight: 600;
+        padding-right: 32px;
+        vertical-align: top;
+        white-space: nowrap;
+    }
+
+    &__contact-value {
+        color: var(--color-dark-450);
+
+        p {
+            margin-bottom: 4px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &__button {
+        margin-bottom: 24px;
+        margin-top: 16px;
+    }
+
+    &__card-header {
+        align-items: center;
+        background-color: var(--color-primary-50);
+        display: flex;
+        gap: 16px;
+        padding: 20px 24px;
+    }
+
+    &__card-content {
+        padding: 24px;
+    }
+
+    &__section-title {
+        color: var(--color-dark-500);
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    &__icon-wrapper {
+        background-color: var(--color-primary-500);
+        border-radius: calc(var(--border-radius-default) / 2);
+        color: var(--color-white);
+        display: flex;
+        flex-shrink: 0;
+        height: 40px;
+        justify-content: center;
+        padding: 10px;
+        width: 40px;
+
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    &__times-table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        font-size: 15px;
+        width: 100%;
+    }
+
+    &__time-content {
+        display: block;
+        padding: 8px 12px;
+    }
+
+    &__day {
+        color: var(--color-dark-500);
+        font-weight: 600;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    &__hours {
+        color: var(--color-dark-450);
+        font-feature-settings: 'tnum';
+        font-variant-numeric: tabular-nums;
+        padding: 0;
+        text-align: right;
+    }
+
+    &__time-row {
+        &--is-current {
+            .mino-google-map__time-content {
+                background-color: var(--color-primary-100);
+            }
+
+            td:first-child .mino-google-map__time-content {
+                border-bottom-left-radius: calc(
+                    var(--border-radius-default) / 2
+                );
+                border-top-left-radius: calc(var(--border-radius-default) / 2);
+            }
+
+            td:last-child .mino-google-map__time-content {
+                border-bottom-right-radius: calc(
+                    var(--border-radius-default) / 2
+                );
+                border-top-right-radius: calc(var(--border-radius-default) / 2);
+            }
+
+            .mino-google-map__day,
+            .mino-google-map__hours {
+                font-weight: 600;
+            }
+        }
+    }
+
+    &__hours-closed {
+        color: var(--color-dark-200);
+        font-style: italic;
+    }
+
+    &__container {
+        border-radius: var(--border-radius-default);
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+
+        @include media-breakpoint-down(lg) {
+            aspect-ratio: 16/9;
+            margin-top: 24px;
+        }
+    }
+}

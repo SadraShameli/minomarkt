@@ -1,0 +1,158 @@
+.mino-company-details {
+    &__container {
+        background-color: var(--color-primary-100);
+        border-radius: var(--border-radius-default);
+        height: 100%;
+        padding: 40px 20px;
+        position: relative;
+
+        @include media-breakpoint-up(lg) {
+            padding: 40px;
+        }
+    }
+
+    &__description {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 24px;
+    }
+
+    &__button {
+        margin-bottom: 24px;
+        margin-top: 16px;
+    }
+
+    .row {
+        margin-top: 24px;
+    }
+
+    &__block {
+        background-color: var(--color-white);
+        border-radius: var(--border-radius-default);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        margin-bottom: 24px;
+        overflow: hidden;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 24px;
+        }
+    }
+
+    &__card-header {
+        align-items: center;
+        background-color: var(--color-primary-50);
+        display: flex;
+        gap: 16px;
+        padding: 20px 24px;
+    }
+
+    &__card-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        font-size: 16px;
+        font-weight: 400;
+        gap: 16px;
+        line-height: 1.1;
+        padding: 24px;
+
+        @include media-breakpoint-between(md, lg) {
+            padding: 16px;
+        }
+
+        span {
+            display: block;
+        }
+    }
+
+    &__icon-wrapper {
+        background-color: var(--color-primary-500);
+        border-radius: calc(var(--border-radius-default) / 2);
+        color: var(--color-white);
+        display: flex;
+        flex-shrink: 0;
+        height: 40px;
+        justify-content: center;
+        padding: 10px;
+        width: 40px;
+
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    &__title {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 16px;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 42px;
+        }
+    }
+
+    &__section-title {
+        color: var(--color-dark-500);
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+
+        @include media-breakpoint-between(md, lg) {
+            font-size: 16px;
+        }
+    }
+
+    &__table {
+        border-spacing: 0;
+        font-size: 15px;
+        width: 100%;
+
+        @include media-breakpoint-between(md, lg) {
+            font-size: 14px;
+        }
+    }
+
+    &__row {
+        &:not(:last-child) td {
+            padding-bottom: 16px;
+
+            @include media-breakpoint-between(md, lg) {
+                padding-bottom: 12px;
+            }
+        }
+    }
+
+    &__label {
+        color: var(--color-dark-500);
+        font-weight: 600;
+        padding-right: 32px;
+        vertical-align: top;
+        white-space: nowrap;
+
+        @include media-breakpoint-between(md, lg) {
+            padding-right: 16px;
+        }
+    }
+
+    &__value {
+        color: var(--color-dark-450);
+        overflow-wrap: break-word;
+        word-break: break-word;
+
+        p {
+            margin-bottom: 4px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        a {
+            word-break: break-all;
+        }
+    }
+}

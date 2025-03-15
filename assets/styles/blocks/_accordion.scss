@@ -1,0 +1,123 @@
+.mino-accordion {
+    &__intro {
+        margin-bottom: 48px;
+    }
+
+    &__intro-title {
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.28px;
+        line-height: 110%;
+        margin-bottom: 0;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 40px;
+            letter-spacing: -0.4px;
+        }
+    }
+
+    &__intro-text {
+        font-size: 16px;
+        font-weight: 450;
+        line-height: 160%;
+        margin-top: 16px;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 18px;
+            margin-top: 24px;
+        }
+    }
+
+    &__intro-button-wrapper {
+        margin-top: 32px;
+    }
+
+    .accordion {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .accordion-item {
+        background-color: var(--color-white);
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .accordion-button {
+        align-items: center;
+        background-color: var(--color-white);
+        border: 0;
+        display: flex;
+        font-size: 18px;
+        font-weight: 500;
+        gap: 24px;
+        justify-content: space-between;
+        letter-spacing: -0.22px;
+        line-height: 110%;
+        padding: 24px;
+        position: relative;
+        transition: var(--transition-default);
+        width: 100%;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 20px;
+            letter-spacing: -0.3px;
+            padding: 24px 32px;
+        }
+
+        &::after {
+            display: none;
+        }
+
+        &:focus {
+            box-shadow: none;
+        }
+
+        &__icon {
+            align-items: center;
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            transition: var(--transition-default);
+
+            svg {
+                height: 18px;
+                transition: var(--transition-default);
+                width: 18px;
+
+                @include media-breakpoint-up(lg) {
+                    height: 22px;
+                    width: 22px;
+                }
+            }
+        }
+
+        &:not(.collapsed) {
+            background-color: var(--color-white);
+            box-shadow: none;
+            color: var(--color-primary-500);
+
+            .accordion-button__icon {
+                transform: rotate(45deg);
+            }
+        }
+
+        &:hover {
+            color: var(--color-primary-500);
+        }
+    }
+
+    .accordion-body {
+        font-size: 14px;
+        font-weight: 450;
+        line-height: 160%;
+        padding: 0 24px 24px;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 16px;
+            padding: 0 32px 32px;
+        }
+    }
+}

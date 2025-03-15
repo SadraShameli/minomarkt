@@ -1,0 +1,31 @@
+.block-padding {
+    padding-bottom: 40px;
+    padding-top: 40px;
+
+    @include media-breakpoint-up(lg) {
+        padding-bottom: 80px;
+        padding-top: 80px;
+    }
+}
+
+.block-spacing {
+    &--top {
+        margin-top: 24px;
+
+        @include media-breakpoint-up(lg) {
+            margin-top: 56px;
+        }
+    }
+
+    &--bottom {
+        margin-bottom: 24px;
+
+        @include media-breakpoint-up(lg) {
+            margin-bottom: 56px;
+        }
+    }
+}
+
+.block-shadow {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}

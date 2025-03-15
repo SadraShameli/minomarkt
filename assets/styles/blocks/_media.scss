@@ -1,0 +1,31 @@
+.mino-media {
+    &__image-container {
+        display: block;
+        margin-bottom: var(--spacing-24);
+    }
+
+    &__caption {
+        font-size: var(--font-size-16);
+        font-style: italic;
+        line-height: var(--line-height-150);
+    }
+
+    &__embed-container {
+        height: auto;
+        margin-bottom: var(--spacing-24);
+        max-width: 100%;
+        overflow: hidden;
+        padding-bottom: 56.25%;
+        position: relative;
+
+        iframe,
+        object,
+        embed {
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+    }
+}

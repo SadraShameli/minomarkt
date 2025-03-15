@@ -1,0 +1,80 @@
+<section {{ cs ('mino-accordion block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-9">
+                {% if fields.title or fields.description %}
+                    <div class="mino-accordion__intro">
+                        {% if fields.subtitle %}
+                            <h4 class="mino-accordion__intro-subtitle">
+                                {{ fields.subtitle }}
+                            </h4>
+                        {% endif %}
+
+                        {% if fields.title %}
+                            <h3 class="mino-accordion__intro-title">
+                                {{ fields.title }}
+                            </h3>
+                        {% endif %}
+
+                        {% if fields.description %}
+                            <div class="mino-accordion__intro-text">
+                                {{ fields.description }}
+                            </div>
+                        {% endif %}
+
+                        {% if fields.button %}
+                            <div class="mino-accordion__intro-button-wrapper">
+                                {{ include('components/button.twig') }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-9">
+                {% set accordionId = 'accordion_' ~ random() %}
+
+                <div class="accordion" id="{{ accordionId }}">
+                    {% for item in items %}
+                        {% if item.question and item.answer %}
+                            {% set itemId = 'accordion-item_' ~ random() %}
+
+                            <div class="accordion-item block-shadow">
+                                <h2 class="accordion-header">
+                                    <button
+                                        class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#{{ itemId }}"
+                                        aria-expanded="false"
+                                        aria-controls="{{ itemId }}"
+                                    >
+                                        {{ item.question }}
+                                        <span class="accordion-button__icon">
+                                            {{ fetch_svg('plus') }}
+                                        </span>
+                                    </button>
+                                </h2>
+                                <div
+                                    class="accordion-collapse collapse"
+                                    id="{{ itemId }}"
+                                    data-bs-parent="#{{ accordionId }}"
+                                >
+                                    <div class="accordion-body">
+                                        {{ item.answer }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if schema %}
+    <script type="application/ld+json">{{ schema|json_encode }}</script>
+{% endif %}

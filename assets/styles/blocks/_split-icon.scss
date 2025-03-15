@@ -1,0 +1,108 @@
+.mino-split-icon {
+    &__title {
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.28px;
+        line-height: 110%;
+        margin-bottom: 32px;
+        text-align: center;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 40px;
+            letter-spacing: -0.4px;
+            margin-bottom: 80px;
+        }
+    }
+
+    &__card {
+        background-color: var(--color-white);
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    &__card-header {
+        align-items: center;
+        background-color: var(--color-primary-100);
+        display: flex;
+        justify-content: center;
+        padding: 32px;
+    }
+
+    &__card-content {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 32px;
+
+        @include media-breakpoint-up(lg) {
+            padding: 40px;
+        }
+    }
+
+    &__icon-wrapper {
+        display: flex;
+        flex-shrink: 0;
+        height: 80px;
+        justify-content: center;
+        width: 80px;
+
+        @include media-breakpoint-up(lg) {
+            height: 96px;
+            width: 96px;
+        }
+
+        svg {
+            color: var(--color-primary-500);
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    &__icon-title {
+        color: var(--color-dark-500);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 110%;
+        margin-bottom: 16px;
+        text-align: center;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 24px;
+        }
+    }
+
+    &__icon-content {
+        color: var(--color-dark-450);
+        font-size: 16px;
+        font-weight: 450;
+        line-height: 160%;
+        text-align: center;
+    }
+
+    &__icon-link-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: auto;
+        padding-top: 32px;
+    }
+
+    .row {
+        row-gap: 24px;
+
+        @include media-breakpoint-up(lg) {
+            row-gap: 32px;
+        }
+
+        > [class*='col'] {
+            @include media-breakpoint-up(lg) {
+                flex: 1;
+                max-width: none;
+                width: 0;
+            }
+        }
+    }
+}
