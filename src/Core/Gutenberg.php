@@ -15,7 +15,7 @@ class Gutenberg
     public function modifyBlockOutput(string $block_content, array $block): string
     {
         return match ($block['blockName']) {
-            'core/list' => sprintf(
+            'complianz/document' => sprintf(
                 '<section class="mino-complianz-document">
                     <div class="container">
                         <div class="row">
