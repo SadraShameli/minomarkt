@@ -1,0 +1,32 @@
+parameters:
+  level: 5
+  universalObjectCratesClasses:
+    - WPMUDEV_Dashboard
+  excludePaths:
+    - builds
+    - includes/external
+    - includes/assets
+    - node_modules
+    - vendor
+    - vendor_prefixed
+  bootstrapFiles:
+    - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+    - vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php
+    - constants.php
+    - includes/external/simple_html_dom.php
+  ignoreErrors:
+    -
+      message: '#Constant \w+ not found\.#'
+      reportUnmatched: false
+    -
+      message: '#Call to static method \w+\(\) on an unknown class (\w|\\)+\.#'
+      reportUnmatched: false
+    -
+      message: '#Call to function method_exists\(\) with .+ will always evaluate to false\.#'
+      reportUnmatched: false
+    -
+      message: '#Variable \$\w+ might not be defined\.#'
+      reportUnmatched: false
+    -
+      message: '#Parameter \#5 \$callback of function add_menu_page expects callable\(\): mixed, (.+) given\.#'
+      reportUnmatched: false
