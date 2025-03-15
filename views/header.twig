@@ -1,9 +1,13 @@
 <header id="masthead" class="site-header">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-9 col-md-3">
+            <div class="col-9 col-md-4">
                 <div class="site-branding">
-                    <a href="{{ site.url }}" class="site-logo-wrap">
+                    <a
+                        class="site-logo-wrap"
+                        href="{{ site.url }}"
+                        title="{{ site.title }}"
+                    >
                         {% if options.site_logo and options.header.settings.show_logo %}
                             {% set imageObj = get_image(options.site_logo) %}
                             {% if imageObj %}
@@ -23,7 +27,7 @@
                 </div>
             </div>
 
-            <div class="col-3 col-md-9">
+            <div class="col-3 col-md-8">
                 <div class="site-header__desktop">
                     <div class="site-navigation">
                         {{ include('navigations/navigation-main.twig') }}

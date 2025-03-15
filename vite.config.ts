@@ -1,17 +1,21 @@
+import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
+
+dotenv.config();
 
 export default defineConfig(function ({ mode }) {
-    const env = loadEnv(mode, process.cwd());
-    const isProd = mode === 'production';
+    const isProd = process.env.NODE_ENV === 'production';
 
     if (!isProd) {
         fs.writeFileSync(path.resolve(__dirname, 'dist/hot'), '');
     }
 
     return {
-        base: isProd ? `/wp-content/themes/${env.THEME_NAME}/dist/` : '/',
+        base: isProd
+            ? `/wp-content/themes/${process.env.THEME_NAME}/dist/`
+            : '/',
         build: {
             manifest: true,
             rollupOptions: {
@@ -46,7 +50,7 @@ export default defineConfig(function ({ mode }) {
             },
         },
         server: {
-            host: env.VITE_WP_SITEURL,
+            host: process.env.SITE_NAME + '.test',
             cors: true,
         },
     };

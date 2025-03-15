@@ -24,6 +24,7 @@ class StarterSite extends Site
     public function addToContext(array $context): array
     {
         $context['menu'] = Timber::get_menu();
+
         $context['menus'] = [
             'primary' => Timber::get_menu('primary-menu'),
             'secondary' => Timber::get_menu('secondary-menu'),
@@ -31,6 +32,8 @@ class StarterSite extends Site
             'footerTwo' => Timber::get_menu('footer-menu-two'),
             'legal' => Timber::get_menu('legal-menu'),
         ];
+
+        $context['options'] = get_fields('options');
 
         return $context;
     }
