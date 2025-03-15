@@ -2,15 +2,6 @@ name: Deploy WordPress Theme
 
 on:
     workflow_dispatch:
-        inputs:
-            environment:
-                description: 'Environment to deploy to'
-                required: true
-                default: 'production'
-                type: choice
-                options:
-                    - production
-                    - staging
     push:
         branches:
             - release/*
@@ -62,23 +53,12 @@ jobs:
                   SSH_USER: ${{ secrets.SSH_USER }}
                   SSH_PORT: ${{ secrets.SSH_PORT }}
                   SSH_DOMAIN: ${{ secrets.SSH_DOMAIN }}
-                  ENVIRONMENT: ${{ inputs.environment }}
               run: |
-                  echo "Deploying to $ENVIRONMENT environment"
+                  echo "Deploying to production"
 
-                  # Verify SSH connection
-                  ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "echo 'SSH connection successful!'"
-
-                  # Update theme files via Git
-                  ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd domains/$SSH_DOMAIN/public_html/wp-content/themes/minomarkt && git pull origin"
-
-                  # Install PHP dependencies on server
-                  ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd domains/$SSH_DOMAIN/public_html/wp-content/themes/minomarkt && composer install --no-dev --optimize-autoloader"
-
-                  # Deploy compiled assets
                   rsync -avz --delete -e "ssh -p $SSH_PORT" \
-                    dist/ \
-                    $SSH_USER@$SSH_HOST:domains/$SSH_DOMAIN/public_html/wp-content/themes/minomarkt/dist/
+                    / \
+                    $SSH_USER@$SSH_HOST:domains/$SSH_DOMAIN/public_html/wp-content/themes/minomarkt/
 
             - name: Deployment Status
               run: echo "Theme successfully deployed!"
