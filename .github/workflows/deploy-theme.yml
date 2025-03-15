@@ -72,13 +72,18 @@ jobs:
               run: |
                   echo "Syncing plugins"
 
-                  # Check if we have plugins to sync
-                  if [ -d "plugins" ]; then
-                    # Note: NOT using --delete flag to preserve existing plugins
-                    rsync -avz -e "ssh -p $SSH_PORT" \
-                      plugins/ \
-                      $SSH_USER@$SSH_HOST:domains/$SSH_DOMAIN/public_html/wp-content/plugins/
-                    echo "Plugins synced successfully!"
-                  else
-                    echo "No plugins directory found to sync"
-                  fi
+                  # Get list of local plugins
+                  for plugin_dir in .wordpress/plugins/*/; do
+                    if [ -d "$plugin_dir" ]; then
+                      plugin_name=$(basename "$plugin_dir")
+                      echo "Syncing plugin: $plugin_name"
+                      
+                      # Sync each plugin individually with --delete flag
+                      # This replaces the plugin if it exists on server, but won't remove other plugins
+                      rsync -avz --delete -e "ssh -p $SSH_PORT" \
+                        ".wordpress/plugins/$plugin_name/" \
+                        "$SSH_USER@$SSH_HOST:domains/$SSH_DOMAIN/public_html/wp-content/plugins/$plugin_name/"
+                    fi
+                  done
+
+                  echo "Plugins synced successfully!"
