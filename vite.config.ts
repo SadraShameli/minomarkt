@@ -1,21 +1,15 @@
-import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { defineConfig } from 'vite';
 
-dotenv.config();
-
-export default defineConfig(function ({ mode }) {
+export default defineConfig(function () {
     const isProd = process.env.NODE_ENV === 'production';
-
     if (!isProd) {
         fs.writeFileSync(path.resolve(__dirname, 'dist/hot'), '');
     }
 
     return {
-        base: isProd
-            ? `/wp-content/themes/${process.env.THEME_NAME}/dist/`
-            : '/',
+        base: isProd ? `/wp-content/themes/minomarkt/dist/` : '/',
         build: {
             manifest: true,
             rollupOptions: {
@@ -50,7 +44,7 @@ export default defineConfig(function ({ mode }) {
             },
         },
         server: {
-            host: process.env.SITE_NAME + '.test',
+            host: 'minomarktnl.test',
             cors: true,
         },
     };

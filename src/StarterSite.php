@@ -9,6 +9,8 @@ class StarterSite extends Site
 {
     public function __construct()
     {
+        Timber::init();
+
         $this->registerMenus();
 
         add_action('after_setup_theme', [$this, 'themeSupports']);
