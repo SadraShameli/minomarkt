@@ -9,12 +9,18 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 function loadFilesRecursively(string $directory): void
 {
-    foreach (glob("$directory/*.php") as $file) {
-        require_once $file;
+    $phpFiles = glob("$directory/*.php");
+    if (is_array($phpFiles)) {
+        foreach ($phpFiles as $file) {
+            require_once $file;
+        }
     }
 
-    foreach (glob("$directory/*") as $subdir) {
-        loadFilesRecursively($subdir);
+    $subdirs = glob("$directory/*");
+    if (is_array($subdirs)) {
+        foreach ($subdirs as $subdir) {
+            loadFilesRecursively($subdir);
+        }
     }
 }
 

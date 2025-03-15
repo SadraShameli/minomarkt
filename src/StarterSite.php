@@ -17,6 +17,10 @@ class StarterSite extends Site
         parent::__construct();
     }
 
+    /**
+     * @param array<string, mixed> $context
+     * @return array<string, mixed>
+     */
     public function addToContext(array $context): array
     {
         $context['menu'] = Timber::get_menu();

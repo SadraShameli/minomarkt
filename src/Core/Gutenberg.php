@@ -9,6 +9,9 @@ class Gutenberg
         add_filter('render_block', [&$this, 'modifyBlockOutput'], 10, 2);
     }
 
+    /**
+     * @param array<string, mixed> $block
+     */
     public function modifyBlockOutput(string $block_content, array $block): string
     {
         return match ($block['blockName']) {
