@@ -1,10 +1,8 @@
-.PHONY: install build up down db clean composer-install env-setup deploy
+.PHONY: env-setup install up down restart clean
 
 ifneq ("$(wildcard ./.env)","")
 	include .env
 endif
-
-install: env-setup build up db composer-install
 
 env-setup:
 	@if [ ! -f .env ]; then \
@@ -14,8 +12,8 @@ env-setup:
 		echo ".env file already exists"; \
 	fi
 
-build:
-	docker-compose build nginx php-fpm
+
+install: env-setup up
 
 up:
 	docker-compose up -d
@@ -23,28 +21,7 @@ up:
 down:
 	docker-compose down
 
+restart: down up
+
 clean:
 	docker-compose down -v
-
-db:
-	docker-compose exec -T mysql mysql -uroot -p${DB_PASSWORD} -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME};"
-
-composer-install:
-	docker-compose exec php-fpm composer install
-
-deploy:
-	@echo "=== Running composer install ==="
-	composer install
-	@echo "=== Running npm install ==="
-	npm install
-	@echo "=== Building theme assets ==="
-	npm run build
-	@echo "=== Deploying theme to Hostinger ==="
-	@echo "Loading environment variables..."
-	$(eval include .env)
-	@echo "Using SSH_HOST: ${SSH_HOST}, SSH_USER: ${SSH_USER}, SSH_DOMAIN: ${SSH_DOMAIN}"
-	rsync -avz --delete -e "ssh -p ${SSH_PORT}" public/wp-content/themes/minomarkt/ ${SSH_USER}@${SSH_HOST}:domains/${SSH_DOMAIN}/public_html/wp-content/themes/minomarkt/
-	@echo "=== Theme deployment complete ==="
-
-%:
-	@:

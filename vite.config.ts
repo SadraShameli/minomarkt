@@ -4,12 +4,14 @@ import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(function ({ mode }) {
     const env = loadEnv(mode, process.cwd());
+    const isProd = mode === 'production';
 
-    if (env.NODE_ENV !== 'production') {
+    if (!isProd) {
         fs.writeFileSync(path.resolve(__dirname, 'dist/hot'), '');
     }
 
     return {
+        base: isProd ? `/wp-content/themes/${env.THEME_NAME}/dist/` : '/',
         build: {
             manifest: true,
             rollupOptions: {
@@ -20,6 +22,8 @@ export default defineConfig(function ({ mode }) {
                     adminStyles: `assets/admin/admin-style.scss`,
                 },
             },
+            assetsDir: 'assets',
+            emptyOutDir: true,
         },
         resolve: {
             alias: {
@@ -43,6 +47,7 @@ export default defineConfig(function ({ mode }) {
         },
         server: {
             host: env.VITE_WP_SITEURL,
+            cors: true,
         },
     };
 });
