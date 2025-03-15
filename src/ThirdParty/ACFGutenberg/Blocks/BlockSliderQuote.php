@@ -60,7 +60,7 @@ class BlockSliderQuote extends BaseBlock
             ];
         }, $quotes);
 
-        Timber::render('blocks/block-slider-quote.twig', $context);
+        Timber::render('blocks/slider-quote.twig', $context);
     }
 
     protected function addFieldsContent(): void

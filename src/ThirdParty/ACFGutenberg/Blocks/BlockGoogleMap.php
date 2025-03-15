@@ -23,7 +23,7 @@ class BlockGoogleMap extends BaseBlock
     ): void {
         $context['currentDay'] = strtolower(date('l'));
 
-        Timber::render('blocks/block-google-map.twig', $context);
+        Timber::render('blocks/google-map.twig', $context);
     }
 
     protected function addFieldsContent(): void

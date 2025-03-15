@@ -27,7 +27,7 @@ class BlockHeading extends BaseBlock
             return;
         }
 
-        Timber::render('blocks/block-heading.twig', $context);
+        Timber::render('blocks/heading.twig', $context);
     }
 
     protected function addFieldsContent(): void

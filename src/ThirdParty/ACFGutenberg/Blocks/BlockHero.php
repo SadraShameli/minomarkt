@@ -21,7 +21,7 @@ class BlockHero extends BaseBlock
         string $content = '',
         bool $is_preview = true,
     ): void {
-        Timber::render('blocks/block-hero.twig', $context);
+        Timber::render('blocks/hero.twig', $context);
     }
 
     protected function addFieldsContent(): void

@@ -5,5 +5,6 @@ parameters:
     excludePaths:
         analyse:
             - vendor
+            - node_modules
     scanDirectories:
-        - ../../plugins
+        - .wordpress/plugins

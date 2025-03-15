@@ -21,7 +21,7 @@ class BlockImageGrid extends BaseBlock
         string $content = '',
         bool $is_preview = true,
     ): void {
-        Timber::render('blocks/block-image-grid.twig', $context);
+        Timber::render('blocks/image-grid.twig', $context);
     }
 
     protected function addFieldsContent(): void

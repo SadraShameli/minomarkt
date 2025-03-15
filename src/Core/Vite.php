@@ -14,12 +14,12 @@ class Vite
      * The URI to the hot server. Calculated when
      * initialize() is called.
      */
-    private string $server = 'http://localhost:3000';
+    private string $server;
 
     /**
      * The path where compiled assets will go.
      */
-    private string $buildPath = 'build';
+    private string $buildPath = 'dist';
 
     /**
      * The root directory where assets are located.
@@ -37,6 +37,7 @@ class Vite
 
     public function __construct(string $rootDir = '')
     {
+        $this->server = get_site_url() . ':5173';
         $this->rootDir = $rootDir ?: get_stylesheet_directory();
     }
 

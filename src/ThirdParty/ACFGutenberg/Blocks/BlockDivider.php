@@ -22,7 +22,7 @@ class BlockDivider extends BaseBlock
         string $content = '',
         bool $is_preview = true,
     ): void {
-        Timber::render('blocks/block-divider.twig', $context);
+        Timber::render('blocks/divider.twig', $context);
     }
 
     protected function addFieldsContent(): void

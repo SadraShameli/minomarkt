@@ -21,7 +21,7 @@ class BlockCompanyDetails extends BaseBlock
         string $content = '',
         bool $is_preview = true,
     ): void {
-        Timber::render('blocks/block-company-details.twig', $context);
+        Timber::render('blocks/company-details.twig', $context);
     }
 
     protected function addFieldsContent(): void

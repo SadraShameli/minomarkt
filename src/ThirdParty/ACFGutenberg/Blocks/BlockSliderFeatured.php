@@ -25,7 +25,7 @@ class BlockSliderFeatured extends BaseBlock
             return;
         }
 
-        Timber::render('blocks/block-slider-featured.twig', $context);
+        Timber::render('blocks/slider-featured.twig', $context);
     }
 
     protected function addFieldsContent(): void

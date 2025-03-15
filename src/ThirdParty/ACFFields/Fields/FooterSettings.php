@@ -5,7 +5,6 @@ namespace App\ThirdParty\ACFFields\Fields;
 use App\ThirdParty\ACFFields\BaseACFGroup;
 use App\ThirdParty\ACFFields\ReusableFields;
 
-
 class FooterSettings extends BaseACFGroup
 {
     public function __construct()

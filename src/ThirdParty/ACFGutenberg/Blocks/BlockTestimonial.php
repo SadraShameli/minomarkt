@@ -34,7 +34,7 @@ class BlockTestimonial extends BaseBlock
 
         $context['testimonials'] = $testimonials;
 
-        Timber::render('blocks/block-testimonial.twig', $context);
+        Timber::render('blocks/testimonial.twig', $context);
     }
 
     protected function addFieldsContent(): void

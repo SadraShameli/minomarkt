@@ -32,7 +32,7 @@ class BlockBanner extends BaseBlock
         $context['bannerImage'] = $fieldsBanner['image'] ?? null;
         $context['bannerButton'] = $fieldsBanner['button'] ?? null;
 
-        Timber::render('blocks/block-banner.twig', $context);
+        Timber::render('blocks/banner.twig', $context);
     }
 
     protected function addFieldsContent(): void

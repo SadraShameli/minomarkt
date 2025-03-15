@@ -55,7 +55,7 @@ class BlockSliderLogo extends BaseBlock
             ];
         }, $logos);
 
-        Timber::render('blocks/block-slider-logo.twig', $context);
+        Timber::render('blocks/slider-logo.twig', $context);
     }
 
     protected function addFieldsContent(): void

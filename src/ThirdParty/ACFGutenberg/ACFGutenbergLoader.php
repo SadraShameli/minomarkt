@@ -30,7 +30,7 @@ class ACFGutenbergLoader
 
                 $relativePath = str_replace([$baseDir, '.php'], '', $file);
                 $namespacePart = str_replace('/', '\\', trim($relativePath, '/'));
-                $className = 'Mino\ThirdParty\ACFGutenberg\\' . $namespacePart;
+                $className = 'App\ThirdParty\ACFGutenberg\\' . $namespacePart;
 
                 new $className();
             }

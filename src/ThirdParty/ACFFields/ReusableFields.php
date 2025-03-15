@@ -175,8 +175,6 @@ class ReusableFields
 
     /**
      * @param array<mixed> $args
-     *
-     * @throws FieldNameCollisionException
      */
     public static function wysiwyg(
         string $fieldName = 'content',
@@ -198,8 +196,6 @@ class ReusableFields
 
     /**
      * @param array<mixed> $args
-     *
-     * @throws FieldNameCollisionException
      */
     public static function image(
         string $fieldName = 'image',
@@ -221,8 +217,6 @@ class ReusableFields
 
     /**
      * @param array<mixed> $args
-     *
-     * @throws FieldNameCollisionException
      */
     public static function imageFocusable(
         string $fieldName = 'image',
@@ -245,8 +239,6 @@ class ReusableFields
      * @param array<mixed> $args
      * @param mixed        $fieldName
      * @param mixed        $fieldLabel
-     *
-     * @throws FieldNameCollisionException
      */
     public static function button(
         $fieldName = 'button',
@@ -302,8 +294,6 @@ class ReusableFields
 
     /**
      * @param array<mixed> $args
-     *
-     * @throws FieldNameCollisionException
      */
     public static function icon(
         string $fieldName = 'icon',

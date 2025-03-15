@@ -25,7 +25,7 @@ class BlockSplitContent extends BaseBlock
             return;
         }
 
-        Timber::render('blocks/block-split-content.twig', $context);
+        Timber::render('blocks/split-content.twig', $context);
     }
 
     protected function addFieldsContent(): void

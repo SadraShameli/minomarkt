@@ -6,14 +6,10 @@ Thumbs.db
 
 /node_modules/
 /vendor/
+/dist/
 
 .env
 .env.*
-!.env.example
-!.env.j2
-!.env.vars.*
 
-wp-cli.yml
-
-.php_cs.cache
+.php-cs-fixer.cache
 .twig-cs-fixer.cache

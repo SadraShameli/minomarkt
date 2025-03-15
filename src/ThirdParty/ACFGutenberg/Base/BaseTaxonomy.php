@@ -4,7 +4,6 @@ namespace App\ThirdParty\ACFGutenberg\Base;
 
 use App\ThirdParty\ACFFields\BaseACFGroup;
 use App\ThirdParty\ACFFields\ReusableFields;
-
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
 abstract class BaseTaxonomy

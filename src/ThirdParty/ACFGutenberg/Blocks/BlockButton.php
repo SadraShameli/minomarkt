@@ -21,7 +21,7 @@ class BlockButton extends BaseBlock
         string $content = '',
         bool $is_preview = true,
     ): void {
-        Timber::render('blocks/block-button.twig', $context);
+        Timber::render('blocks/button.twig', $context);
     }
 
     protected function addFieldsContent(): void

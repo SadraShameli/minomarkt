@@ -8,9 +8,7 @@ class ACF
 {
     public function __construct()
     {
-        if (!function_exists('acf_add_options_page')) {
-            add_action('admin_notices', [&$this, 'displayACFInstallNotice']);
-
+        if (!class_exists('ACF')) {
             return;
         }
 
@@ -19,14 +17,6 @@ class ACF
         ACFGutenbergLoader::initialize();
 
         $this->registerOptionPages();
-    }
-
-    public function displayACFInstallNotice(): void
-    {
-        $classes = 'notice notice-error';
-        $message = 'Please install and activate Advanced Custom Fields PRO, it is required for this theme to work properly!';
-
-        printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($classes), esc_html($message));
     }
 
     public function registerOptionPages(): void

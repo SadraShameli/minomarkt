@@ -34,7 +34,7 @@ class BlockMedia extends BaseBlock
             default => 'col-12',
         };
 
-        Timber::render('blocks/block-media.twig', $context);
+        Timber::render('blocks/media.twig', $context);
     }
 
     protected function addFieldsContent(): void

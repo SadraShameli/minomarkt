@@ -66,7 +66,7 @@ class BlockAccordion extends BaseBlock
 
         $context['schema'] = $this->getSchema($context['items']);
 
-        Timber::render('blocks/block-accordion.twig', $context);
+        Timber::render('blocks/accordion.twig', $context);
     }
 
     protected function addFieldsContent(): void

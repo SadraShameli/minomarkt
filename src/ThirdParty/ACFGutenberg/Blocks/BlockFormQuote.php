@@ -21,7 +21,7 @@ class BlockFormQuote extends BaseBlock
         string $content = '',
         bool $is_preview = true,
     ): void {
-        Timber::render('blocks/block-form-quote.twig', $context);
+        Timber::render('blocks/form-quote.twig', $context);
     }
 
     protected function addFieldsContent(): void

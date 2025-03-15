@@ -25,7 +25,7 @@ class BlockSplitIcon extends BaseBlock
             return;
         }
 
-        Timber::render('blocks/block-split-icon.twig', $context);
+        Timber::render('blocks/split-icon.twig', $context);
     }
 
     protected function addFieldsContent(): void

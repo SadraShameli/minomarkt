@@ -25,7 +25,7 @@ class BlockContent extends BaseBlock
             return;
         }
 
-        Timber::render('blocks/block-content.twig', $context);
+        Timber::render('blocks/content.twig', $context);
     }
 
     protected function addFieldsContent(): void

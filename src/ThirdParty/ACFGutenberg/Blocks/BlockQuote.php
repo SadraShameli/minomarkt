@@ -25,7 +25,7 @@ class BlockQuote extends BaseBlock
             return;
         }
 
-        Timber::render('blocks/block-quote.twig', $context);
+        Timber::render('blocks/quote.twig', $context);
     }
 
     protected function addFieldsContent(): void

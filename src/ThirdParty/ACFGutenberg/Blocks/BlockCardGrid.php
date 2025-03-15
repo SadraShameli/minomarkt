@@ -21,7 +21,7 @@ class BlockCardGrid extends BaseBlock
         string $content = '',
         bool $is_preview = true,
     ): void {
-        Timber::render('blocks/block-card-grid.twig', $context);
+        Timber::render('blocks/card-grid.twig', $context);
     }
 
     protected function addFieldsContent(): void

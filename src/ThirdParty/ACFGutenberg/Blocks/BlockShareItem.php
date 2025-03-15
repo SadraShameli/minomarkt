@@ -20,7 +20,7 @@ class BlockShareItem extends BaseBlock
         string $content = '',
         bool $is_preview = true,
     ): void {
-        Timber::render('blocks/block-share-item.twig', $context);
+        Timber::render('blocks/share-item.twig', $context);
     }
 
     protected function addFieldsContent(): void

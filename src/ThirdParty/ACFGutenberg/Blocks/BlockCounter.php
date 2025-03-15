@@ -20,7 +20,7 @@ class BlockCounter extends BaseBlock
         string $content = '',
         bool $is_preview = true,
     ): void {
-        Timber::render('blocks/block-counter.twig', $context);
+        Timber::render('blocks/counter.twig', $context);
     }
 
     protected function addFieldsContent(): void

@@ -22,9 +22,8 @@ loadFilesRecursively(__DIR__ . '/src');
 
 Timber::init();
 
-$dotenv = Dotenv::createImmutable('/app/');
+$dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
 new StarterSite();
 new App();
-

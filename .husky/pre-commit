@@ -7,7 +7,6 @@ echo "Running NPM linter";
 npm run lint:fix;
 
 echo "Running Composer linter";
-cd public/wp-content/themes/minomarkt;
 
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
   if [ -f "$HOME/.config/herd-lite/bin/composer.bat" ]; then

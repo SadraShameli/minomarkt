@@ -11,7 +11,9 @@ services:
             WORDPRESS_DB_USER: wp_user
             WORDPRESS_DB_PASSWORD: wp_pass
             WORDPRESS_DB_NAME: wordpress
-            WORDPRESS_DEBUG: 1
+            WORDPRESS_CONFIG_EXTRA: |
+                define('WP_SITEURL', 'http://${WP_SITEURL}', true);
+                define('WP_HOME', 'http://${WP_SITEURL}', true);
         volumes:
             - wordpress:/var/www/html
             - ./:/var/www/html/wp-content/themes/theme-dev
@@ -19,6 +21,11 @@ services:
             - .wordpress/config/php-custom.ini:/usr/local/etc/php/conf.d/99-php-custom.ini
             - .wordpress/config/php-xdebug.ini:/usr/local/etc/php/conf.d/99-php-xdebug.ini
             - .wordpress/config/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.http.routers.wordpress.rule=Host(`${WP_SITEURL}`)'
+            - 'traefik.http.routers.wordpress.entrypoints=web'
+            - 'traefik.http.services.wordpress.loadbalancer.server.port=80'
 
     db:
         image: mariadb
@@ -33,6 +40,40 @@ services:
         volumes:
             - db:/var/lib/mysql
 
+    phpmyadmin:
+        image: phpmyadmin
+        restart: unless-stopped
+        depends_on:
+            - db
+        environment:
+            PMA_HOST: db
+            PMA_USER: wp_user
+            PMA_PASSWORD: wp_pass
+        ports:
+            - 8081:80
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.http.routers.phpmyadmin.rule=Host(`pma.${WP_SITEURL}`)'
+            - 'traefik.http.routers.phpmyadmin.entrypoints=web'
+            - 'traefik.http.services.phpmyadmin.loadbalancer.server.port=80'
+
+    traefik:
+        image: traefik
+        ports:
+            - '80:80'
+            - '8082:8080'
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        command:
+            - '--api.insecure=true'
+            - '--providers.docker=true'
+            - '--providers.docker.exposedbydefault=false'
+            - '--entrypoints.web.address=:80'
+
 volumes:
     wordpress:
     db:
+
+networks:
+    default:
+        name: traefik_network
