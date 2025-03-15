@@ -56,9 +56,29 @@ jobs:
               run: |
                   echo "Deploying to production"
 
-                  rsync -avz --delete -e "ssh -p $SSH_PORT" \
+                  rsync -avz --delete --exclude="node_modules" --exclude=".wordpress" -e "ssh -p $SSH_PORT" \
                     ./ \
                     $SSH_USER@$SSH_HOST:domains/$SSH_DOMAIN/public_html/wp-content/themes/minomarkt/
 
             - name: Deployment Status
               run: echo "Theme successfully deployed!"
+
+            - name: Sync plugins (without removing existing)
+              env:
+                  SSH_HOST: ${{ secrets.SSH_HOST }}
+                  SSH_USER: ${{ secrets.SSH_USER }}
+                  SSH_PORT: ${{ secrets.SSH_PORT }}
+                  SSH_DOMAIN: ${{ secrets.SSH_DOMAIN }}
+              run: |
+                  echo "Syncing plugins"
+
+                  # Check if we have plugins to sync
+                  if [ -d "plugins" ]; then
+                    # Note: NOT using --delete flag to preserve existing plugins
+                    rsync -avz -e "ssh -p $SSH_PORT" \
+                      plugins/ \
+                      $SSH_USER@$SSH_HOST:domains/$SSH_DOMAIN/public_html/wp-content/plugins/
+                    echo "Plugins synced successfully!"
+                  else
+                    echo "No plugins directory found to sync"
+                  fi
