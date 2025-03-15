@@ -44,14 +44,14 @@
             <div class="col-12 col-lg-7 offset-lg-1">
                 <div class="row">
                     <div class="col-12 col-lg-4">
-                        {% if footerMenuOne %}
+                        {% if menus.footerOne %}
                             <nav class="site-footer__navigation" role="navigation">
                                 <div class="site-footer__navigation-title">
-                                    {{ footerMenuOne.title }}
+                                    {{ menus.footerOne.title }}
                                 </div>
 
                                 <ul id="secondary-menu" class="site-footer__navigation-items">
-                                    {% for item in footerMenuOne.items %}
+                                    {% for item in menus.footerOne.get_items %}
                                         <li><a href="{{ item.link }}">{{ item.title }}</a></li>
                                     {% endfor %}
                                 </ul>
@@ -60,14 +60,14 @@
                     </div>
 
                     <div class="col-12 col-lg-4">
-                        {% if footerMenuTwo %}
+                        {% if menus.footerTwo %}
                             <nav class="site-footer__navigation" role="navigation">
                                 <div class="site-footer__navigation-title">
-                                    {{ footerMenuTwo.title }}
+                                    {{ menus.footerTwo.title }}
                                 </div>
 
                                 <ul id="secondary-menu" class="site-footer__navigation-items">
-                                    {% for item in footerMenuTwo.items %}
+                                    {% for item in menus.footerTwo.get_items %}
                                         <li><a href="{{ item.link }}">{{ item.title }}</a></li>
                                     {% endfor %}
                                 </ul>
@@ -182,7 +182,7 @@
         </div>
     {% endif %}
 
-    {% if pageMicroMenu %}
+    {% if menus.legal %}
         <div class="page-micro">
             <div class="container">
                 <div class="row align-items-center">
@@ -192,7 +192,7 @@
                                 &copy; {{ 'now'|date('Y') }} {{ site.title }}
                             </li>
 
-                            {% for item in pageMicroMenu.items %}
+                            {% for item in menus.legal.get_items %}
                                 <li class="page-micro__menu-item">
                                     <a
                                         class="page-micro__menu-link"

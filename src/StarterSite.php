@@ -29,8 +29,7 @@ class StarterSite extends Site
             'secondary' => Timber::get_menu('secondary-menu'),
             'footerOne' => Timber::get_menu('footer-menu-one'),
             'footerTwo' => Timber::get_menu('footer-menu-two'),
-            'footerThree' => Timber::get_menu('footer-menu-three'),
-            'pageMicro' => Timber::get_menu('page-micro-menu'),
+            'legal' => Timber::get_menu('legal-menu'),
         ];
 
         return $context;
@@ -71,8 +70,7 @@ class StarterSite extends Site
         register_nav_menu('secondary-menu', 'Mobile menu');
         register_nav_menu('footer-menu-one', 'Footer Menu One');
         register_nav_menu('footer-menu-two', 'Footer Menu Two');
-        register_nav_menu('footer-menu-three', 'Footer Menu Three');
-        register_nav_menu('page-micro-menu', 'Page Micro Menu');
+        register_nav_menu('legal-menu', 'Legal Menu');
 
     }
 }

@@ -24,7 +24,7 @@ class ReusableChoices
      */
     public static function icon(): array
     {
-        $icons = glob(get_template_directory() . '/svg/*.svg');
+        $icons = glob(get_template_directory() . '/assets/icons/*.svg');
         if (empty($icons)) {
             return [];
         }

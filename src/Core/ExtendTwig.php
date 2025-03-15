@@ -115,8 +115,7 @@ class ExtendTwig
         }
 
         $folders = [
-            '/icons/',
-            '/svg/',
+            '/assets/icons/',
         ];
 
         $svg_path = '';
