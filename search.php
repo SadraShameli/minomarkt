@@ -1,9 +1,5 @@
 <?php
 
-/**
- * The template for displaying the search page.
- */
-
 use Timber\Timber;
 
 $context = Timber::context();

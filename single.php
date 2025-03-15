@@ -1,9 +1,5 @@
 <?php
 
-/**
- * The Template for displaying all single posts.
- */
-
 use Timber\Timber;
 
 $context = Timber::context();

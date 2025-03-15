@@ -1,9 +1,5 @@
 <?php
 
-/**
- * The template for displaying the index.
- */
-
 use Timber\Timber;
 
 $context = Timber::context();

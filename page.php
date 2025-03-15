@@ -1,9 +1,5 @@
 <?php
 
-/**
- * The template for displaying all pages.
- */
-
 use Timber\Timber;
 
 $context = Timber::context();

@@ -1,9 +1,5 @@
 <?php
 
-/**
- * The template for displaying the footer.
- */
-
 use Timber\Timber;
 
 $context = $GLOBALS['timberContext']; // @codingStandardsIgnoreFile
