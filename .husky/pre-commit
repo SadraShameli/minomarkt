@@ -1,10 +1,10 @@
 echo "Running checks";
 
-echo "Running NPM package sorter";
-npx sort-package-json;
+echo "Running node package sorter";
+bunx sort-package-json;
 
-echo "Running NPM linter";
-npm run lint:fix;
+echo "Running node linter";
+bun run lint:fix;
 
 echo "Running Composer linter";
 

@@ -17,11 +17,10 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v1
               with:
-                  node-version: '23.9'
-                  cache: 'npm'
+                  bun-version: latest
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -33,11 +32,11 @@ jobs:
             - name: Install PHP dependencies
               run: composer install --no-dev --optimize-autoloader
 
-            - name: Install Node.js dependencies
-              run: npm ci
+            - name: Install Bun dependencies
+              run: bun install
 
             - name: Build theme assets
-              run: npm run build
+              run: bun run build
 
             - name: Setup SSH key
               uses: shimataro/ssh-key-action@v2
