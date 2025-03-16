@@ -20,7 +20,6 @@ class ExtendTwig
         $twig->addFunction(new TwigFunction('block_layout', [$this, 'getBlockLayout']));
         $twig->addFunction(new TwigFunction('fetch_svg', [$this, 'fetchSvg']));
         $twig->addFunction(new TwigFunction('get_image_focal', [$this, 'getImageFocal']));
-
         $twig->addFunction(new TwigFunction('get_link_directions', [$this, 'getLinkDirections']));
 
         $twig->addTest(new TwigTest('array', [&$this, 'isArray']));

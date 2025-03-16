@@ -4,8 +4,11 @@ namespace App\Core;
 
 class Gutenberg
 {
+    public static string $blockCategorySlug = 'app';
+
     public function __construct()
     {
+        add_filter('block_categories_all', [$this, 'registerBlockCategories']);
         add_filter('render_block', [&$this, 'modifyBlockOutput'], 10, 2);
     }
 
@@ -29,5 +32,22 @@ class Gutenberg
             ),
             default => $block_content,
         };
+    }
+
+    /**
+     * @param array<mixed> $categories
+     *
+     * @return array<mixed>
+     */
+    public function registerBlockCategories(array $categories): array
+    {
+        $customCategories = [
+            [
+                'slug' => self::$blockCategorySlug,
+                'title' => 'App',
+            ],
+        ];
+
+        return array_merge($customCategories, $categories);
     }
 }
