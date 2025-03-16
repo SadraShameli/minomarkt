@@ -16,10 +16,11 @@ class ACF
             return;
         }
 
+        $this->loadFields();
         $this->registerFields();
     }
 
-    public function registerFields(): void
+    private function loadFields(): void
     {
         $baseDir = __DIR__;
         $directories = ['Blocks', 'Menu', 'Options', 'PostTypes', 'Taxonomies'];
@@ -46,7 +47,10 @@ class ACF
                 new $className();
             }
         }
+    }
 
+    private function registerFields(): void
+    {
         BaseBlock::register();
         BaseMenu::register();
         BaseOptions::register();

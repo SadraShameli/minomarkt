@@ -22,7 +22,7 @@ class Gutenberg
                 '<section class="mino-complianz-document">
                     <div class="container">
                         <div class="row">
-                            <div class="col-12 col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
+                            <div class="col-12 col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 mt-5">
                                 %s
                             </div>
                         </div>
