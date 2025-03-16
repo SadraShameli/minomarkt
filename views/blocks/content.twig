@@ -17,9 +17,9 @@
                 {% if fields.buttons|length > 0 %}
                     <div class="mino-content__button-wrapper">
                         {% for button in fields.buttons %}
-                            {{ include('components/button.twig', {
-                                class: 'mino-content__button',
-                            }) }}
+                            {% if button.link %}
+                                {{ include('components/button.twig') }}
+                            {% endif %}
                         {% endfor %}
                     </div>
                 {% endif %}

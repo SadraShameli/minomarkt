@@ -4,9 +4,11 @@
             <div class="col-12">
                 <div class="mino-button__wrapper">
                     {% for buttonFields in fields.buttons %}
-                        {{ include('components/button.twig', {
-                            button: buttonFields.button,
-                        }) }}
+                        {% if buttonFields.button.link %}
+                            {{ include('components/button.twig', {
+                                button: buttonFields.button,
+                            }) }}
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

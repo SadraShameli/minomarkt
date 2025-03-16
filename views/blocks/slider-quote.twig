@@ -7,7 +7,7 @@
                         <h2 class="mino-slider-quote__title">{{ fields.title }}</h2>
                     {% endif %}
 
-                    {% if fields.button %}
+                    {% if fields.button.link %}
                         {{ include('components/button.twig', {
                             class: 'block-shadow',
                         }) }}

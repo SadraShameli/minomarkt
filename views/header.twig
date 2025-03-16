@@ -36,15 +36,11 @@
                     {% if options.header.menu_buttons %}
                         <div class="site-header__widget">
                             {% for buttonFields in options.header.menu_buttons %}
-                                {{ include('components/button.twig', {
-                                    class: 'btn--small',
-                                    url: buttonFields.button.link.url,
-                                    target: buttonFields.button.link.target,
-                                    title: buttonFields.button.link.title,
-                                    type: buttonFields.button.type,
-                                    iconBefore: buttonFields.button.icon_before,
-                                    iconAfter: buttonFields.button.icon_after,
-                                }) }}
+                                {% if buttonFields.button.link %}
+                                    {{ include('components/button.twig', {
+                                        button: buttonFields.button,
+                                    }) }}
+                                {% endif %}
                             {% endfor %}
                         </div>
                     {% endif %}

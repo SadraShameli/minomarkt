@@ -23,14 +23,11 @@
             {% if fields.buttons %}
                 <div class="mino-hero__cta-wrapper">
                     {% for buttonFields in fields.buttons %}
-                        {{ include('components/button.twig', {
-                            url: buttonFields.button.link.url,
-                            target: buttonFields.button.link.target,
-                            title: buttonFields.button.link.title,
-                            type: buttonFields.button.type,
-                            iconBefore: buttonFields.button.icon_before,
-                            iconAfter: buttonFields.button.icon_after,
-                        }) }}
+                        {% if buttonFields.button.link %}
+                            {{ include('components/button.twig', {
+                                button: buttonFields.button,
+                            }) }}
+                        {% endif %}
                     {% endfor %}
                 </div>
             {% endif %}
