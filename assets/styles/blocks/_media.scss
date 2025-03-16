@@ -1,18 +1,17 @@
 .mino-media {
     &__image-container {
         display: block;
-        margin-bottom: var(--spacing-24);
+        margin-bottom: 24px;
     }
 
     &__caption {
-        font-size: var(--font-size-16);
-        font-style: italic;
-        line-height: var(--line-height-150);
+        font-size: 16px;
+        line-height: 1.5;
     }
 
     &__embed-container {
         height: auto;
-        margin-bottom: var(--spacing-24);
+        margin-bottom: 24px;
         max-width: 100%;
         overflow: hidden;
         padding-bottom: 56.25%;
