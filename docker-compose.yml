@@ -91,4 +91,3 @@ volumes:
 networks:
     default:
         name: traefik_network
-        external: true
