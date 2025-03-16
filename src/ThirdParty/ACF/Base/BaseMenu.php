@@ -27,7 +27,7 @@ abstract class BaseMenu
 
     public static function register(): void
     {
-        usort(static::$instances, static fn(BaseMenu $a, BaseMenu $b): int => strcmp($a::$menuSlug, $b::$menuSlug));
+        usort(static::$instances, static fn (BaseMenu $a, BaseMenu $b): int => strcmp($a::$menuSlug, $b::$menuSlug));
 
         foreach (static::$instances as $instance) {
             $instance->registerMenu();
