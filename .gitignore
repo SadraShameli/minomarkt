@@ -18,5 +18,3 @@ Thumbs.db
 
 !.wordpress/uploads/.gitkeep
 .wordpress/uploads/*
-.wordpress/certs/*.key
-.wordpress/certs/*.crt

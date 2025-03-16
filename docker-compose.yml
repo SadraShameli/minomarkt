@@ -1,6 +1,7 @@
 services:
     wordpress:
         image: wordpress
+        container_name: wordpress
         user: 1000:1000
         ports:
             - 8080:80
@@ -27,12 +28,12 @@ services:
             - 'traefik.http.routers.wordpress.rule=Host(`minomarktnl.test`)'
             - 'traefik.http.routers.wordpress.entrypoints=web'
             - 'traefik.http.services.wordpress.loadbalancer.server.port=80'
-            - 'traefik.http.routers.wordpress-secure.rule=Host(`minomarktnl.test`)'
-            - 'traefik.http.routers.wordpress-secure.entrypoints=websecure'
-            - 'traefik.http.routers.wordpress-secure.tls=true'
+        networks:
+            - traefik_network
 
     db:
         image: mariadb
+        container_name: db
         restart: unless-stopped
         environment:
             MYSQL_DATABASE: wordpress
@@ -43,9 +44,12 @@ services:
             - 3306:3306
         volumes:
             - db:/var/lib/mysql
+        networks:
+            - traefik_network
 
     phpmyadmin:
         image: phpmyadmin
+        container_name: phpmyadmin
         restart: unless-stopped
         depends_on:
             - db
@@ -60,34 +64,29 @@ services:
             - 'traefik.http.routers.phpmyadmin.rule=Host(`pma.minomarktnl.test`)'
             - 'traefik.http.routers.phpmyadmin.entrypoints=web'
             - 'traefik.http.services.phpmyadmin.loadbalancer.server.port=80'
-            - 'traefik.http.routers.phpmyadmin-secure.rule=Host(`pma.minomarktnl.test`)'
-            - 'traefik.http.routers.phpmyadmin-secure.entrypoints=websecure'
-            - 'traefik.http.routers.phpmyadmin-secure.tls=true'
+        networks:
+            - traefik_network
 
     traefik:
         image: traefik
+        container_name: traefik
         ports:
             - '80:80'
-            - '443:443'
             - '8082:8080'
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
-            - ./.wordpress/certs:/etc/traefik/certs
         command:
             - '--api.insecure=true'
             - '--providers.docker=true'
-            - '--providers.docker.exposedbydefault=false'
+            - '--providers.docker.exposedbydefault=true'
             - '--entrypoints.web.address=:80'
-            - '--entrypoints.websecure.address=:443'
-            - '--certificatesresolvers.myresolver.acme.tlschallenge=true'
-            - '--certificatesresolvers.myresolver.acme.storage=/etc/traefik/acme.json'
-            - '--providers.file.directory=/etc/traefik/certs'
-            - '--providers.file.watch=true'
+        networks:
+            - traefik_network
 
 volumes:
     wordpress:
     db:
 
 networks:
-    default:
+    traefik_network:
         name: traefik_network
