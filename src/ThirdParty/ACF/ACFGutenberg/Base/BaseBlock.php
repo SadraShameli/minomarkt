@@ -33,7 +33,7 @@ abstract class BaseBlock
 
     public static function register(): void
     {
-        usort(static::$instances, static fn($a, $b): int => strcmp($a::$blockTitle, $b::$blockTitle));
+        usort(static::$instances, static fn ($a, $b): int => strcmp($a::$blockTitle, $b::$blockTitle));
 
         foreach (static::$instances as $instance) {
             $instance->registerBlock();

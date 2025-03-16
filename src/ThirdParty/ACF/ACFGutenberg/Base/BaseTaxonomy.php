@@ -31,7 +31,7 @@ abstract class BaseTaxonomy
 
     public static function register(): void
     {
-        usort(static::$instances, static fn($a, $b): int => strcmp($a::$singularName, $b::$singularName));
+        usort(static::$instances, static fn ($a, $b): int => strcmp($a::$singularName, $b::$singularName));
 
         foreach (static::$instances as $instance) {
             $instance->registerTaxonomy();
