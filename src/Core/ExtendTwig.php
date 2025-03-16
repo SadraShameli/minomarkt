@@ -25,9 +25,7 @@ class ExtendTwig
     public function addToContext(array $context): array
     {
         $context['menu'] = Timber::get_menu();
-
         $context['menus'] = BaseMenu::getMenus();
-
         $context['options'] = get_fields('options');
 
         return $context;
