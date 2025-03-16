@@ -23,5 +23,4 @@ function loadFilesRecursively(string $directory): void
 
 loadFilesRecursively(__DIR__ . '/src');
 
-new StarterSite();
 new App();

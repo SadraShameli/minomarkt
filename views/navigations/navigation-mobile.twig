@@ -1,6 +1,6 @@
 <nav class="mobile-navigation" role="navigation">
     <ul id="primary-menu" class="menu navigation">
-        {% for menuItem in menus.secondary.get_items %}
+        {% for menuItem in menus.mobile.get_items %}
             <li
                 {{ cs(menuItem.classes|join(' '), 'menu-item-level-1', menuItem.children ? 'dropdown has-megamenu') }}
                 id="menu-item-{{ menuItem.id }}"

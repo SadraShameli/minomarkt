@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\ThirdParty\ACF\Base\BaseMenu;
+use Timber\Timber;
 use Twig\Environment;
 use Twig\TwigFunction;
 use Twig\TwigTest;
@@ -10,7 +12,25 @@ class ExtendTwig
 {
     public function __construct()
     {
+        Timber::init();
+
+        add_filter('timber/context', [$this, 'addToContext']);
         add_filter('timber/twig', [$this, 'addToTwig']);
+    }
+
+    /**
+     * @param array<string, mixed> $context
+     * @return array<string, mixed>
+     */
+    public function addToContext(array $context): array
+    {
+        $context['menu'] = Timber::get_menu();
+
+        $context['menus'] = BaseMenu::getMenus();
+
+        $context['options'] = get_fields('options');
+
+        return $context;
     }
 
     public function addToTwig(Environment $twig): Environment

@@ -12,10 +12,44 @@ class App
 {
     public function __construct()
     {
-        new Gutenberg();
-        new ExtendTwig();
-        new Vite();
-        new Enqueues();
+        $this->addThemeSupports();
+
         new ACF();
+        new Enqueues();
+        new ExtendTwig();
+        new Gutenberg();
+        new Vite();
     }
+
+    private function addThemeSupports(): void
+    {
+        add_action('after_setup_theme', function (): void {
+            add_theme_support('menus');
+            add_theme_support('title-tag');
+            add_theme_support('post-thumbnails');
+            add_theme_support('automatic-feed-links');
+            add_theme_support(
+                'html5',
+                [
+                    'comment-form',
+                    'comment-list',
+                    'gallery',
+                    'caption',
+                ],
+            );
+            add_theme_support(
+                'post-formats',
+                [
+                    'aside',
+                    'image',
+                    'video',
+                    'quote',
+                    'link',
+                    'gallery',
+                    'audio',
+                ],
+            );
+        });
+    }
+
 }
