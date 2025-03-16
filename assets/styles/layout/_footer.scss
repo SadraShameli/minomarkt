@@ -88,7 +88,7 @@
     }
 
     a:not(.btn) {
-        --color-link: var(--color-primary-950);
+        --color-link: var(--color-black);
         --color-link-hover: var(--color-primary-500);
 
         font-size: 14px;
@@ -196,7 +196,6 @@
 }
 
 .page-micro {
-    background-color: var(--color-primary-50);
     color: var(--color-primary-950);
     font-size: 14px;
     font-weight: 400;
@@ -249,7 +248,7 @@
                 padding-top: 0;
 
                 &::after {
-                    background-color: var(--color-primary-500);
+                    background-color: var(--color-dark-200);
                     content: '';
                     display: block;
                     height: 12px;

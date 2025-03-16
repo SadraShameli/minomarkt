@@ -100,14 +100,14 @@ class ExtendTwig
         $attributes = [];
 
         if (!empty($layout['spacing_top'])) {
-            $classes[] = 'has-spacing-top';
+            $classes[] = 'block-spacing--top';
         }
         if (!empty($layout['spacing_bottom'])) {
-            $classes[] = 'has-spacing-bottom';
+            $classes[] = 'block-spacing--bottom';
         }
 
         if (!empty($layout['width'])) {
-            $classes[] = 'has-width-' . $layout['width'];
+            $classes[] = 'block-width--' . $layout['width'];
         }
 
         if (!empty($classes)) {

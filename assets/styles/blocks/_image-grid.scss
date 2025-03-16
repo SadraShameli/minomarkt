@@ -90,20 +90,20 @@
     &__title-wrapper {
         align-items: center;
         background-color: var(--color-white);
-        border-radius: calc(var(--border-radius-default) / 2);
+        border-radius: 9999px;
         bottom: 16px;
         color: var(--color-body);
         display: flex;
         gap: 4px;
         left: 16px;
-        padding: 4px 12px;
+        padding: 5px 16px;
         position: absolute;
         z-index: 1;
 
         @include media-breakpoint-up(lg) {
             bottom: 20px;
             left: 20px;
-            padding: 4px 18px;
+            padding: 5px 20px;
         }
     }
 

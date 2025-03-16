@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row row-gap-3">
             <div class="col-12">
-                <div class="mino-google-map__info block-shadow">
+                <div class="mino-google-map__info">
                     {% if fields.title and fields.show_content %}
                         <h2 class="mino-google-map__title">{{ fields.title }}</h2>
                     {% endif %}
@@ -21,7 +21,7 @@
                                 url: linkDirections,
                                 title: __('Routebeschrijving', 'mino'),
                                 target: '_blank',
-                                type: 'secondary',
+                                type: 'primary',
                             }) }}
                         </div>
                     {% endif %}
@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-12 col-xl-4 d-flex flex-column row-gap-4">
                             {% if (fields.address or fields.postcode or fields.city) or (fields.show_address and fields.show_contact) %}
-                                <div class="mino-google-map__contact block-shadow">
+                                <div class="mino-google-map__contact">
                                     <div class="mino-google-map__card-header">
                                         <div class="mino-google-map__icon-wrapper">
                                             {{ fetch_svg('map-pin') }}
@@ -76,7 +76,7 @@
                             {% endif %}
 
                             {% if options.opening_times.days and fields.show_opening_times %}
-                                <div class="mino-google-map__opening-times block-shadow">
+                                <div class="mino-google-map__opening-times">
                                     <div class="mino-google-map__card-header">
                                         <div class="mino-google-map__icon-wrapper">
                                             {{ fetch_svg('clock') }}
@@ -110,19 +110,19 @@
                             {% endif %}
                         </div>
 
-                        <div class="col-12 col-xl-8">
-                            {% if fields.show_map %}
-                                <div
-                                    class="mino-google-map__container block-shadow js-google-map"
-                                    data-api-key="{{ options.api.google_maps_api_key }}"
-                                    data-map-id="{{ options.api.google_maps_id }}"
-                                    data-place-id="{{ options.api.google_maps_place_id }}"
-                                    data-latitude="{{ options.address.latitude }}"
-                                    data-longitude="{{ options.address.longitude }}"
-                                    data-zoom="{{ fields.zoom }}"
-                                ></div>
-                            {% endif %}
-                        </div>
+                        {% if fields.show_map %}
+                            <div class="col-12 col-xl-8">
+                                    <div
+                                        class="mino-google-map__container js-google-map"
+                                        data-api-key="{{ options.api.google_maps_api_key }}"
+                                        data-map-id="{{ options.api.google_maps_id }}"
+                                        data-place-id="{{ options.api.google_maps_place_id }}"
+                                        data-latitude="{{ options.address.latitude }}"
+                                        data-longitude="{{ options.address.longitude }}"
+                                        data-zoom="{{ fields.zoom }}"
+                                    ></div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

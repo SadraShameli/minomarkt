@@ -8,9 +8,7 @@
                     {% endif %}
 
                     {% if fields.button.link %}
-                        {{ include('components/button.twig', {
-                            class: 'block-shadow',
-                        }) }}
+                        {{ include('components/button.twig') }}
                     {% endif %}
                 </div>
 
@@ -18,7 +16,7 @@
                     <div class="swiper-wrapper">
                         {% for item in items %}
                             <div class="swiper-slide">
-                                <div class="mino-slider-quote__item block-shadow">
+                                <div class="mino-slider-quote__item">
                                     {% if item.image %}
                                         {% set image = get_image(item.image) %}
 

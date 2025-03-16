@@ -3,7 +3,7 @@
     position: relative;
 
     &__wrapper {
-        background-color: var(--color-primary-100);
+        background-color: var(--color-primary-50);
         border-radius: var(--border-radius-default);
         height: 100%;
         padding: 40px 20px;
@@ -69,15 +69,10 @@
         height: 100%;
         overflow: hidden;
         padding: 24px;
-        transition: var(--transition-default);
         width: 100%;
 
         @include media-breakpoint-up(lg) {
             padding: 32px;
-        }
-
-        &:hover {
-            transform: translateY(-5px);
         }
     }
 
@@ -101,7 +96,7 @@
         transition: var(--transition-default);
 
         &:hover {
-            color: var(--color-primary-600);
+            color: var(--color-primary-500);
         }
 
         svg {
@@ -116,7 +111,7 @@
         height: 100%;
 
         &-photo {
-            border-radius: 50%;
+            border-radius: var(--border-radius-default);
             flex-shrink: 0;
             height: 80px;
             margin-bottom: 16px;

@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="mino-testimonial__wrapper block-shadow">
+                <div class="mino-testimonial__wrapper">
                     {% if fields.title and fields.show_title %}
                         <h2 class="mino-testimonial__title">{{ fields.title }}</h2>
                     {% endif %}
@@ -20,7 +20,7 @@
                                     <div class="mino-testimonial__slider-wrapper swiper-wrapper">
                                         {% for testimonial in testimonials %}
                                             <div class="mino-testimonial__slider-slide swiper-slide">
-                                                <div class="mino-testimonial__card block-shadow">
+                                                <div class="mino-testimonial__card">
                                                     {{ include('components/testimonial-item.twig', {
                                                         name: testimonial.name,
                                                         author: testimonial.author,
@@ -48,7 +48,7 @@
                                 <div class="mino-testimonial__grid">
                                     {% for testimonial in testimonials %}
                                         {% set image = Image(testimonial.image) %}
-                                        <div class="mino-testimonial__card block-shadow">
+                                        <div class="mino-testimonial__card">
                                             {{ include('components/testimonial-item.twig', {
                                                 name: testimonial.name,
                                                 author: testimonial.author,

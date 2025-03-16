@@ -1,14 +1,10 @@
-/**
- * General
- */
-
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 175px;
 }
 
 body {
-    --body-bg-color: var(--color-primary-50);
+    --body-bg-color: var(--color-white);
     --border-radius-default: 8px;
     --transition-default: all 0.3s ease-out;
 

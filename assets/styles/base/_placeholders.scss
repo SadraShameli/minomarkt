@@ -1,11 +1,3 @@
-/**
- * Background image
- */
-
-/*
- * usage:
- * @extend %bg-image;
- */
 %bg-image {
     background-position: center center;
     background-repeat: no-repeat;
@@ -13,14 +5,6 @@
     width: 100%;
 }
 
-/**
- * Flexbox
- */
-
-/*
- * usage:
- * @extend %flexbox-center;
- */
 %flexbox-center {
     align-items: center;
     display: flex;
@@ -28,20 +12,12 @@
     justify-content: center;
 }
 
-/*
- * usage:
- * @extend %flexbox-v-center;
- */
 %flexbox-v-center {
     display: flex;
     height: 100%;
     justify-content: center;
 }
 
-/*
- * usage:
- * @extend %flexbox-h-center;
- */
 %flexbox-h-center {
     align-items: center;
     display: flex;
