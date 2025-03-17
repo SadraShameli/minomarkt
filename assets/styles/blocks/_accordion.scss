@@ -39,7 +39,7 @@
     }
 
     .accordion-item {
-        background-color: var(--color-white);
+        background-color: var(--color-primary-50);
         border: none;
         border-radius: 16px;
         overflow: hidden;
@@ -47,7 +47,7 @@
 
     .accordion-button {
         align-items: center;
-        background-color: var(--color-white);
+        background-color: var(--color-primary-50);
         border: 0;
         display: flex;
         font-size: 18px;
@@ -95,7 +95,6 @@
         }
 
         &:not(.collapsed) {
-            background-color: var(--color-white);
             box-shadow: none;
             color: var(--color-primary-500);
 
