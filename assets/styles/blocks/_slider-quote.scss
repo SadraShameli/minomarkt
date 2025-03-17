@@ -50,8 +50,7 @@
 
         @include media-breakpoint-up(lg) {
             align-items: start;
-            flex-direction: row;
-            flex-wrap: nowrap;
+            flex-flow: row nowrap;
             gap: 40px;
         }
     }
@@ -125,7 +124,7 @@
         transition: var(--transition-default);
 
         &:hover {
-            color: var(--color-primary-600);
+            color: var(--color-primary-500);
         }
 
         svg {
