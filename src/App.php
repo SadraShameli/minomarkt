@@ -23,7 +23,7 @@ class App
 
     private function addThemeSupports(): void
     {
-        add_action('after_setup_theme', function (): void {
+        add_action('after_setup_theme', static function (): void {
             add_theme_support('menus');
             add_theme_support('title-tag');
             add_theme_support('post-thumbnails');
