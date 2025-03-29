@@ -30,15 +30,14 @@
 
                                 <div class="mino-form-quote__person-info">
                                     {% if fields.person.image %}
-                                        {% set image = get_image(fields.person.image) %}
-
-                                        {% if image %}
+                                        {% set imageObj = get_image(fields.person.image) %}
+                                        {% if imageObj %}
                                             <img
                                                 class="mino-form-quote__person-image"
-                                                src="{{ image.src('medium') }}"
-                                                srcset="{{ image.srcset }}"
-                                                sizes="{{ image.img_sizes }}"
-                                                alt="{{ image.alt }}"
+                                                src="{{ imageObj.src('medium') }}"
+                                                srcset="{{ imageObj.srcset }}"
+                                                sizes="{{ imageObj.img_sizes }}"
+                                                alt="{{ imageObj.alt }}"
                                                 loading="lazy"
                                             />
                                         {% endif %}

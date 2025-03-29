@@ -1,0 +1,96 @@
+<section {{ cs('mino-tabs block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% if fields.title or fields.description %}
+                    <div class="mino-tabs__header col-12 col-lg-8 mx-auto text-center">
+                        {% if fields.title %}
+                            <h2 class="mino-tabs__title">{{ fields.title }}</h2>
+                        {% endif %}
+
+                        {% if fields.description %}
+                            <p class="mino-tabs__description">{{ fields.description }}</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if fields.tabs %}
+                    {% set tab_style = fields.tab_style|default('default') %}
+                    {% set is_vertical = fields.vertical_tabs %}
+                    {% set animation = fields.animation|default('fade') %}
+                    
+                    <div {{ cs('mino-tabs__container', is_vertical ? 'mino-tabs__container--vertical') }}>
+                        <div class="mino-tabs__nav-wrapper">
+                            <ul class="mino-tabs__nav mino-tabs__nav--{{ tab_style }}" role="tablist">
+                                {% for tab in fields.tabs %}
+                                    <li class="mino-tabs__nav-item" role="presentation">
+                                        <button 
+                                            {{ cs('mino-tabs__nav-link', loop.first ? 'active') }}
+                                            id="tab-{{ block.id }}-{{ loop.index }}" 
+                                            data-toggle="tab" 
+                                            data-target="#tab-content-{{ block.id }}-{{ loop.index }}" 
+                                            type="button" 
+                                            role="tab" 
+                                            aria-controls="tab-content-{{ block.id }}-{{ loop.index }}" 
+                                            aria-selected="{% if loop.first %}true{% else %}false{% endif %}"
+                                        >
+                                            {{ tab.tab_title }}
+                                        </button>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div {{ cs('mino-tabs__content tab-content') }}>
+                            {% for tab in fields.tabs %}
+                                <div 
+                                    {{ cs('mino-tabs__pane tab-pane fade', loop.first ? 'show active') }}
+                                    id="tab-content-{{ block.id }}-{{ loop.index }}" 
+                                    role="tabpanel" 
+                                    aria-labelledby="tab-{{ block.id }}-{{ loop.index }}"
+                                >
+                                    <div class="mino-tabs__pane-inner">
+                                        {% if tab.tab_image %}
+                                            {% set imageObj = get_image(tab.tab_image) %}
+                                            {% if imageObj %}
+                                                <div class="mino-tabs__image-wrapper">
+                                                    <img 
+                                                        class="mino-tabs__image"
+                                                        src="{{ imageObj.src('medium') }}" 
+                                                        srcset="{{ imageObj.srcset }}" 
+                                                        sizes="{{ imageObj.img_sizes }}" 
+                                                        alt="{{ imageObj.alt }}" 
+                                                        loading="lazy"
+                                                    />
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        <div class="mino-tabs__content-wrapper">
+                                            {{ tab.tab_content }}
+
+                                            {% if tab.tab_button %}
+                                                <div class="mino-tabs__button-wrapper">
+                                                    <a 
+                                                        class="btn btn-primary"
+                                                        href="{{ tab.tab_button.url }}" 
+
+                                                        {% if tab.tab_button.target %}
+                                                            target="{{ tab.tab_button.target }}"
+                                                        {% endif %}
+                                                    >
+                                                        {{ tab.tab_button.title }}
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section> 

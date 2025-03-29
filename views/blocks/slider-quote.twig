@@ -18,16 +18,15 @@
                             <div class="swiper-slide">
                                 <div class="mino-slider-quote__item">
                                     {% if item.image %}
-                                        {% set image = get_image(item.image) %}
-
-                                        {% if image %}
+                                        {% set imageObj = get_image(item.image) %}
+                                        {% if imageObj %}
                                             <div class="mino-slider-quote__image-wrapper">
                                                 <img
                                                     class="mino-slider-quote__image"
-                                                    src="{{ image.src('medium') }}"
-                                                    srcset="{{ image.srcset }}"
-                                                    sizes="{{ image.img_sizes }}"
-                                                    alt="{{ image.alt }}"
+                                                    src="{{ imageObj.src('medium') }}"
+                                                    srcset="{{ imageObj.srcset }}"
+                                                    sizes="{{ imageObj.img_sizes }}"
+                                                    alt="{{ imageObj.alt }}"
                                                     loading="lazy"
                                                 />
                                             </div>

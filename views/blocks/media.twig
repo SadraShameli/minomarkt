@@ -8,16 +8,15 @@
                             {{ fields.video }}
                         {% else %}
                             {% if fields.image %}
-                                {% set image = get_image(fields.image) %}
-
-                                {% if image %}
+                                {% set imageObj = get_image(fields.image) %}
+                                {% if imageObj %}
                                     <picture class="mino-media__image-wrapper">
                                         <img
                                             class="mino-media__image img-fluid"
-                                            src="{{ image.src('medium') }}"
-                                            srcset="{{ image.srcset }}"
-                                            sizes="{{ image.img_sizes }}"
-                                            alt="{{ image.alt }}"
+                                            src="{{ imageObj.src('medium') }}"
+                                            srcset="{{ imageObj.srcset }}"
+                                            sizes="{{ imageObj.img_sizes }}"
+                                            alt="{{ imageObj.alt }}"
                                             loading="lazy"
                                         />
                                     </picture>

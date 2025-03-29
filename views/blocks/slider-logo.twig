@@ -13,15 +13,14 @@
                                     target="{{ item.link.target }}"
                                 >
                                     <div class="mino-slider-logo__image-wrapper">
-                                        {% set image = get_image(item.image) %}
-
-                                        {% if image %}
+                                        {% set imageObj = get_image(item.image) %}
+                                        {% if imageObj %}
                                             <img
                                                 class="mino-slider-logo__image"
-                                                src="{{ image.src('medium') }}"
-                                                srcset="{{ image.srcset }}"
-                                                sizes="{{ image.img_sizes }}"
-                                                alt="{{ image.alt }}"
+                                                src="{{ imageObj.src('medium') }}"
+                                                srcset="{{ imageObj.srcset }}"
+                                                sizes="{{ imageObj.img_sizes }}"
+                                                alt="{{ imageObj.alt }}"
                                                 loading="lazy"
                                             />
                                         {% endif %}

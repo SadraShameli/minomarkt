@@ -1,0 +1,231 @@
+<section {{ cs('mino-comparison-table block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% if fields.title or fields.description %}
+                    <div {{ cs('mino-comparison-table__header col-12 col-lg-8 mx-auto text-center') }}>
+                        {% if fields.title %}
+                            <h2 class="mino-comparison-table__title">{{ fields.title }}</h2>
+                        {% endif %}
+
+                        {% if fields.description %}
+                            <p class="mino-comparison-table__description">{{ fields.description }}</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if fields.columns and fields.features %}
+                    {% set table_style = fields.table_style|default('default') %}
+                    {% set sticky_header = fields.sticky_header %}
+                    {% set highlight_differences = fields.highlight_differences %}
+                    {% set mobile_accordion = fields.mobile_accordion %}
+                    
+                    <div 
+                        {{ cs('mino-comparison-table__wrapper', {
+                            'sticky-header': sticky_header,
+                            'highlight-differences': highlight_differences,
+                            'mobile-accordion': mobile_accordion
+                        }) }}
+                        data-table-style="{{ table_style }}"
+                    >
+                        <div class="mino-comparison-table__table-wrapper">
+                            <table class="mino-comparison-table__table mino-comparison-table__table--{{ table_style }}">
+                                <thead>
+                                    <tr>
+                                        <th class="mino-comparison-table__feature-header">Features</th>
+                                        
+                                        {% for column in fields.columns %}
+                                            <th 
+                                                {{ cs('mino-comparison-table__column-header', {
+                                                    'mino-comparison-table__column-header--featured': column.featured
+                                                }) }}
+
+                                                {% if column.custom_color %}
+                                                    style="--column-color: {{ column.custom_color }};"
+                                                {% endif %}
+                                            >
+                                                <div class="mino-comparison-table__column-title">{{ column.column_title }}</div>
+                                                
+                                                {% if column.column_subtitle %}
+                                                    <div class="mino-comparison-table__column-subtitle">{{ column.column_subtitle }}</div>
+                                                {% endif %}
+                                                
+                                                {% if column.price %}
+                                                    <div class="mino-comparison-table__price-wrapper">
+                                                        <span class="mino-comparison-table__price">{{ column.price }}</span>
+                                                        {% if column.price_suffix %}
+                                                            <span class="mino-comparison-table__price-suffix">{{ column.price_suffix }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
+                                                
+                                                {% if column.description %}
+                                                    <div class="mino-comparison-table__column-description">{{ column.description }}</div>
+                                                {% endif %}
+                                                
+                                                {% if column.button %}
+                                                    <a 
+                                                        class="btn btn-primary btn-sm mino-comparison-table__button"
+                                                        href="{{ column.button.url }}" 
+                                                      
+                                                        {% if column.button.target %}
+                                                            target="{{ column.button.target }}"
+                                                        {% endif %}
+                                                    >
+                                                        {{ column.button.title }}
+                                                    </a>
+                                                {% endif %}
+                                            </th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for feature in fields.features %}
+                                        <tr {{ cs({
+                                            'mino-comparison-table__section-row': feature.is_heading
+                                        }) }}>
+                                            <td class="mino-comparison-table__feature-cell">
+                                                <div class="mino-comparison-table__feature-title">{{ feature.feature_title }}</div>
+                                                
+                                                {% if feature.feature_description %}
+                                                    <div class="mino-comparison-table__feature-description">{{ feature.feature_description }}</div>
+                                                {% endif %}
+                                            </td>
+                                            
+                                            {% for value in feature.feature_values %}
+                                                <td class="mino-comparison-table__value-cell">
+                                                    {% if value.value_type == 'text' %}
+                                                        <div class="mino-comparison-table__text-value">{{ value.text_value }}</div>
+                                                    {% elseif value.value_type == 'yes_no' %}
+                                                        <div class="mino-comparison-table__yes-no-value mino-comparison-table__yes-no-value--{{ value.yes_no_value }}">
+                                                            {% if value.yes_no_value == 'yes' %}
+                                                                <svg class="mino-comparison-table__icon mino-comparison-table__icon--check" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
+                                                                </svg>
+                                                            {% elseif value.yes_no_value == 'no' %}
+                                                                <svg class="mino-comparison-table__icon mino-comparison-table__icon--cross" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
+                                                                </svg>
+                                                            {% else %}
+                                                                <svg class="mino-comparison-table__icon mino-comparison-table__icon--partial" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M19 13H5v-2h14v2z" fill="currentColor"/>
+                                                                </svg>
+                                                            {% endif %}
+                                                        </div>
+                                                    {% elseif value.value_type == 'icon' %}
+                                                        <div class="mino-comparison-table__icon-value">
+                                                            {% if value.icon_value == 'check' %}
+                                                                <svg class="mino-comparison-table__icon mino-comparison-table__icon--check" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
+                                                                </svg>
+                                                            {% elseif value.icon_value == 'cross' %}
+                                                                <svg class="mino-comparison-table__icon mino-comparison-table__icon--cross" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
+                                                                </svg>
+                                                            {% elseif value.icon_value == 'arrow' %}
+                                                                <svg class="mino-comparison-table__icon mino-comparison-table__icon--arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M8 16l4-4 4 4 1.4-1.4-5.4-5.4-5.4 5.4z" fill="currentColor"/>
+                                                                </svg>
+                                                            {% elseif value.icon_value == 'star' %}
+                                                                <svg class="mino-comparison-table__icon mino-comparison-table__icon--star" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="currentColor"/>
+                                                                </svg>
+                                                            {% elseif value.icon_value == 'info' %}
+                                                                <svg class="mino-comparison-table__icon mino-comparison-table__icon--info" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="currentColor"/>
+                                                                </svg>
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endif %}
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {% if mobile_accordion %}
+                            <div {{ cs('mino-comparison-table__accordion') }}>
+                                {% for column in fields.columns %}
+                                    <div {{ cs('mino-comparison-table__accordion-item', {'mino-comparison-table__accordion-item--featured': column.featured}) }}>
+                                        <div 
+                                            {{ cs('mino-comparison-table__accordion-header') }}
+                                            {% if column.custom_color %}style="--column-color: {{ column.custom_color }};"{% endif %}
+                                        >
+                                            <div {{ cs('mino-comparison-table__accordion-title') }}>{{ column.column_title }}</div>
+                                            {% if column.price %}
+                                                <div {{ cs('mino-comparison-table__price-wrapper') }}>
+                                                    <span {{ cs('mino-comparison-table__price') }}>{{ column.price }}</span>
+                                                    {% if column.price_suffix %}
+                                                        <span {{ cs('mino-comparison-table__price-suffix') }}>{{ column.price_suffix }}</span>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                            <button {{ cs('mino-comparison-table__accordion-toggle') }}>
+                                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M7 10l5 5 5-5H7z" fill="currentColor"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div {{ cs('mino-comparison-table__accordion-content') }}>
+                                            {% if column.description %}
+                                                <div {{ cs('mino-comparison-table__column-description') }}>{{ column.description }}</div>
+                                            {% endif %}
+                                            
+                                            <ul {{ cs('mino-comparison-table__feature-list') }}>
+                                                {% for feature in fields.features %}
+                                                    <li {{ cs('mino-comparison-table__feature-item', {'mino-comparison-table__feature-item--heading': feature.is_heading}) }}>
+                                                        <div {{ cs('mino-comparison-table__feature-item-title') }}>{{ feature.feature_title }}</div>
+                                                        
+                                                        {% if feature.feature_values[loop.parent.loop.index0] %}
+                                                            {% set value = feature.feature_values[loop.parent.loop.index0] %}
+                                                            <div {{ cs('mino-comparison-table__feature-item-value') }}>
+                                                                {% if value.value_type == 'text' %}
+                                                                    {{ value.text_value }}
+                                                                {% elseif value.value_type == 'yes_no' %}
+                                                                    <div class="mino-comparison-table__yes-no-value mino-comparison-table__yes-no-value--{{ value.yes_no_value }}">
+                                                                        {% if value.yes_no_value == 'yes' %}
+                                                                            <svg class="mino-comparison-table__icon mino-comparison-table__icon--check" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
+                                                                            </svg>
+                                                                        {% elseif value.yes_no_value == 'no' %}
+                                                                            <svg class="mino-comparison-table__icon mino-comparison-table__icon--cross" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
+                                                                            </svg>
+                                                                        {% else %}
+                                                                            <svg class="mino-comparison-table__icon mino-comparison-table__icon--partial" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M19 13H5v-2h14v2z" fill="currentColor"/>
+                                                                            </svg>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                {% elseif value.value_type == 'icon' %}
+                                                                    <div class="mino-comparison-table__icon-value">
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                            
+                                            {% if column.button %}
+                                                <a 
+                                                    href="{{ column.button.url }}" 
+                                                    {{ cs('btn btn-primary mino-comparison-table__accordion-button') }}
+                                                    {% if column.button.target %}target="{{ column.button.target }}"{% endif %}
+                                                >
+                                                    {{ column.button.title }}
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section> 

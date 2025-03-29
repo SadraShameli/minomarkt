@@ -1,0 +1,84 @@
+<section {{ cs('mino-timeline block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% if fields.title or fields.description %}
+                    <div class="mino-timeline__header col-12 col-lg-8 mx-auto text-center">
+                        {% if fields.title %}
+                            <h2 class="mino-timeline__title">{{ fields.title }}</h2>
+                        {% endif %}
+
+                        {% if fields.description %}
+                            <p class="mino-timeline__description">{{ fields.description }}</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if fields.events %}
+                    {% set layout = fields.layout_style|default('vertical') %}
+                    {% set line_color = fields.line_color|default('#dddddd') %}
+                    {% set dot_color = fields.dot_color|default('#0066cc') %}
+                    {% set animate = fields.animate_on_scroll %}
+                    
+                    <div 
+                        {{ cs('mino-timeline__container', layout ? 'mino-timeline__container--' ~ layout, animate ? 'animate') }}
+                        style="--timeline-line-color: {{ line_color }}; --timeline-dot-color: {{ dot_color }};"
+                    >
+                        {% for event in fields.events %}
+                            <div {{ cs('mino-timeline__event', event.featured ? 'mino-timeline__event--featured') }}>
+                                <div class="mino-timeline__date-wrapper">
+                                    <span class="mino-timeline__date">{{ event.date }}</span>
+                                </div>
+                                
+                                <div {{ cs('mino-timeline__content') }}>
+                                    <div {{ cs('mino-timeline__dot') }}></div>
+                                    
+                                    <div {{ cs('mino-timeline__card') }}>
+                                        <h3 {{ cs('mino-timeline__event-title') }}>{{ event.event_title }}</h3>
+                                        
+                                        {% if event.event_description %}
+                                            <div class="mino-timeline__event-description">
+                                                {{ event.event_description }}
+                                            </div>
+                                        {% endif %}
+                                        
+                                        {% if event.event_image %}
+                                            {% set imageObj = get_image(event.event_image) %}
+                                            {% if imageObj %}
+                                                <div class="mino-timeline__image-wrapper">
+                                                    <img 
+                                                        class="mino-timeline__image"
+                                                        src="{{ imageObj.src('medium') }}" 
+                                                        srcset="{{ imageObj.srcset }}" 
+                                                        sizes="{{ imageObj.img_sizes }}" 
+                                                        alt="{{ imageObj.alt }}" 
+                                                        loading="lazy"
+                                                    />
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                        
+                                        {% if event.event_link %}
+                                            <div class="mino-timeline__button-wrapper">
+                                                <a 
+                                                    class="btn btn-primary btn-sm"
+                                                    href="{{ event.event_link.url }}" 
+                                                    
+                                                    {% if event.event_link.target %}
+                                                        target="{{ event.event_link.target }}"
+                                                    {% endif %}
+                                                >
+                                                    {{ event.event_link.title }}
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section> 

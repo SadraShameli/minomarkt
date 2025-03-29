@@ -1,0 +1,192 @@
+.mino-tabs {
+    &__header {
+        margin-bottom: 40px;
+
+        @include media-breakpoint-up(lg) {
+            margin-bottom: 60px;
+        }
+    }
+
+    &__title {
+        text-align: center;
+    }
+
+    &__description {
+        margin-top: 16px;
+        text-align: center;
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        &--vertical {
+            @include media-breakpoint-up(lg) {
+                flex-direction: row;
+                gap: 30px;
+            }
+        }
+    }
+
+    &__nav-wrapper {
+        margin-bottom: 20px;
+
+        @include media-breakpoint-up(lg) {
+            .mino-tabs__container--vertical & {
+                flex: 0 0 25%;
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &__nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        .mino-tabs__container--vertical & {
+            @include media-breakpoint-up(lg) {
+                flex-direction: column;
+            }
+        }
+
+        &--default {
+            border-bottom: 1px solid var(--color-border);
+            gap: 0;
+
+            .mino-tabs__nav-link {
+                background: transparent;
+                border: 0;
+                border-bottom: 3px solid transparent;
+                border-radius: 0;
+                color: var(--color-body);
+                margin-bottom: -1px;
+                padding: 10px 15px;
+
+                &:hover {
+                    border-bottom-color: var(--color-primary-light);
+                }
+
+                &.active {
+                    border-bottom-color: var(--color-primary);
+                    color: var(--color-primary);
+                }
+            }
+        }
+
+        &--boxed {
+            .mino-tabs__nav-link {
+                background: var(--color-light);
+                border: 1px solid var(--color-border);
+                border-radius: var(--border-radius-default);
+                color: var(--color-body);
+                padding: 10px 20px;
+
+                &:hover {
+                    background: var(--color-light-hover);
+                }
+
+                &.active {
+                    background: var(--color-white);
+                    border-color: var(--color-primary);
+                    color: var(--color-primary);
+                }
+            }
+        }
+
+        &--pills {
+            .mino-tabs__nav-link {
+                background: transparent;
+                border: 0;
+                border-radius: 9999px;
+                color: var(--color-body);
+                padding: 8px 16px;
+
+                &:hover {
+                    background: var(--color-light);
+                }
+
+                &.active {
+                    background: var(--color-primary);
+                    color: var(--color-white);
+                }
+            }
+        }
+
+        &--underlined {
+            .mino-tabs__nav-link {
+                background: transparent;
+                border: 0;
+                border-bottom: 2px solid transparent;
+                border-radius: 0;
+                color: var(--color-body);
+                padding: 8px 16px;
+
+                &:hover {
+                    border-bottom-color: var(--color-primary-light);
+                }
+
+                &.active {
+                    border-bottom-color: var(--color-primary);
+                    color: var(--color-primary);
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+    &__nav-item {
+        margin: 0;
+    }
+
+    &__nav-link {
+        cursor: pointer;
+        font-weight: 500;
+        transition: var(--transition-default);
+    }
+
+    &__content {
+        flex: 1;
+    }
+
+    &__pane {
+        padding: 20px 0;
+    }
+
+    &__pane-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+        }
+    }
+
+    &__image-wrapper {
+        flex: 0 0 100%;
+
+        @include media-breakpoint-up(lg) {
+            flex: 0 0 40%;
+        }
+    }
+
+    &__image {
+        border-radius: var(--border-radius-default);
+        height: auto;
+        max-width: 100%;
+        object-fit: cover;
+    }
+
+    &__content-wrapper {
+        flex: 1;
+    }
+
+    &__button-wrapper {
+        margin-top: 20px;
+    }
+}

@@ -58,7 +58,26 @@ class ExtendTwig
                     unset($arg['class']);
                 }
 
-                $attributes = array_merge($attributes, $arg);
+                if (isset($arg['attributes']) && is_array($arg['attributes'])) {
+                    $attributes = array_merge($attributes, $arg['attributes']);
+                    unset($arg['attributes']);
+                }
+
+                $isConditionalClasses = true;
+                foreach ($arg as $key => $value) {
+                    if (!is_bool($value) && !is_int($value)) {
+                        $isConditionalClasses = false;
+                        break;
+                    }
+                }
+
+                if ($isConditionalClasses) {
+                    foreach ($arg as $className => $condition) {
+                        if ($condition) {
+                            $classes[] = $className;
+                        }
+                    }
+                }
             } else {
                 $classes[] = $arg;
             }
@@ -97,7 +116,7 @@ class ExtendTwig
         }
 
         $classes = [];
-        $attributes = [];
+        $data = [];
 
         if (!empty($layout['spacing_top'])) {
             $classes[] = 'block-spacing--top';
@@ -111,14 +130,14 @@ class ExtendTwig
         }
 
         if (!empty($classes)) {
-            $attributes['class'] = implode(' ', $classes);
+            $data['class'] = implode(' ', $classes);
         }
 
         if (!empty($layout['anchor'])) {
-            $attributes['id'] = str_replace('#', '', trim($layout['anchor']));
+            $data['attributes']['id'] = str_replace('#', '', trim($layout['anchor']));
         }
 
-        return $attributes;
+        return $data;
     }
 
     public static function fetchSvg(mixed $filename): string

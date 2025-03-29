@@ -18,14 +18,14 @@
                                     <div class="mino-slider-media__item">
                                         <div class="mino-slider-media__media-wrapper">
                                             {% if item.media_type == 'image' %}
-                                                {% set image = get_image(item.image) %}
-                                                {% if image %}
+                                                {% set imageObj = get_image(item.image) %}
+                                                {% if imageObj %}
                                                     <img
                                                         class="mino-slider-media__image"
-                                                        src="{{ image.src('large') }}"
-                                                        srcset="{{ image.srcset }}"
-                                                        sizes="{{ image.img_sizes }}"
-                                                        alt="{{ image.alt }}"
+                                                        src="{{ imageObj.src('medium') }}"
+                                                        srcset="{{ imageObj.srcset }}"
+                                                        sizes="{{ imageObj.img_sizes }}"
+                                                        alt="{{ imageObj.alt }}"
                                                         loading="lazy"
                                                     />
                                                 {% endif %}

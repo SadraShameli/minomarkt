@@ -1,0 +1,124 @@
+<section {{ cs('mino-team-members block-padding', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            {% if fields.title or fields.description %}
+                <div {{ cs('mino-team-members__header col-12 col-lg-8 mx-auto text-center') }}>
+                    {% if fields.title %}
+                        <h2 {{ cs('mino-team-members__title') }}>{{ fields.title }}</h2>
+                    {% endif %}
+
+                    {% if fields.description %}
+                        <p {{ cs('mino-team-members__description') }}>{{ fields.description }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if fields.selected_people %}
+                {% set layout = fields.layout_style|default('grid') %}
+                {% set columns = fields.columns|default('3') %}
+                {% set card_style = fields.card_style|default('default') %}
+                {% set image_style = fields.image_style|default('circle') %}
+                {% set show_bio_popup = fields.show_bio_popup %}
+                
+                <div {{ cs('mino-team-members__container col-12', {
+                    'mino-team-members__container--list': layout == 'list',
+                    'mino-team-members__container--carousel': layout == 'carousel'
+                }) }} 
+                    data-columns="{{ columns }}" 
+                    data-card-style="{{ card_style }}" 
+                    data-image-style="{{ image_style }}"
+                >
+                    {% if layout == 'carousel' %}
+                        <div class="swiper mino-team-members__swiper">
+                            <div class="swiper-wrapper mino-team-members__swiper-wrapper">
+                    {% endif %}
+                    
+                    {% for person_id in fields.selected_people %}
+                        {% set person = get_post(person_id) %}
+                        {% set member_id = 'member-' ~ loop.index %}
+                        
+                        <div {{ cs('mino-team-members__member', {
+                            'swiper-slide': layout == 'carousel'
+                        }) }}>
+                            <div class="mino-team-members__card mino-team-members__card--{{ card_style }}">
+                                {% if person.meta('people_profile_image') %}
+                                    {% set imageObj = get_image(person.meta('people_profile_image')) %}
+                                    <div class="mino-team-members__photo-wrapper mino-team-members__photo-wrapper--{{ image_style }}">
+                                        <img
+                                            class="mino-team-members__photo"
+                                            src="{{ imageObj.src('medium') }}"
+                                            srcset="{{ imageObj.srcset }}"
+                                            sizes="{{ imageObj.img_sizes }}"
+                                            alt="{{ imageObj.alt }}"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="mino-team-members__content">
+                                    {% if person.meta('people_first_name') or person.meta('people_last_name') %}
+                                        <h3 class="mino-team-members__name">
+                                            {{ person.meta('people_first_name') }} {{ person.meta('people_last_name') }}
+                                        </h3>
+                                    {% endif %}
+                                    
+                                    {% if person.meta('people_function') %}
+                                        <p class="mino-team-members__position">{{ person.meta('people_function') }}</p>
+                                    {% endif %}
+                                    
+                                    {% if person.meta('people_bio') and not show_bio_popup %}
+                                        <div class="mino-team-members__bio">{{ person.meta('people_bio') }}</div>
+                                    {% endif %}
+                                    
+                                    {% if person.meta('people_mail') or person.meta('people_phone') %}
+                                        <div class="mino-team-members__contact">
+                                            {% if person.meta('people_mail') %}
+                                                <a class="mino-team-members__email" href="mailto:{{ person.meta('people_mail') }}">{{ person.meta('people_mail') }}</a>
+                                            {% endif %}
+                                            
+                                            {% if person.meta('people_phone') %}
+                                                <a class="mino-team-members__phone" href="tel:{{ person.meta('people_phone') }}">{{ person.meta('people_phone') }}</a>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                    
+                                    {% if person.meta('people_bio') and show_bio_popup %}
+                                        <button class="mino-team-members__bio-button" data-toggle="modal" data-target="#{{ member_id }}">
+                                            {{__('Bio lezen', 'mino')}}
+                                        </button>
+                                        
+                                        <div class="modal fade" id="{{ member_id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content mino-team-members__modal-content">
+                                                    <div class="modal-header mino-team-members__modal-header">
+                                                        <h5 class="modal-title mino-team-members__modal-title" id="{{ member_id }}-label">
+                                                            {{ person.meta('people_first_name') }} {{ person.meta('people_last_name') }}
+                                                        </h5>
+                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body mino-team-members__modal-body">
+                                                        <div class="mino-team-members__modal-bio">{{ person.meta('people_bio') }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                    {% if layout == 'carousel' %}
+                            </div>
+                            <div class="swiper-pagination mino-team-members__swiper-pagination"></div>
+                            <div class="swiper-button-prev mino-team-members__swiper-button-prev"></div>
+                            <div class="swiper-button-next mino-team-members__swiper-button-next"></div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section> 

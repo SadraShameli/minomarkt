@@ -1,0 +1,307 @@
+.mino-team-members {
+    &__header {
+        margin-bottom: 40px;
+
+        @include media-breakpoint-up(lg) {
+            margin-bottom: 60px;
+        }
+    }
+
+    &__title {
+        text-align: center;
+    }
+
+    &__description {
+        margin-top: 16px;
+        text-align: center;
+    }
+
+    &__container {
+        display: grid;
+        gap: 30px;
+        width: 100%;
+
+        &--grid {
+            grid-template-columns: repeat(1, 1fr);
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            &.mino-team-members__container--columns-3 {
+                @include media-breakpoint-up(lg) {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            }
+
+            &.mino-team-members__container--columns-4 {
+                @include media-breakpoint-up(lg) {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+
+                @include media-breakpoint-up(xl) {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+            }
+        }
+
+        &--list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            .mino-team-members__member {
+                width: 100%;
+            }
+
+            .mino-team-members__card {
+                flex-direction: row;
+
+                @include media-breakpoint-down(sm) {
+                    flex-direction: column;
+                }
+            }
+
+            .mino-team-members__photo-wrapper {
+                flex: 0 0 150px;
+                margin-right: 20px;
+
+                @include media-breakpoint-down(sm) {
+                    margin-bottom: 20px;
+                    margin-right: 0;
+                    width: 100%;
+                }
+            }
+        }
+
+        &--carousel {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            scroll-snap-type: x mandatory;
+            width: 100%;
+
+            .mino-team-members__member {
+                flex: 0 0 300px;
+                scroll-snap-align: start;
+
+                @include media-breakpoint-up(md) {
+                    flex: 0 0 350px;
+                }
+            }
+        }
+    }
+
+    &__member {
+        &--featured {
+            .mino-team-members__card {
+                border-color: var(--color-primary);
+            }
+        }
+    }
+
+    &__card {
+        background-color: var(--color-white);
+        border-radius: var(--border-radius-default);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        transition:
+            transform 0.3s ease,
+            box-shadow 0.3s ease;
+
+        &--basic {
+            border: 1px solid var(--color-border);
+        }
+
+        &--shadow {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        &--border {
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-default);
+        }
+
+        &--hover {
+            &:hover {
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                transform: translateY(-5px);
+            }
+        }
+    }
+
+    &__photo-wrapper {
+        background-color: var(--color-light);
+        overflow: hidden;
+        position: relative;
+
+        &--square {
+            aspect-ratio: 1 / 1;
+        }
+
+        &--circle {
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            margin: 16px auto;
+            overflow: hidden;
+            width: 200px;
+        }
+
+        &--rounded {
+            aspect-ratio: 1 / 1;
+
+            .mino-team-members__list & {
+                aspect-ratio: auto;
+            }
+        }
+    }
+
+    &__photo {
+        height: 100%;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        padding: 20px;
+    }
+
+    &__name {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    &__position {
+        color: var(--color-body-light);
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    &__bio {
+        color: var(--color-body);
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 16px;
+    }
+
+    &__contact {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    &__email,
+    &__phone {
+        align-items: center;
+        color: var(--color-body);
+        display: flex;
+        font-size: 14px;
+        gap: 8px;
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        height: 18px;
+        width: 18px;
+
+        &--email,
+        &--phone {
+            color: var(--color-primary);
+        }
+    }
+
+    &__social {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: auto;
+        padding-top: 16px;
+    }
+
+    &__social-link {
+        align-items: center;
+        background-color: var(--color-light);
+        border-radius: 50%;
+        color: var(--color-body);
+        display: flex;
+        height: 36px;
+        justify-content: center;
+        transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+        width: 36px;
+
+        &:hover {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        &--linkedin:hover {
+            background-color: #0077b5;
+        }
+
+        &--twitter:hover {
+            background-color: #1da1f2;
+        }
+
+        &--facebook:hover {
+            background-color: #1877f2;
+        }
+
+        &--instagram:hover {
+            background-color: #e4405f;
+        }
+
+        &--youtube:hover {
+            background-color: #ff0000;
+        }
+
+        &--github:hover {
+            background-color: #333;
+        }
+
+        &--website:hover {
+            background-color: var(--color-primary);
+        }
+    }
+
+    &__social-icon {
+        height: 18px;
+        width: 18px;
+    }
+
+    &__bio-button {
+        background-color: transparent;
+        border: 1px solid var(--color-primary);
+        border-radius: var(--border-radius-default);
+        color: var(--color-primary);
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: 16px;
+        padding: 8px 16px;
+        transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+        width: fit-content;
+
+        &:hover {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+    }
+}

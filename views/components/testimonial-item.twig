@@ -1,15 +1,14 @@
 <div class="mino-testimonial__item">
     {% if image %}
-        {% set image = get_image(image) %}
-
-        {% if image %}
+        {% set imageObj = get_image(image) %}
+        {% if imageObj %}
             <div class="mino-testimonial__item-photo">
                 <img
                     class="mino-testimonial__item-image"
-                    src="{{ image.src('medium') }}"
-                    srcset="{{ image.srcset }}"
-                    sizes="{{ image.img_sizes }}"
-                    alt="{{ image.alt ?? name }}"
+                    src="{{ imageObj.src('medium') }}"
+                    srcset="{{ imageObj.srcset }}"
+                    sizes="{{ imageObj.img_sizes }}"
+                    alt="{{ imageObj.alt }}"
                     loading="lazy"
                 />
             </div>

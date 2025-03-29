@@ -27,24 +27,23 @@
                 playsinline
             >
                 {% set videoFallbackLink %}
-                    <a href="{{ fields.video }}" target="_blank" rel="noopener noreferrer">{{ __('link to the video', 'minomarkt') }}</a>
+                    <a href="{{ fields.video }}" target="_blank" rel="noopener noreferrer">{{ __('Link naar de video', 'mino') }}</a>
                 {% endset %}
 
-                <p>{{ __('Your browser doesn\'t support HTML5 video. Here is a %s instead.', 'minomarkt')|format(videoFallbackLink) }}</p>
+                <p>{{ __('Je browser ondersteunt geen HTML5 video. Hier is een %s als fallback.', 'mino')|format(videoFallbackLink) }}</p>
             </video>
         {% endif %}
     {% elseif fields.media_type == 'image' and fields.image %}
-        {% set image = get_image(fields.image) %}
-
-        {% if image %}
+        {% set imageObj = get_image(fields.image) %}
+        {% if imageObj %}
             <div class="mino-split-content__image-container">
                 <picture class="mino-split-content__image-wrapper">
                     <img
                         class="mino-split-content__image"
-                        src="{{ image.src('medium') }}"
-                        srcset="{{ image.srcset }}"
-                        sizes="{{ image.img_sizes }}"
-                        alt="{{ image.alt }}"
+                        src="{{ imageObj.src('medium') }}"
+                        srcset="{{ imageObj.srcset }}"
+                        sizes="{{ imageObj.img_sizes }}"
+                        alt="{{ imageObj.alt }}"
                         loading="lazy"
                     />
                 </picture>

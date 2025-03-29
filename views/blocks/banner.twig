@@ -29,14 +29,14 @@
                     </div>
 
                     {% if bannerImage %}
-                        {% set image = get_image(bannerImage) %}
-                        {% if image %}
+                        {% set imageObj = get_image(bannerImage) %}
+                        {% if imageObj %}
                             <div class="mino-banner__image">
                                 <img
-                                    src="{{ image.src('medium') }}"
-                                    srcset="{{ image.srcset }}"
-                                    sizes="{{ image.img_sizes }}"
-                                    alt="{{ image.alt }}"
+                                    src="{{ imageObj.src('medium') }}"
+                                    srcset="{{ imageObj.srcset }}"
+                                    sizes="{{ imageObj.img_sizes }}"
+                                    alt="{{ imageObj.alt }}"
                                     loading="lazy"
                                 />
                             </div>
