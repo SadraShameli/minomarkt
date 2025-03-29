@@ -3,7 +3,6 @@
 namespace App\ThirdParty\ACF\Base;
 
 use App\Core\Gutenberg;
-use App\ThirdParty\ACF\Base\BaseGroup;
 use App\ThirdParty\ACF\Reusable\ReusableFields;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Timber\Timber;
@@ -33,7 +32,7 @@ abstract class BaseBlock
 
     public static function register(): void
     {
-        usort(static::$instances, static fn (BaseBlock $a, BaseBlock $b): int => strcmp($a::$blockTitle, $b::$blockTitle));
+        usort(static::$instances, static fn(BaseBlock $a, BaseBlock $b): int => strcmp($a::$blockTitle, $b::$blockTitle));
 
         foreach (static::$instances as $instance) {
             $instance->registerBlock();
@@ -96,7 +95,7 @@ abstract class BaseBlock
         $this->fields = ReusableFields::setupGroup('Block: ' . static::$blockTitle);
 
         $this->fields->addAccordion('message', [
-            'label' => static::$blockMessage ?: static::$blockTitle,
+            'label' => static::$blockMessage ? static::$blockTitle . ' • ' . static::$blockMessage : static::$blockTitle,
         ]);
 
         $this->addFieldsContentDefault();

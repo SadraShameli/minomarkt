@@ -89,14 +89,14 @@
     &__button-next {
         align-items: center;
         border-radius: 50%;
-        color: var(--color-primary-950);
+        color: var(--color-primary-500);
         cursor: pointer;
         display: flex;
         justify-content: center;
         transition: var(--transition-default);
 
         &:hover {
-            color: var(--color-primary-500);
+            color: var(--color-primary-600);
         }
 
         svg {

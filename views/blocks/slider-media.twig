@@ -1,0 +1,126 @@
+<section {{ cs('mino-slider-media', block_layout(blockLayout)) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% if fields.title %}
+                    <h2 class="mino-slider-media__title">{{ fields.title }}</h2>
+                {% endif %}
+
+                {% if fields.description %}
+                    <p class="mino-slider-media__description">{{ fields.description }}</p>
+                {% endif %}
+
+                {% set slider_options = {
+                    autoplay: fields.autoplay,
+                    layout: fields.slider_layout,
+                } %}
+                <div class="mino-slider-media__swiper-wrapper">
+                    <div class="swiper" data-options="{{ slider_options|json_encode|e }}">
+                        <div class="swiper-wrapper">
+                            {% for item in fields.items %}
+                                <div class="swiper-slide">
+                                    <div class="mino-slider-media__item">
+                                        <div class="mino-slider-media__media-wrapper">
+                                            {% if item.media_type == 'image' %}
+                                                {% set image = get_image(item.image) %}
+                                                {% if image %}
+                                                    <img
+                                                        class="mino-slider-media__image"
+                                                        src="{{ image.src('large') }}"
+                                                        srcset="{{ image.srcset }}"
+                                                        sizes="{{ image.img_sizes }}"
+                                                        alt="{{ image.alt }}"
+                                                        loading="lazy"
+                                                    />
+                                                {% endif %}
+                                            {% elseif item.media_type == 'video_file' %}
+                                                <video 
+                                                    class="mino-slider-media__video" 
+                                                    controls
+
+                                                    {% if item.video_loop %}
+                                                        loop
+                                                    {% endif %}
+                                                >
+                                                    <source src="{{ item.video_file }}" type="video/mp4">
+                                                    {{ __('Your browser does not support the video tag.') }}
+                                                </video>
+                                            {% elseif item.media_type == 'video_embed' %}
+                                                {% set video_id = null %}
+                                                {% if 'youtube.com' in item.video_embed_url or 'youtu.be' in item.video_embed_url %}
+                                                    {% if 'v=' in item.video_embed_url %}
+                                                        {% set video_id = item.video_embed_url|split('v=')|last|split('&')|first %}
+                                                    {% else %}
+                                                        {% set video_id = item.video_embed_url|split('/')|last %}
+                                                    {% endif %}
+                                                    <iframe 
+                                                        class="mino-slider-media__iframe"
+                                                        src="https://www.youtube.com/embed/{{ video_id }}"
+                                                        frameborder="0"
+                                                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowfullscreen>
+                                                    </iframe>
+                                                {% elseif 'vimeo.com' in item.video_embed_url %}
+                                                    {% set video_id = item.video_embed_url|split('/')|last %}
+                                                    <iframe 
+                                                        class="mino-slider-media__iframe"
+                                                        src="https://player.vimeo.com/video/{{ video_id }}"
+                                                        frameborder="0"
+                                                        allow="autoplay; fullscreen; picture-in-picture"
+                                                        allowfullscreen>
+                                                    </iframe>
+                                                {% else %}
+                                                <video
+                                                    class="mino-slider-media__video" 
+                                                    controls
+
+                                                    {% if item.video_loop %}
+                                                        loop
+                                                    {% endif %}
+                                                >
+                                                    <source src="{{ item.video_embed_url }}" type="video/mp4">
+                                                    {{ __('Your browser does not support the video tag.') }}
+                                                </video>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+
+                                        {% if fields.show_captions and (item.title or item.caption) %}
+                                            <div class="mino-slider-media__caption">
+                                                {% if item.title %}
+                                                    <h3 class="mino-slider-media__caption-title">{{ item.title }}</h3>
+                                                {% endif %}
+                                                
+                                                {% if item.caption %}
+                                                    <p class="mino-slider-media__caption-text">{{ item.caption }}</p>
+                                                {% endif %}
+                                                
+                                                {% if item.button.link.url %}
+                                                    <div class="mino-slider-media__button">
+                                                        {{ include('components/button.twig', {
+                                                            button: item.button
+                                                        }) }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mino-slider-media__button-wrapper">
+                            <div class="mino-slider-media__button-prev js-swiper-button-prev">
+                                {{ fetch_svg('arrow-left-circle') }}
+                            </div>
+
+                            <div class="mino-slider-media__button-next js-swiper-button-next">
+                                {{ fetch_svg('arrow-right-circle') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 

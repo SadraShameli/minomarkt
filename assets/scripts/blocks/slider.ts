@@ -1,3 +1,5 @@
+import type { SwiperOptions } from 'swiper/types';
+
 import Swiper from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 
@@ -15,9 +17,6 @@ function initSliderLogo() {
             slidesPerView: 2,
             spaceBetween: 16,
             loop: slideCount > 1,
-            autoplay: {
-                delay: 10000,
-            },
             navigation: {
                 nextEl: slider.querySelector(
                     '.js-swiper-button-next',
@@ -52,9 +51,6 @@ function initSliderFeatured() {
             slidesPerView: 1,
             spaceBetween: 16,
             loop: slideCount > 1,
-            autoplay: {
-                delay: 10000,
-            },
             navigation: {
                 nextEl: slider.querySelector(
                     '.js-swiper-button-next',
@@ -89,9 +85,6 @@ function initSliderQuote() {
             slidesPerView: 1,
             spaceBetween: 24,
             loop: slideCount > 1,
-            autoplay: {
-                delay: 10000,
-            },
             navigation: {
                 nextEl: slider.querySelector(
                     '.js-swiper-button-next',
@@ -125,9 +118,6 @@ function initSliderTestimonial() {
             slidesPerView: 1,
             spaceBetween: 24,
             loop: slideCount > 1,
-            autoplay: {
-                delay: 10000,
-            },
             navigation: {
                 nextEl: slider.querySelector(
                     '.js-swiper-button-next',
@@ -150,9 +140,51 @@ function initSliderTestimonial() {
     }
 }
 
+function initSliderMedia() {
+    const sliders = document.querySelectorAll('.mino-slider-media .swiper');
+
+    for (const slider of sliders) {
+        const slideCount = slider.querySelectorAll('.swiper-slide').length;
+        if (slideCount < 1) {
+            continue;
+        }
+
+        const options: SwiperOptions = JSON.parse(
+            (slider as HTMLElement).dataset.options || '{}',
+        );
+
+        new Swiper(slider as HTMLElement, {
+            modules: [Navigation, Autoplay],
+            slidesPerView: 1,
+            spaceBetween: 24,
+            loop: slideCount > 1,
+            autoplay: true,
+            navigation: {
+                nextEl: slider.querySelector(
+                    '.js-swiper-button-next',
+                ) as HTMLElement,
+                prevEl: slider.querySelector(
+                    '.js-swiper-button-prev',
+                ) as HTMLElement,
+            },
+            breakpoints: {
+                576: {
+                    slidesPerView: 2.75,
+                    spaceBetween: 24,
+                },
+                992: {
+                    slidesPerView: 3.75,
+                    spaceBetween: 32,
+                },
+            },
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     initSliderLogo();
     initSliderFeatured();
     initSliderQuote();
     initSliderTestimonial();
+    initSliderMedia();
 });
