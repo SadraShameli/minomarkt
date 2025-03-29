@@ -1,5 +1,3 @@
-import type { SwiperOptions } from 'swiper/types';
-
 import Swiper from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 
@@ -17,6 +15,7 @@ function initSliderLogo() {
             slidesPerView: 2,
             spaceBetween: 16,
             loop: slideCount > 1,
+            autoplay: true,
             navigation: {
                 nextEl: slider.querySelector(
                     '.js-swiper-button-next',
@@ -51,6 +50,7 @@ function initSliderFeatured() {
             slidesPerView: 1,
             spaceBetween: 16,
             loop: slideCount > 1,
+            autoplay: true,
             navigation: {
                 nextEl: slider.querySelector(
                     '.js-swiper-button-next',
@@ -85,6 +85,7 @@ function initSliderQuote() {
             slidesPerView: 1,
             spaceBetween: 24,
             loop: slideCount > 1,
+            autoplay: true,
             navigation: {
                 nextEl: slider.querySelector(
                     '.js-swiper-button-next',
@@ -118,6 +119,7 @@ function initSliderTestimonial() {
             slidesPerView: 1,
             spaceBetween: 24,
             loop: slideCount > 1,
+            autoplay: true,
             navigation: {
                 nextEl: slider.querySelector(
                     '.js-swiper-button-next',
@@ -148,10 +150,6 @@ function initSliderMedia() {
         if (slideCount < 1) {
             continue;
         }
-
-        const options: SwiperOptions = JSON.parse(
-            (slider as HTMLElement).dataset.options || '{}',
-        );
 
         new Swiper(slider as HTMLElement, {
             modules: [Navigation, Autoplay],

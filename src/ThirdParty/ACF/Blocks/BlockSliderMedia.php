@@ -135,11 +135,6 @@ class BlockSliderMedia extends BaseBlock
                 'default_value' => true,
                 'ui' => true,
             ])
-            ->addTrueFalse('autoplay', [
-                'label' => 'Enable Autoplay',
-                'default_value' => true,
-                'ui' => true,
-            ])
         ;
     }
 }

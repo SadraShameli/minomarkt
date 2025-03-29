@@ -4,7 +4,7 @@ declare global {
     }
 }
 
-function initGoogleMap() {
+async function initGoogleMap() {
     const mapContainers = document.querySelectorAll('.js-google-map');
 
     for (const mapContainer of mapContainers) {
@@ -26,37 +26,37 @@ function initGoogleMap() {
 
         const map = new google.maps.Map(htmlMapContainer, mapOptions);
 
-        const placesService = new google.maps.places.PlacesService(map);
-        placesService.getDetails(
-            {
-                placeId: placeId || '',
-                fields: ['name', 'geometry', 'formatted_address'],
-            },
-            (
-                place: google.maps.places.PlaceResult | null,
-                status: google.maps.places.PlacesServiceStatus,
-            ) => {
-                if (
-                    status === google.maps.places.PlacesServiceStatus.OK &&
-                    place &&
-                    place.geometry &&
-                    place.geometry.location
-                ) {
-                    map.setCenter(place.geometry.location);
+        if (placeId) {
+            try {
+                const place = new google.maps.places.Place({
+                    id: placeId,
+                });
+
+                await place.fetchFields({
+                    fields: ['displayName', 'formattedAddress', 'location'],
+                });
+
+                if (place.location) {
+                    map.setCenter(place.location);
 
                     new google.maps.marker.AdvancedMarkerElement({
-                        position: place.geometry.location,
+                        position: place.location,
                         map: map,
-                        title: place.name,
-                    });
-                } else {
-                    new google.maps.marker.AdvancedMarkerElement({
-                        position: { lat: latitude, lng: longitude },
-                        map: map,
+                        title: place.displayName,
                     });
                 }
-            },
-        );
+            } catch (error) {
+                new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: latitude, lng: longitude },
+                    map: map,
+                });
+            }
+        } else {
+            new google.maps.marker.AdvancedMarkerElement({
+                position: { lat: latitude, lng: longitude },
+                map: map,
+            });
+        }
     }
 }
 

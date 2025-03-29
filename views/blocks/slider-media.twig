@@ -10,12 +10,8 @@
                     <p class="mino-slider-media__description">{{ fields.description }}</p>
                 {% endif %}
 
-                {% set slider_options = {
-                    autoplay: fields.autoplay,
-                    layout: fields.slider_layout,
-                } %}
                 <div class="mino-slider-media__swiper-wrapper">
-                    <div class="swiper" data-options="{{ slider_options|json_encode|e }}">
+                    <div class="swiper">
                         <div class="swiper-wrapper">
                             {% for item in fields.items %}
                                 <div class="swiper-slide">
