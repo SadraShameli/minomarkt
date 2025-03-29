@@ -1,6 +1,8 @@
 services:
     wordpress:
-        image: wordpress
+        build:
+            context: .
+            dockerfile: Dockerfile
         container_name: wordpress
         user: 1000:1000
         ports:

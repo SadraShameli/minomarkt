@@ -1,0 +1,15 @@
+{
+    "php.version": "8.4",
+    "debug.javascript.autoAttachFilter": "smart",
+    "debug.javascript.terminalOptions": {
+        "skipFiles": ["<node_internals>/**"]
+    },
+    "files.watcherExclude": {
+        "**/node_modules/**": true,
+        "**/dist/**": true
+    },
+    "js/ts.implicitProjectConfig.checkJs": true,
+    "php.debug.executablePath": "/usr/local/bin/php",
+    "php.validate.enable": false,
+    "php.suggest.basic": false
+}

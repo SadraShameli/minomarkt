@@ -22,6 +22,7 @@ export default defineConfig(function () {
             },
             assetsDir: 'assets',
             emptyOutDir: true,
+            sourcemap: true,
         },
         resolve: {
             alias: {
@@ -42,6 +43,7 @@ export default defineConfig(function () {
                     ],
                 },
             },
+            devSourcemap: true,
         },
         server: {
             host: 'minomarktnl.test',
