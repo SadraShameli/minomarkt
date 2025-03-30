@@ -26,12 +26,15 @@
         }
     },
     "include": [
-        "eslint.config.cjs",
+        ".stylelintrc.js",
+        "eslint.config.js",
+        "prettier.config.js",
+        "vite.config.ts",
         "**/*.ts",
         "**/*.tsx",
         "**/*.cjs",
-        "**/*.js",
-        "public/wp-content/themes/**/*.*"
+        "**/*.mjs",
+        "**/*.js"
     ],
-    "exclude": ["node_modules", "public"]
+    "exclude": ["vendor", "node_modules", "dist", ".wordpress"]
 }

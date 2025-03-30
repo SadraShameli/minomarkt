@@ -6,5 +6,6 @@ parameters:
         analyse:
             - vendor
             - node_modules
+            - dist
     scanDirectories:
         - .wordpress/plugins
