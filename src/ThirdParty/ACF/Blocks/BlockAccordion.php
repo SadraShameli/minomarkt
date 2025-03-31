@@ -125,7 +125,7 @@ class BlockAccordion extends BaseBlock
                         [
                             'field' => 'use_faqs',
                             'operator' => '==',
-                            'value' => true,
+                            'value' => '1',
                         ],
                     ],
                 ],
@@ -141,12 +141,12 @@ class BlockAccordion extends BaseBlock
                         [
                             'field' => 'use_faqs',
                             'operator' => '==',
-                            'value' => true,
+                            'value' => '1',
                         ],
                         [
                             'field' => 'manual_selection',
                             'operator' => '==',
-                            'value' => false,
+                            'value' => '0',
                         ],
                     ],
                 ],
@@ -161,12 +161,12 @@ class BlockAccordion extends BaseBlock
                         [
                             'field' => 'use_faqs',
                             'operator' => '==',
-                            'value' => true,
+                            'value' => '1',
                         ],
                         [
                             'field' => 'manual_selection',
                             'operator' => '==',
-                            'value' => true,
+                            'value' => '1',
                         ],
                     ],
                 ],
