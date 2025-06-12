@@ -288,7 +288,7 @@ if ( !function_exists('cmplz_upgraded_to_current_version')){
 			return false;
 		}
 		//if the first version is below current, we just upgraded.
-		if ( version_compare($first_version,cmplz_version ,'<') ){
+		if ( version_compare($first_version,CMPLZ_VERSION ,'<') ){
 			return true;
 		}
 		return false;
@@ -305,10 +305,10 @@ if ( ! function_exists( 'cmplz_get_template' ) ) {
 	 */
 
 	function cmplz_get_template( $filename , $args = array(), $path = false ) {
-		$path = $path ? trailingslashit($path) : trailingslashit( cmplz_path ) . 'templates/';
+		$path = $path ? trailingslashit($path) : trailingslashit( CMPLZ_PATH ) . 'templates/';
 		$file = apply_filters('cmplz_template_file', $path . $filename, $filename);
 		$theme_file = trailingslashit( get_stylesheet_directory() )
-		              . trailingslashit( basename( cmplz_path ) )
+		              . trailingslashit( basename( CMPLZ_PATH ) )
 		              . 'templates/' . $filename;
 		if ( !file_exists( $file ) ) {
 		    return false;
@@ -1253,6 +1253,7 @@ if ( ! function_exists( 'cmplz_is_pagebuilder_preview' ) ) {
 			 || isset( $_GET['tatsu'] ) //tatsu
 			 || isset( $_GET['tatsu-header'] ) //tatsu
 			 || isset( $_GET['tatsu-footer'] ) //tatsu
+	         || ( isset( $_GET['action'] ) && $_GET['action'] === 'ms_get_preview' ) //meta slider
 			 || strpos( $_SERVER['REQUEST_URI'], 'cornerstone/edit') !== false
 		) {
 			$preview = true;
@@ -1267,7 +1268,6 @@ if ( ! function_exists( 'cmplz_is_pagebuilder_preview' ) ) {
 		if (isset($_GET['context']) &&  $_GET['context']==='edit') {
 			return true;
 		}
-
 		return apply_filters( 'cmplz_is_preview', $preview );
 	}
 }
@@ -2024,22 +2024,7 @@ if ( ! function_exists( 'cmplz_used_cookies' ) ) {
 
 		$servicesHTML = '<div id="cmplz-cookies-overview">'.$servicesHTML.'</div>';
 
-		return str_replace( '{plugin_url}',cmplz_url, $servicesHTML);
-	}
-}
-
-if ( !function_exists('cmplz_uses_complianz_documents') ) {
-	function cmplz_uses_complianz_documents(){
-		$types = [];
-		$required_pages = COMPLIANZ::$document->get_required_pages();
-		if ( is_array( $required_pages ) ) {
-			foreach ( $required_pages as $region => $region_documents ) {
-				foreach ( $region_documents as $type => $document ) {
-					$types[] = $type;
-				}
-			}
-		}
-		return count(array_unique($types))>0;
+		return str_replace( '{plugin_url}',CMPLZ_URL, $servicesHTML);
 	}
 }
 
@@ -2207,8 +2192,7 @@ if ( ! function_exists( 'cmplz_register_translation' ) ) {
 			icl_register_string( 'complianz', $fieldname, $string );
 		}
 
-		do_action( 'wpml_register_single_string', 'complianz', $fieldname,
-			$string );
+		do_action( 'wpml_register_single_string', 'complianz', $fieldname, $string );
 
 	}
 }
@@ -2228,7 +2212,7 @@ if ( ! function_exists( 'cmplz_default_placeholder' ) ) {
 
 		$style = cmplz_get_option('placeholder_style');
 		$ratio = $type === 'google-maps' ? cmplz_get_option( 'google-maps-format' ) : '';
-		$path = cmplz_path . "assets/images/placeholders";
+		$path = CMPLZ_PATH . "assets/images/placeholders";
 		//check if this type exists as placeholder
 		if ( file_exists( "$path/$type-$style-$ratio.jpg" ) ) {
 			$img = "$type-$style-$ratio.jpg";
@@ -2238,12 +2222,12 @@ if ( ! function_exists( 'cmplz_default_placeholder' ) ) {
 			$img = "default-$style.jpg";
 		}
 
-		$img_url = cmplz_url . 'assets/images/placeholders/' . $img;
+		$img_url = CMPLZ_URL . 'assets/images/placeholders/' . $img;
 
 		//check for image in themedir/complianz-gpdr-premium
-		$theme_img = trailingslashit( get_stylesheet_directory() ) . trailingslashit( basename( cmplz_path ) ) . $img;
+		$theme_img = trailingslashit( get_stylesheet_directory() ) . trailingslashit( basename( CMPLZ_PATH ) ) . $img;
 		if ( file_exists( $theme_img ) ) {
-			$img_url = trailingslashit( get_stylesheet_directory_uri() ) . trailingslashit( basename( cmplz_path ) ) . $img;
+			$img_url = trailingslashit( get_stylesheet_directory_uri() ) . trailingslashit( basename( CMPLZ_PATH ) ) . $img;
 		}
 
 		return apply_filters( 'cmplz_default_placeholder', $img_url, $type, $style );
@@ -2711,10 +2695,10 @@ if ( ! function_exists( 'cmplz_remove_free_translation_files' ) ) {
 	 */
 
 	function cmplz_remove_free_translation_files() {
-		//can't use cmplz_path here, it may not have been defined yet on activation
+		//can't use CMPLZ_PATH here, it may not have been defined yet on activation
 		$path = plugin_dir_path(__FILE__);
 		$path = dirname( $path, 2 ) . "/languages/plugins/";
-		$extensions = array( "po", "mo" );
+		$extensions = array( "po", "mo", "php" );
 		if ( $handle = opendir( $path ) ) {
 			while ( false !== ( $file = readdir( $handle ) ) ) {
 				if ( $file != "." && $file != ".." ) {
@@ -2725,11 +2709,7 @@ if ( ! function_exists( 'cmplz_remove_free_translation_files' ) ) {
 					     && strpos( $file, 'complianz-gdpr' ) !== false
 					     && strpos( $file, 'backup' ) === false
 					) {
-						//copy to new file
-						$new_name = str_replace( 'complianz-gdpr',
-							'complianz-gdpr-backup-' . time(), $file );
-
-						rename( $file, $new_name );
+						unlink($file);
 					}
 				}
 			}
@@ -2747,7 +2727,7 @@ if ( ! function_exists( 'cmplz_has_free_translation_files' ) ) {
 	 */
 
 	function cmplz_has_free_translation_files() {
-		//can't use cmplz_path here, it may not have been defined yet on activation
+		//can't use CMPLZ_PATH here, it may not have been defined yet on activation
 		$path = plugin_dir_path(__FILE__);
 		$path = dirname( $path, 2 ) . "/languages/plugins/";
 
@@ -2868,6 +2848,22 @@ if ( ! function_exists('cmplz_requires_quebec_notice') ) {
 
 		return false;
 
+	}
+}
+
+
+if (!function_exists('cmplz_wsc_is_enabled')) {
+	/**
+	 * Helper function to check if the wsc is enabled,
+	 * then show/hide input fields on wsc settings page.
+	 *
+	 * @return bool
+	 */
+	function cmplz_wsc_is_enabled(): bool
+	{
+		$signup_status = get_option('cmplz_wsc_signup_status') === 'enabled'; // true if === "enabled"
+
+		return $signup_status;
 	}
 }
 

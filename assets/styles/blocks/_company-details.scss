@@ -140,7 +140,7 @@
     &__value {
         color: var(--color-dark-450);
         overflow-wrap: break-word;
-        word-break: break-word;
+        word-break: break-all;
 
         p {
             margin-bottom: 4px;

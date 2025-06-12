@@ -106,4 +106,3 @@ $settings = wp_parse_args( $settings, $defaults );
 		</div>
 	</div>
 </div>
-

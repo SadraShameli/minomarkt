@@ -256,7 +256,7 @@ button,
 [type='reset'],
 [type='submit'] {
     -webkit-appearance: button;
-    appearance: button;
+    appearance: auto;
 
     @if $enable-button-pointers {
         &:not(:disabled) {
@@ -356,7 +356,7 @@ legend {
 
 ::file-selector-button {
     -webkit-appearance: button;
-    appearance: button;
+    appearance: auto;
     font: inherit;
 }
 

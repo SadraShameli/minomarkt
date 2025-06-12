@@ -35,6 +35,114 @@ if ( ! class_exists( "cmplz_document" ) ) {
 			return self::$_this;
 		}
 
+
+		/**
+		 * Get list of all required pages for current setup
+		 *
+		 * @return array $pages
+		 *
+		 *
+		 */
+
+		public function get_required_pages() {
+			$regions  = cmplz_get_regions( $add_all_cat = true );
+			$required = array();
+			foreach ( $regions as $region ) {
+				if ( ! isset( COMPLIANZ::$config->pages[ $region ] ) ) {
+					continue;
+				}
+
+				$pages = COMPLIANZ::$config->pages[ $region ];
+				foreach ( $pages as $type => $page ) {
+					if ( ! $page['public'] ) {
+						continue;
+					}
+					if ( $this->page_required( $page, $region ) ) {
+						$required[ $region ][ $type ] = $page;
+					}
+				}
+			}
+
+
+			return $required;
+		}
+
+		/**
+		 * Check if a page is required. If no condition is set, return true.
+		 * condition is "AND", all conditions need to be met.
+		 *
+		 * @param array|string $page
+		 * @param string       $region
+		 *
+		 * @return bool
+		 */
+
+		public function page_required( $page, $region ) {
+			if ( ! is_array( $page ) ) {
+				if ( ! isset( COMPLIANZ::$config->pages[ $region ][ $page ] ) ) {
+					return false;
+				}
+
+				$page = COMPLIANZ::$config->pages[ $region ][ $page ];
+			}
+
+			//if it's not public, it's not required
+			if ( isset( $page['public'] ) && $page['public'] == false ) {
+				return false;
+			}
+
+			//if there's no condition, we set it as required
+			if ( ! isset( $page['condition'] ) ) {
+				return true;
+			}
+
+			if ( isset( $page['condition'] ) ) {
+				$conditions    = $page['condition'];
+				$condition_met = true;
+				$invert = false;
+				foreach (
+					$conditions as $condition_question => $condition_answer
+				) {
+					$value  = cmplz_get_option( $condition_question );
+					$invert = false;
+					if ( ! is_array( $condition_answer )
+						 && strpos( $condition_answer, 'NOT ' ) !== false
+					) {
+						$condition_answer = str_replace( 'NOT ', '', $condition_answer );
+						$invert           = true;
+					}
+
+					$condition_answer = is_array( $condition_answer ) ? $condition_answer : array( $condition_answer );
+					foreach ( $condition_answer as $answer_item ) {
+						if ( is_array( $value ) ) {
+							if ( !in_array($answer_item, $value ) ) {
+								$condition_met = false;
+							} else {
+								$condition_met = true;
+							}
+						} else {
+							$condition_met = ( $value == $answer_item );
+						}
+
+						//if one condition is met, we break with this condition, so it will return true.
+						if ( $condition_met ) {
+							break;
+						}
+
+					}
+
+					//if one condition is not met, we break with this condition, so it will return false.
+					if ( ! $condition_met ) {
+						break;
+					}
+				}
+				return $invert ? !$condition_met : $condition_met;
+			}
+
+			return false;
+
+		}
+
 		public function get_permalink($type, $region, $auto_redirect_region=false)
 		{
 			$url = "#";
@@ -196,22 +304,22 @@ if ( ! class_exists( "cmplz_document" ) ) {
 			if ( $this->is_complianz_page() ) {
 				$load_css = cmplz_get_option( 'use_document_css' );
 				if ( $load_css ) {
-					$v = filemtime(cmplz_path . "assets/css/document$min.css");
+					$v = filemtime(CMPLZ_PATH . "assets/css/document$min.css");
 					wp_register_style( 'cmplz-document',
-						cmplz_url . "assets/css/document$min.css", false,
+						CMPLZ_URL . "assets/css/document$min.css", false,
 						$v );
 					wp_enqueue_style( 'cmplz-document' );
 				} else {
-					$v = filemtime(cmplz_path . "assets/css/document-grid$min.css");
-                    wp_register_style( 'cmplz-document-grid', cmplz_url . "assets/css/document-grid$min.css", false, $v );
+					$v = filemtime(CMPLZ_PATH . "assets/css/document-grid$min.css");
+                    wp_register_style( 'cmplz-document-grid', CMPLZ_URL . "assets/css/document-grid$min.css", false, $v );
                     wp_enqueue_style( 'cmplz-document-grid' );
                 }
 				add_action( 'wp_head', array( $this, 'inline_styles' ), 100 );
 			}
 
 			if ( cmplz_get_option( 'disable_cookie_block' ) !== 1 ) {
-				$v = filemtime(cmplz_path . "assets/css/cookieblocker$min.css");
-				wp_register_style( 'cmplz-general', cmplz_url . "assets/css/cookieblocker$min.css", false, $v );
+				$v = filemtime(CMPLZ_PATH . "assets/css/cookieblocker$min.css");
+				wp_register_style( 'cmplz-general', CMPLZ_URL . "assets/css/cookieblocker$min.css", false, $v );
 				wp_enqueue_style( 'cmplz-general' );
 			}
 
@@ -353,6 +461,11 @@ if ( ! class_exists( "cmplz_document" ) ) {
 						continue;
 					}
 					$field = cmplz_get_field($question);
+
+					if ( ! $field ) {
+						continue;
+					}
+
 					$type  = $field['type'];
 					$value = $post_id ? get_post_meta($post_id, $question, true) : cmplz_get_option( $question, $post_id );
 					if ( strpos( $condition_answer, 'NOT ' ) !== false ) {
@@ -1088,15 +1201,29 @@ if ( ! class_exists( "cmplz_document" ) ) {
 		}
 
 		/**
-		 * obfuscate the email address
+		 * Obfuscates an email address to protect it from spam bots while keeping it readable for users.
 		 *
-		 * @param $email
+		 * This function applies WordPress' `antispambot()` to encode the email username and domain,
+		 * then injects a fake domain within a `<span>` to further mislead scrapers.
+		 * The real domain remains intact for display purposes.
 		 *
-		 * @return string
+		 * Note: The fake domain is hidden via CSS on the frontend and removed when generating PDFs.
+		 *
+		 * @param string $email The email address to obfuscate.
+		 *
+		 * @return string The obfuscated email wrapped in a `<span>` for styling and bot prevention.
 		 */
-
 		public function obfuscate_email( $email ) {
-			return antispambot( $email );
+			if ( empty( $email ) ) {
+				return "";
+			}
+			list( $username, $domain ) = explode( '@', $email );
+			$username_obfuscated = antispambot( $username );
+			$domain_obfuscated = antispambot( $domain );
+			$fake_domain_obsfuscated = antispambot( 'ex.com' );
+			$email_obfuscated = sprintf( '%s@<span class="cmplz-fmail-domain">%s</span>%s', $username_obfuscated, $fake_domain_obsfuscated, $domain_obfuscated );
+
+			return sprintf( '<span class="cmplz-obfuscate">%s</span>', $email_obfuscated );
 		}
 
 		/**
@@ -1561,6 +1688,9 @@ if ( ! class_exists( "cmplz_document" ) ) {
 		 */
 
 		public function get_shortcode_page_id( $type, $region , $cache = true) {
+
+			global $wpdb;
+
 			$shortcode = 'cmplz-document';
 			$page_id   = $cache ? cmplz_get_transient( 'cmplz_shortcode_' . $type . '-' . $region ) : false;
 			if ( $page_id === 'none') {
@@ -1570,11 +1700,14 @@ if ( ! class_exists( "cmplz_document" ) ) {
 			if ( ! $page_id ) {
 				//ensure a transient, in case none is found. This prevents continuing requests on the page list
 				cmplz_set_transient( "cmplz_shortcode_$type-$region", 'none', HOUR_IN_SECONDS );
-				$pages = get_pages(
-						[
-								'post_status' => ['publish','draft']
-						]
+				$query = $wpdb->prepare(
+					"SELECT * FROM $wpdb->posts WHERE (post_content LIKE %s OR post_content LIKE %s) AND post_status = 'publish' AND post_type = 'page' ",
+					'%' . '[cmplz-document' . '%',
+					'%' . 'wp:complianz\/document' . '%'
 				);
+
+				$pages = $wpdb->get_results($query);
+
 				$type_region = ( $region === 'eu' ) ? $type : $type . '-' . $region;
 
 				/**
@@ -1806,7 +1939,7 @@ if ( ! class_exists( "cmplz_document" ) ) {
 			$css           = '';
 
 			if ( $load_css ) {
-				$css = file_get_contents( cmplz_path . "assets/css/document.css" );
+				$css = file_get_contents( CMPLZ_PATH . "assets/css/document.css" );
 			}
 			$title_html = $save_to_file ? '' : '<h4 class="center">' . $title . '</h4>';
 
@@ -1849,8 +1982,9 @@ if ( ! class_exists( "cmplz_document" ) ) {
 			//==============================================================
 
 			$html = preg_replace('/<input type="checkbox".*?>/', '', $html);
+			$html = preg_replace('/<span class="cmplz-fmail-domain">.*?<\/span>/', '', $html);
 
-			require cmplz_path . '/assets/vendor/autoload.php';
+			require CMPLZ_PATH . '/assets/vendor/autoload.php';
 
 			//obsolete function
 			if ( get_option( 'cmplz_pdf_dir_token' ) ) {
@@ -1862,12 +1996,16 @@ if ( ! class_exists( "cmplz_document" ) ) {
 			}
 
 			if ( ! $error ) {
+				// create snapshot directories
+				// cmplz_upload_dir will create the directory if it doesn't exist
+				// and will return the path to the directory
 				$save_dir = cmplz_upload_dir('snapshots');
+				// set a default mpdf temporary dir
+				$mpdf_default_temp_dir = cmplz_upload_dir('snapshots/tmp');
 			}
 
 			if ( ! $error) {
-				//use tempDir to override the directory for temporary files in MPDF. Default the mpdf directory.
-				$mpdf = new Mpdf\Mpdf( apply_filters( 'cmplz_mpdf_args', array(
+				$mpdf_args = apply_filters( 'cmplz_mpdf_args', array(
 					'setAutoTopMargin'  => 'stretch',
 					'autoMarginPadding' => 5,
 					'margin_left'       => 20,
@@ -1876,7 +2014,10 @@ if ( ! class_exists( "cmplz_document" ) ) {
 					'margin_bottom'     => 30,
 					'margin_header'     => 30,
 					'margin_footer'     => 10,
-				) ) );
+					'tempDir'			=> $mpdf_default_temp_dir
+				) );
+
+				$mpdf = new Mpdf\Mpdf($mpdf_args);
 
 				$mpdf->SetDisplayMode( 'fullpage' );
 				$mpdf->SetTitle( $title );
@@ -1903,8 +2044,13 @@ if ( ! class_exists( "cmplz_document" ) ) {
 				unset( $_POST['cmplz_generate_snapshot'] );
 			}
 			//clear files
-			$dir = cmplz_path . '/assets/vendor/mpdf/mpdf/tmp';
-			$this->recursively_clear_directory($dir);
+			$mpdf_tempDir = $mpdf_args['tempDir'];
+			$this->recursively_clear_directory($mpdf_tempDir);
+
+			// if the user change/filter the temporary directory, we will clear the default directory created before 'snapshots/tmp'
+			if ($mpdf_default_temp_dir !== $mpdf_tempDir) {
+				$this->recursively_clear_directory($mpdf_default_temp_dir);
+			}
 		}
 
 		/**
@@ -1916,11 +2062,6 @@ if ( ! class_exists( "cmplz_document" ) ) {
 		private function recursively_clear_directory($dir) {
 			if ( !cmplz_admin_logged_in() ) {
 				return false;
-			}
-
-			//only for mpdf
-			if ( !str_contains($dir, 'assets/vendor/mpdf/mpdf')) {
-				return;
 			}
 
 			$files = array_diff(scandir($dir), array('.','..'));

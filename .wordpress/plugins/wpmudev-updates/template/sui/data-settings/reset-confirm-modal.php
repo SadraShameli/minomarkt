@@ -85,4 +85,3 @@ defined( 'WPINC' ) || die();
 	</div>
 
 </div>
-

@@ -409,7 +409,7 @@ if ( ! class_exists( "cmplz_admin_DNSMPD" ) ) {
 			if (!wp_doing_cron() && !cmplz_user_can_manage() ) {
 				return;
 			}
-			if ( get_option( 'cmplz_dnsmpd_db_version' ) != cmplz_version ) {
+			if ( get_option( 'cmplz_dnsmpd_db_version' ) != CMPLZ_VERSION ) {
 				require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 				global $wpdb;
 				$charset_collate = $wpdb->get_charset_collate();
@@ -422,13 +422,16 @@ if ( ! class_exists( "cmplz_admin_DNSMPD" ) ) {
 				  `global_optout` int(11) NOT NULL,
 				  `cross_context` int(11) NOT NULL,
 				  `limit_sensitive` int(11) NOT NULL,
+				  `request_for_access` int(11) NOT NULL,
+				  `right_to_be_forgotten` int(11) NOT NULL,
+				  `right_to_data_portability` int(11) NOT NULL,
 				  `request_date` int(11) NOT NULL,
 				  `resolved` int(11) NOT NULL,
 				  PRIMARY KEY  (ID)
 				) $charset_collate;";
 
 				dbDelta( $sql );
-				update_option( 'cmplz_dnsmpd_db_version', cmplz_version, false );
+				update_option( 'cmplz_dnsmpd_db_version', CMPLZ_VERSION, false );
 			}
 		}
 	} //class closure

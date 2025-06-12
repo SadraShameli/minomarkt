@@ -12,7 +12,7 @@
 defined( 'WPINC' ) || die();
 
 // Enabled sites.
-$sites = empty( $settings['labels_subsites'] ) ? array() : (array) $settings['labels_subsites'];
+$sites = empty( $settings['labels_subsites'] ) ? array() : (array) $settings['labels_subsites'];	  		   	  	  		  	  
 
 ?>
 <div class="sui-form-field">

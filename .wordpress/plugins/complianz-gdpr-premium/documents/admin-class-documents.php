@@ -17,7 +17,7 @@ if ( ! class_exists( "cmplz_documents_admin" ) ) {
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 			add_action( 'save_post', array( $this, 'save_metabox_data' ) );
 			add_filter( 'display_post_states', array( $this, 'add_post_state') , 10, 2);
-			add_action( 'save_post', array( $this, 'clear_shortcode_transients' ), 10, 1 );
+			add_action( 'save_post', array( $this, 'clear_shortcode_transients' ), 10);
 			add_action( 'save_post', array($this, 'register_document_title_for_translations'), 10, 3);
 			add_action( 'cmplz_install_tables', array( $this, 'preload_privacy_info' ) );
 			add_action( 'admin_init', array( $this, 'add_privacy_info' ) );
@@ -37,15 +37,20 @@ if ( ! class_exists( "cmplz_documents_admin" ) ) {
 			if ( ! class_exists( 'WP_Privacy_Policy_Content' ) ) {
 				if ( file_exists(ABSPATH . 'wp-admin/includes/class-wp-privacy-policy-content.php') ) {
 					require_once( ABSPATH . 'wp-admin/includes/class-wp-privacy-policy-content.php' );
-				} else {
+				} elseif ( file_exists(ABSPATH . 'wp-admin/misc.php') ) {
 					require_once( ABSPATH . 'wp-admin/misc.php' );
+				} else {
+					return;
 				}
 			}
-			WP_Privacy_Policy_Content::_policy_page_updated( $policy_page_id );
-			//check again, to update the cache.
-			WP_Privacy_Policy_Content::text_change_check();
-			$data = WP_Privacy_Policy_Content::get_suggested_policy_text();
-			update_option('cmplz_preloaded_privacy_info', $data, false);
+
+			if ( class_exists( 'WP_Privacy_Policy_Content' ) ) {
+				WP_Privacy_Policy_Content::_policy_page_updated( $policy_page_id );
+				//check again, to update the cache.
+				WP_Privacy_Policy_Content::text_change_check();
+				$data = WP_Privacy_Policy_Content::get_suggested_policy_text();
+				update_option( 'cmplz_preloaded_privacy_info', $data, false );
+			}
 		}
 
 
@@ -189,7 +194,7 @@ if ( ! class_exists( "cmplz_documents_admin" ) ) {
 		 * @return array
 		 */
 		private function required_pages_flattened(){
-			$pages         =$this->get_required_pages();
+			$pages         = COMPLIANZ::$document->get_required_pages();
 			$menu = wp_list_pluck( wp_get_nav_menus(), 'name', 'term_id' );
 
 			$pages_flat = [];
@@ -284,7 +289,7 @@ if ( ! class_exists( "cmplz_documents_admin" ) ) {
 					//check if post is trashed
 					$page_data['permalink'] = get_permalink( $page_id );
 					$page_data['exists'] = $this->page_exists( $type, $region ) ;
-					$page_data['required'] = $this->page_required( $type, $region );
+					$page_data['required'] = COMPLIANZ::$document->page_required( $type, $region );
 					$page_data['shortcode'] = COMPLIANZ::$document->get_shortcode( $type, $region, $force_classic = true );
 					$page_data['generated'] = date( cmplz_short_date_format(), get_option( 'cmplz_documents_update_date' ) );
 					$page_data['status'] = $this->syncStatus( $page_id );
@@ -341,113 +346,6 @@ if ( ! class_exists( "cmplz_documents_admin" ) ) {
 					'proofOfConsentOptions' => $proofOfConsentDocuments,
 					'dataBreachOptions' => apply_filters('cmplz_tools_databreaches', []),
 				];
-		}
-
-		/**
-		 * Check if a page is required. If no condition is set, return true.
-		 * condition is "AND", all conditions need to be met.
-		 *
-		 * @param array|string $page
-		 * @param string       $region
-		 *
-		 * @return bool
-		 */
-
-		public function page_required( $page, $region ) {
-			if ( ! is_array( $page ) ) {
-				if ( ! isset( COMPLIANZ::$config->pages[ $region ][ $page ] ) ) {
-					return false;
-				}
-
-				$page = COMPLIANZ::$config->pages[ $region ][ $page ];
-			}
-
-			//if it's not public, it's not required
-			if ( isset( $page['public'] ) && $page['public'] == false ) {
-				return false;
-			}
-
-			//if there's no condition, we set it as required
-			if ( ! isset( $page['condition'] ) ) {
-				return true;
-			}
-
-			if ( isset( $page['condition'] ) ) {
-				$conditions    = $page['condition'];
-				$condition_met = true;
-				$invert = false;
-				foreach (
-						$conditions as $condition_question => $condition_answer
-				) {
-					$value  = cmplz_get_option( $condition_question );
-					$invert = false;
-					if ( ! is_array( $condition_answer )
-						 && strpos( $condition_answer, 'NOT ' ) !== false
-					) {
-						$condition_answer = str_replace( 'NOT ', '', $condition_answer );
-						$invert           = true;
-					}
-
-					$condition_answer = is_array( $condition_answer ) ? $condition_answer : array( $condition_answer );
-					foreach ( $condition_answer as $answer_item ) {
-						if ( is_array( $value ) ) {
-							if ( !in_array($answer_item, $value ) ) {
-								$condition_met = false;
-							} else {
-								$condition_met = true;
-							}
-						} else {
-							$condition_met = ( $value == $answer_item );
-						}
-
-						//if one condition is met, we break with this condition, so it will return true.
-						if ( $condition_met ) {
-							break;
-						}
-
-					}
-
-					//if one condition is not met, we break with this condition, so it will return false.
-					if ( ! $condition_met ) {
-						break;
-					}
-				}
-				return $invert ? !$condition_met : $condition_met;
-			}
-
-			return false;
-
-		}
-
-		/**
-		 * Get list of all required pages for current setup
-		 *
-		 * @return array $pages
-		 *
-		 *
-		 */
-
-		public function get_required_pages() {
-			$regions  = cmplz_get_regions( $add_all_cat = true );
-			$required = array();
-			foreach ( $regions as $region ) {
-				if ( ! isset( COMPLIANZ::$config->pages[ $region ] ) ) {
-					continue;
-				}
-
-				$pages = COMPLIANZ::$config->pages[ $region ];
-				foreach ( $pages as $type => $page ) {
-					if ( ! $page['public'] ) {
-						continue;
-					}
-					if ( $this->page_required( $page, $region ) ) {
-						$required[ $region ][ $type ] = $page;
-					}
-				}
-			}
-
-
-			return $required;
 		}
 
 		/**
@@ -803,7 +701,7 @@ if ( ! class_exists( "cmplz_documents_admin" ) ) {
 		 * Check if all required pages are created
 		 */
 		public function all_required_pages_created(): bool {
-			$pages = $this->get_required_pages();
+			$pages = COMPLIANZ::$document->get_required_pages();
 			$total_pages = $existing_pages= 0;
 			foreach ( $pages as $region => $region_pages ) {
 				foreach ( $region_pages as $type => $page ) {
@@ -1105,10 +1003,20 @@ if ( ! class_exists( "cmplz_documents_admin" ) ) {
 		 *
 		 * @return void
 		 */
-		public function clear_shortcode_transients(
-			$post_id = false, $post = false
-		) {
-			delete_option('cmplz_transients');
+		public function clear_shortcode_transients()
+		{
+			global $post;
+			if (!$post || $post->post_type !== 'page') return;
+
+			$pages = COMPLIANZ::$document->get_required_pages();
+
+			foreach ($pages as $region => $region_pages) {
+				foreach ($region_pages as $type => $page) {
+					if ($this->page_exists($type, $region)) {
+						cmplz_delete_transient('cmplz_shortcode_' . $type . '-' . $region);
+					}
+				}
+			}
 		}
 
 		/**
@@ -1163,7 +1071,7 @@ if ( ! class_exists( "cmplz_documents_admin" ) ) {
 		 */
 
 		public function get_created_pages( $filter_region = false) {
-			$required_pages = $this->get_required_pages();
+			$required_pages = COMPLIANZ::$document->get_required_pages();
 			$pages          = array();
 			if ( $filter_region ) {
 				if ( isset( $required_pages[ $filter_region ] ) ) {
@@ -1195,7 +1103,7 @@ if ( ! class_exists( "cmplz_documents_admin" ) ) {
 		 */
 
 		public function get_active_page_types(): array {
-			$required_pages = $this->get_required_pages();
+			$required_pages = COMPLIANZ::$document->get_required_pages();
 			$generic_documents_list = COMPLIANZ::$config->generic_documents_list;
 			$types = [];
 			$regions = cmplz_get_regions(true);
