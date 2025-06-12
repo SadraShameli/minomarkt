@@ -24,23 +24,23 @@
         "watch": "bun run dev"
     },
     "dependencies": {
-        "bootstrap": "^5.3.3",
-        "countup.js": "^2.8.0",
-        "swiper": "11.2.6"
+        "bootstrap": "^5.3.6",
+        "countup.js": "^2.9.0",
+        "swiper": "11.2.8"
     },
     "devDependencies": {
         "@types/google.maps": "^3.58.1",
-        "@types/node": "^22.13.14",
-        "@typescript-eslint/eslint-plugin": "^8.28.0",
-        "@typescript-eslint/parser": "^8.28.0",
-        "eslint": "9.23.0",
-        "eslint-plugin-perfectionist": "^4.10.1",
+        "@types/node": "^24.0.1",
+        "@typescript-eslint/eslint-plugin": "^8.34.0",
+        "@typescript-eslint/parser": "^8.34.0",
+        "eslint": "9.28.0",
+        "eslint-plugin-perfectionist": "^4.14.0",
         "husky": "^9.1.7",
         "prettier": "3.5.3",
-        "sass-embedded": "1.86.0",
-        "stylelint": "16.17.0",
-        "stylelint-config-recommended-scss": "^14.1.0",
-        "stylelint-order": "^6.0.4",
-        "vite": "6.2.3"
+        "sass-embedded": "1.89.2",
+        "stylelint": "16.20.0",
+        "stylelint-config-recommended-scss": "^15.0.1",
+        "stylelint-order": "^7.0.0",
+        "vite": "6.3.5"
     }
 }

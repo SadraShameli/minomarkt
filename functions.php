@@ -4,6 +4,8 @@ namespace App;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+ini_set('error_log', __DIR__ . '/logs/debug.log');
+
 function loadFilesRecursively(string $directory): void
 {
     $phpFiles = glob("$directory/*.php");

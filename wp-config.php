@@ -19,6 +19,20 @@ class Config
             define('THEMEPATH', constant('ABSPATH') . 'wp-content/themes/minomarkt/');
         }
 
+        if (!defined('WP_DEBUG')) {
+            define('WP_DEBUG', false);
+            ini_set('display_errors', 0);
+            error_reporting(0);
+        }
+
+        if (!defined('WP_DEBUG_LOG')) {
+            define('WP_DEBUG_LOG', false);
+        }
+
+        if (!defined('WP_DEBUG_DISPLAY')) {
+            define('WP_DEBUG_DISPLAY', false);
+        }
+
         if (!defined('DB_NAME')) {
             define('DB_NAME', 'wordpress');
         }

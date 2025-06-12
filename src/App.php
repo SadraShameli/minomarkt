@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Core\Core;
 use App\Core\Enqueues;
 use App\Core\ExtendTwig;
 use App\Core\Gutenberg;
@@ -12,9 +13,14 @@ class App
 {
     public function __construct()
     {
+        $this->init();
         $this->addThemeSupports();
+    }
 
+    private function init(): void
+    {
         new ACF();
+        new Core();
         new Enqueues();
         new ExtendTwig();
         new Gutenberg();
@@ -51,5 +57,4 @@ class App
             );
         });
     }
-
 }

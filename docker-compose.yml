@@ -18,6 +18,7 @@ services:
             - .wordpress/config/php-xdebug.ini:/usr/local/etc/php/conf.d/99-php-xdebug.ini
             - .wordpress/config/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini
             - ./wp-config.php:/var/www/html/wp-config.php
+            - ./logs:/var/www/html/wp-content/themes/minomarkt/logs
         labels:
             - 'traefik.enable=true'
             - 'traefik.http.routers.wordpress.rule=Host(`minomarktnl.test`)'
