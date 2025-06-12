@@ -135,7 +135,7 @@ function cmplz_rest_api_banner_data(WP_REST_Request $request){
 	$data                       = apply_filters( 'cmplz_user_data', array() );
 	$data['consenttype']        = apply_filters( 'cmplz_user_consenttype', COMPLIANZ::$company->get_default_consenttype() );
 	$data['region']             = $region;
-	$data['version']            = cmplz_version;
+	$data['version']            = CMPLZ_VERSION;
 	$data['forceEnableStats']   = !COMPLIANZ::$banner_loader->cookie_warning_required_stats( $region );
 	//We need this here because the integrations are not loaded yet, so the filter will return empty, overwriting the loaded data.
 	unset( $data["set_cookies"] );
@@ -156,7 +156,7 @@ function cmplz_rest_api_banner_data(WP_REST_Request $request){
  * @return array
  */
 function cmplz_rest_api_documents( WP_REST_Request $request ) {
-	$documents = COMPLIANZ::$documents_admin->get_required_pages();
+	$documents = COMPLIANZ::$document->get_required_pages();
 	$output    = array();
 	if ( is_array( $documents ) ) {
 		foreach ( $documents as $region => $region_documents ) {
@@ -192,7 +192,7 @@ function cmplz_rest_api_manage_consent_html( WP_REST_Request $request )
 			"cookie policy", "complianz-gdpr" ), site_url() );
 	} else {
 		$consent_type = apply_filters( 'cmplz_user_consenttype', COMPLIANZ::$company->get_default_consenttype() );
-		$path = trailingslashit( cmplz_path ).'cookiebanner/templates/';
+		$path = trailingslashit( CMPLZ_PATH ).'cookiebanner/templates/';
 		$banner_html = cmplz_get_template( "cookiebanner.php", array( 'consent_type' => $consent_type ), $path);
 		$banner_html = apply_filters("cmplz_banner_html", $banner_html);
 		if ( preg_match( '/<!-- categories start -->(.*?)<!-- categories end -->/s', $banner_html,  $matches ) ) {

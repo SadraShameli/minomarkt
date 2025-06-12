@@ -5,6 +5,7 @@ if (!class_exists("cmplz_support")) {
 	class cmplz_support
 	{
 		private static $_this;
+		const CMPLZ_SUPPORT_MAIL = 'support@complianz.io';
 
 		function __construct()
 		{
@@ -37,32 +38,55 @@ if (!class_exists("cmplz_support")) {
 				return $data;
 			}
 
-			$user_info = get_userdata(get_current_user_id());
-			$email = urlencode($user_info->user_email);
-			$name = urlencode($user_info->display_name);
+			$user_info = get_userdata( get_current_user_id() );
+			$email = $user_info->user_email;
+			$name = $user_info->display_name;
 			$domain = site_url();
-
-			$user_id = get_current_user_id();
 			$license_key = COMPLIANZ::$license->license_key();
 			$license_key = COMPLIANZ::$license->maybe_decode( $license_key );
 			$license_key = $license_key ?: '';
-			//get system status file
-			//set a variable so the system status file knows it's called from the support page
 			$_GET['support_form'] = true;
-			require_once(trailingslashit(cmplz_path).'system-status.php');
+			require_once(trailingslashit(CMPLZ_PATH).'system-status.php');
 			$system_status = cmplz_get_system_status();
-			$system_status = str_replace("\n", '--br--', $system_status );
-			$system_status = urlencode(strip_tags( $system_status ) );
+			$request = $request->get_json_params();
 
-			$output = [
+			$output = array(
+				'message'       => isset( $request['message'] ) ? sanitize_text_field( $request['message'] ) : '',
 				'customer_name' => $name,
-				'email' => $email,
-				'domain' => $domain,
-				'license_key' => $license_key,
+				'email'         => $email,
+				'domain'        => $domain,
+				'license_key'   => $license_key,
 				'system_status' => $system_status,
-			];
-			return $output;
+			);
+
+			$body = '';
+			foreach ( $output as $key => $value ) {
+				$body .= "$key: $value\n";
+			}
+
+			$headers  = sprintf( 'From: %1$s <%2$s>', $name, $email ) . "\r\n";
+			$headers .= "Content-Type: text/plain; charset=UTF-8";
+
+			$mailer          = new cmplz_mailer();
+			$mailer->to      = self::CMPLZ_SUPPORT_MAIL;
+			$mailer->subject = 'Support | Request from ' . $name . ' for ' . $domain;
+			$mailer->body    = $body;
+			$mailer->headers = $headers;
+
+			$send_request = $mailer->send_basic_mail();
+
+			return array(
+				'success' => $send_request,
+				'message' => $send_request ?
+					__( 'Your request has been sent.', 'complianz-gdpr' ) :
+					sprintf(
+						__( 'An error occurred. Please try again later or reach out to our support team at <a target="_blank" href="mailto:%s">%s</a>.', 'complianz-gdpr' ),
+						self::CMPLZ_SUPPORT_MAIL,
+						self::CMPLZ_SUPPORT_MAIL
+					)
+			);
 		}
+
 
 		/**
 		 * @param array $allowed_hosts

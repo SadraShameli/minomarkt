@@ -48,12 +48,12 @@ function cmplz_pro_field_notices(array $notices ): array {
 		];
 	}
 
-	if (defined('rsssl_pro_version')){
+	if (defined('rsssl_pro')){
 		$notices[] = [
 			'field_id' => 'which_personal_data_secure',
 			'label'    => 'default',
 			'title'    => __( "Security Headers", 'complianz-gdpr' ),
-			'text'     => __("You're using Really Simple SSL Pro, headers that are enabled in Really Simple SSL Pro are checked already. You can manage them in the settings, you can follow the link below", 'complianz-gdpr'),
+			'text'     => __("You're using Really Simple Security Pro, headers that are enabled in Really Simple Security Pro are checked already. You can manage them in the settings, you can follow the link below", 'complianz-gdpr'),
 			'url'      => admin_url('options-general.php?page=really-simple-security#settings/recommended_security_headers')
 		];
 	}

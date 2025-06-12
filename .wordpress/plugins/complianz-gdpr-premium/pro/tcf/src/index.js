@@ -2,9 +2,9 @@
  * Resources
  * https://github.com/InteractiveAdvertisingBureau/iabtcf-es
  * */
-import {CmpApi} from '@iabtcf/cmpapi';
-import {TCModel, TCString, GVL, Segment} from '@iabtcf/core';
-import UsprivacyString from '../ccpa/src/uspapi.js';
+import {CmpApi} from '@iabtechlabtcf/cmpapi';
+import {GVL, TCModel, TCString} from '@iabtechlabtcf/core';
+
 const cmplzCMP = 332;
 const cmplzCMPVersion = 1;
 const cmplzIsServiceSpecific = cmplz_tcf.isServiceSpecific == 1 ? true : false;
@@ -14,6 +14,11 @@ let cmplz_html_lang_attr =  document.documentElement.lang.length ? document.docu
 let cmplzLanguage = 'en';
 for (let i = 0; i < langCount; i++) {
 	let cmplzLocale = cmplzExistingLanguages[i];
+	//nb_no should be matched on no, not nb
+	if ( cmplz_html_lang_attr==='nb-no' ) {
+		cmplzLanguage = 'no';
+		break;
+	}
 	//needs to be exact match, as for example "ca" (catalan) occurs in "fr-ca", which should only match on "fr"
 	if ( cmplz_html_lang_attr.indexOf(cmplzLocale)===0 ) {
 		cmplzLanguage = cmplzLocale;
@@ -116,7 +121,7 @@ const acVendorsPromise = useAcVendors ? fetch(ACVendorsUrl)
 			if (row.length === 0) {
 				return null;
 			}
-			const [id, name, policyUrl, domains] = row.split(',').map(item => item.replace(/^"(.*)"$/, '$1'));
+			const [id, name, policyUrl, domains] = cmplzParseCsvRow(row);
 			return {
 				id: parseInt(id),
 				name,
@@ -182,10 +187,11 @@ tcfLanguageLoaded.then(()=>{
 		//https://github.com/InteractiveAdvertisingBureau/iabtcf-es/tree/master/modules/cmpapi#built-in-and-custom-commands
 		'getTCData': (next, tcData, success) => {
 			// tcData will be constructed via the TC string and can be added to here
-			if ( tcData ) {
+			//to prevent the removeEventListener action to return null instead of true, we need the check if the tcData is an object, and if the ACString exists.
+			if ( tcData && ACString && typeof tcData === 'object' ) {
 				tcData.addtlConsent = ACString;
+				tcData.enableAdvertiserConsentMode = !(ACVendors.length === 0 || typeof ACVendors[0].consent === 'undefined');
 			}
-
 			// pass data along
 			next(tcData, success);
 		}
@@ -624,6 +630,7 @@ tcfLanguageLoaded.then(()=>{
 
 			cmplzUpdateAllVendorLegitimateInterests();
 			cmplzSetTCString(tcModel, true);
+			cmplz_set_cookie('banner-status', 'dismissed');
 		});
 
 
@@ -731,7 +738,7 @@ tcfLanguageLoaded.then(()=>{
 
 				let retentionInDays = Math.round(vendor.cookieMaxAgeSeconds / (60 * 60 * 24));
 				//if result is 0, get day in decimals.
-				console.log(vendor);
+				if (cmplz_tcf.debug) console.log(vendor);
 				customTemplate = customTemplate.replace(/{cookie_retention_seconds}/g, vendor.cookieMaxAgeSeconds);
 				customTemplate = customTemplate.replace(/{cookie_retention_days}/g, retentionInDays);
 				customTemplate = customTemplate.replace(/{vendor_name}/g, vendor.name);
@@ -1137,9 +1144,9 @@ tcfLanguageLoaded.then(()=>{
 
 		if (category === 'marketing') {
 			if (includeLowerCategories) {
-				return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+				return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 			} else {
-				return [1, 2, 3, 4, 5, 6, 10];
+				return [1, 2, 3, 4, 5, 6, 10, 11];
 			}
 		} else if (category === 'statistics') {
 			return [1, 7, 8, 9];
@@ -1327,6 +1334,24 @@ function cmplzRenderUSVendorsInPolicy() {
 		document.querySelector('#cmplz-tcf-wrapper').style.display = 'block';
 		document.querySelector('#cmplz-tcf-wrapper-nojavascript').style.display = 'none';
 	})
+}
+
+/**
+ * Parses a CSV row into an array of values.
+ *
+ * This function uses a regular expression to match values in a CSV row.
+ * It handles values enclosed in double quotes and values separated by commas.
+ *
+ * @returns {Array} An array of values parsed from the CSV row.
+ */
+function cmplzParseCsvRow(row) {
+	const regex = /"(.*?)"|([^,]+)/g;
+	const values = [];
+	let match;
+	while ((match = regex.exec(row)) !== null) {
+		values.push(match[1] || match[2]);
+	}
+	return values;
 }
 
 /**

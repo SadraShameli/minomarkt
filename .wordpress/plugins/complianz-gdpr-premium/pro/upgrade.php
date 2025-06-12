@@ -113,7 +113,7 @@ function cmplz_upgrade_premium($prev_version)
 		if ( cmplz_tcf_active() ) {
 			delete_option( 'cmplz_vendorlist_downloaded_once' );
 
-			require_once cmplz_path . 'pro/tcf/tcf-admin.php';
+			require_once CMPLZ_PATH . 'pro/tcf/tcf-admin.php';
 			cmplz_update_json_files();
 
 			$locale = substr(get_user_locale(), 0, 2);
@@ -142,6 +142,28 @@ function cmplz_upgrade_premium($prev_version)
 			}
 			update_option( 'cmplz_options', $options );
 		}
+	}
+
+	//run this upgrade on each update
+	if ( $prev_version ) {
+		if ( cmplz_tcf_active() ) {
+			delete_option( 'cmplz_vendorlist_downloaded_once' );
+
+			require_once CMPLZ_PATH . 'pro/tcf/tcf-admin.php';
+			cmplz_update_json_files();
+
+			$locale = substr(get_user_locale(), 0, 2);
+			$existing_languages = array('bg', 'ca', 'cs', 'da', 'de', 'el', 'es', 'et', 'fi', 'fr', 'hr', 'hu', 'it', 'ja', 'lt', 'lv', 'mt', 'nl', 'no', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'sr', 'sv', 'tr', 'zh',);
+			if ( !in_array($locale, $existing_languages)) {
+				$locale = 'en';
+			}
+
+			delete_transient("cmplz_tcf_".$locale."_purposes");
+			delete_transient("cmplz_tcf_".$locale."_specialpurposes");
+			delete_transient("cmplz_tcf_".$locale."_features");
+			delete_transient("cmplz_tcf_".$locale."_specialfeatures");
+		}
+
 	}
 
 

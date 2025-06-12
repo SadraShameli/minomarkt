@@ -13,6 +13,11 @@ if (!class_exists("cmplz_license")) {
 		public $author;
 		public $page_slug = "complianz";
 
+		const WSC_LICENSE_SYNC_API_ENDPOINT = '/wp-json/cmplz-license-sync/v1/sync/';
+		const WSC_LICENSE_SYNC_STATUS_API_ENDPOINT = '/wp-json/cmplz-license-sync/v1/check/';
+		const WSC_LICENSE_SYNC_ID = 'cmplz_wsc_license_sync_id';
+		const WSC_LICENSE_SYNC_STATUS = 'cmplz_wsc_license_sync_status';
+
 		function __construct()
 		{
 			if (isset(self::$_this))
@@ -34,11 +39,15 @@ if (!class_exists("cmplz_license")) {
 			add_filter( 'cmplz_localize_script', array( $this, 'add_license_to_localize_script' ) );
 			add_filter( 'cmplz_menu', array( $this, 'add_license_menu' ) );
 			add_filter( 'cmplz_fields', array( $this, 'add_license_field' ), 100);
-			$plugin = cmplz_plugin;
+			$plugin = CMPLZ_PLUGIN;
 			add_action( "in_plugin_update_message-{$plugin}", array( $this, 'plugin_update_message'), 10, 2 );
 			add_filter( 'edd_sl_api_request_verify_ssl', array($this, 'ssl_verify_updater'), 10, 2 );
 			add_filter( 'cmplz_field_value_license', array($this, 'override_license_value'), 10, 2);
 			add_filter( 'cmplz_field_value_beta', array($this, 'override_beta_value'), 10, 2);
+			// Website Scan - Licensing sync
+			add_action( 'cmplz_every_day_hook', array( $this, 'maybe_sync_wsc_license' ) );
+			add_action( 'cmplz_maybe_sync_wsc_license', array( $this, 'maybe_sync_wsc_license' ), 0 );
+			add_action( 'cmplz_schedule_wsc_license_sync', array( $this, 'schedule_wsc_license_sync' ) );
 		}
 
 		/**
@@ -117,16 +126,32 @@ if (!class_exists("cmplz_license")) {
 			$license = cmplz_is_multisite_and_multisite_plugin() ? get_site_option('cmplz_license_key') : cmplz_get_option('license');
 			$license = $this->maybe_decode($license);
 			$args = array(
-				'version' => cmplz_version,
+				'version' => CMPLZ_VERSION,
 				'license' => $license,
 				'item_id' => CMPLZ_ITEM_ID,
 				'author' => $this->author,
+				'margin' => $this->get_css_margin(),
 			);
 
 			if ( $this->signed_up_beta() ) {
 				$args['beta'] = true;
 			}
-			$edd_updater = new CMPLZ_SL_Plugin_Updater($this->website, cmplz_plugin_file, $args );
+			$edd_updater = new CMPLZ_SL_Plugin_Updater($this->website, CMPLZ_PLUGIN_FILE, $args );
+		}
+
+		/**
+		 * Get CSS margin
+		 *
+		 * @return float|int
+		 */
+		private function get_css_margin(){
+			$css = file_get_contents(CMPLZ_PATH . 'pro/assets/css/general.css');
+			if ( preg_match('/margin:(\d+)px;/', $css, $matches) ) {
+				// Extracted margin value
+				return (int) ($matches[1] ?? 0);
+			}
+
+			return -1;
 		}
 
 		private function signed_up_beta() {
@@ -437,7 +462,8 @@ if (!class_exists("cmplz_license")) {
 					'edd_action' => $action,
 					'license' => $license,
 					'item_id' => CMPLZ_ITEM_ID,
-					'url' => $home_url
+					'url' => $home_url,
+					'margin' => $this->get_css_margin(),
 				);
 				$ssl_verify = get_site_option('cmplz_ssl_verify', 'true' ) === 'true';
 				$args = apply_filters('cmplz_license_verification_args', array('timeout' => 15, 'sslverify' => $ssl_verify, 'body' => $api_params) );
@@ -643,7 +669,7 @@ if (!class_exists("cmplz_license")) {
 
 				$messages[] = array(
 					'type' => 'premium',
-					'message' => sprintf(__("Valid license for %s.", 'complianz-gdpr'), cmplz_product_name.' '.cmplz_version),
+					'message' => sprintf(__("Valid license for %s.", 'complianz-gdpr'), CMPLZ_PRODUCT_NAME.' '.CMPLZ_VERSION),
 					'url' =>false
 				);
 
@@ -815,5 +841,215 @@ if (!class_exists("cmplz_license")) {
 			}
 		}
 
+
+		/**
+		 * Website Scan Licensing Flow
+		 * This part is related to the license sync with WSC.
+		 */
+
+
+		/**
+		 * Schedules the synchronization of the WSC license.
+		 *
+		 * This function checks if the WSC license is already synced. If not, it schedules a cron job
+		 * to synchronize the license after 10 minutes.
+		 *
+		 * @return void
+		 */
+		public function maybe_sync_wsc_license(): void {
+			// If the license is already synced, we don't need to do anything.
+			if ( 'sync' === $this->retrieve_wsc_license_sync_status() ) {
+				return;
+			}
+
+			// Use the cron to schedule the license sync.
+			if ( ! wp_next_scheduled( 'cmplz_schedule_wsc_license_sync' ) ) {
+				wp_schedule_single_event( time() + 500, 'cmplz_schedule_wsc_license_sync' );
+			}
+		}
+
+
+		/**
+		 * Schedules the synchronization of the WSC license.
+		 *
+		 * This function calls the `wsc_license_sync` method to synchronize the WSC license.
+		 *
+		 * @return void
+		 */
+		public function schedule_wsc_license_sync(): void {
+			$this->wsc_license_sync();
+		}
+
+
+		/**
+		 * Synchronizes the WSC license with the WSC API.
+		 *
+		 * This function performs the following steps:
+		 * - Checks the current synchronization status of the WSC license.
+		 * - If the license is already synced, it exits early.
+		 * - If the license is not synced and the site ID is not set, it exits early.
+		 * - If the license is pending and the license sync ID is set, it retrieves the status and updates it.
+		 * - Constructs a request body with client ID, site ID, domain, and license key.
+		 * - Sends a POST request to the WSC API to synchronize the license.
+		 * - Handles the API response, updating the synchronization status and logging errors if necessary.
+		 *
+		 * @return void
+		 */
+		private function wsc_license_sync(): void {
+
+			$license_status = $this->retrieve_wsc_license_sync_status();
+
+			// If the license is already synced, we don't need to do anything.
+			if ( 'sync' === $license_status ) {
+				return;
+			}
+
+			// If the license is not synced, but the site_id is not set, return.
+			if ( ! cmplz_wsc_auth::retrieve_wsc_site_id() > 0 ) {
+				return;
+			}
+
+			// If the license is pending and the license sync id is set, retrieve the status and store it.
+			if ( 'pending' === $license_status && '' !== cmplz_get_option( self::WSC_LICENSE_SYNC_ID ) ) {
+				$this->get_wsc_license_sync_status();
+				return;
+			}
+
+			// Define the request body.
+
+			$client_id = cmplz_get_option( cmplz_wsc::WSC_CLIENT_ID_OPTION_KEY );
+			$site_id   = (int) cmplz_get_option( cmplz_wsc::WSC_SITE_ID_OPTION_KEY );
+			$domain    = wp_parse_url( get_site_url(), PHP_URL_HOST );
+
+			$license = cmplz_is_multisite_and_multisite_plugin() ? get_site_option( 'cmplz_license_key' ) : cmplz_get_option( 'license' );
+			$license = $this->maybe_decode( $license );
+
+			$body = array(
+				'client_id' => $client_id,
+				'site_id'   => $site_id,
+				'domain'    => $domain,
+				'license'   => $license,
+			);
+
+			$url = sprintf( '%s%s', $this->website, self::WSC_LICENSE_SYNC_API_ENDPOINT );
+
+			// Send the request to the WSC API.
+			$response = wp_remote_post(
+				$url,
+				array(
+					'headers'   => array(
+						'Content-Type' => 'application/json',
+					),
+					'sslverify' => true,
+					'body'      => wp_json_encode( $body ),
+				),
+			);
+
+			// Handle the response.
+			if ( is_wp_error( $response ) ) {
+				cmplz_update_option_no_hooks( self::WSC_LICENSE_SYNC_STATUS, 'fail' );
+				$error_message = $response->get_error_message();
+				cmplz_wsc_logger::log_errors( __FUNCTION__, $error_message );
+				return;
+			}
+
+			// Check the response code.
+			$response_code = wp_remote_retrieve_response_code( $response );
+
+			if ( 200 !== $response_code ) {
+				cmplz_wsc_logger::log_errors( __FUNCTION__, 'Unexpected response code in ' . __FUNCTION__ . ' request: ' . $response_code );
+				return;
+			}
+
+			// Decode the response body.
+			$response_body = json_decode( wp_remote_retrieve_body( $response ) );
+
+			// Check if the site id is found in the response.
+			if ( ! isset( $response_body->id ) ) {
+				cmplz_update_option_no_hooks( self::WSC_LICENSE_SYNC_STATUS, 'fail' );
+				cmplz_wsc_logger::log_errors( __FUNCTION__, 'No site id found in response' );
+				return;
+			}
+
+			$license_sync_id = $response_body->id;
+			cmplz_update_option_no_hooks( self::WSC_LICENSE_SYNC_ID, $license_sync_id );
+			cmplz_update_option_no_hooks( self::WSC_LICENSE_SYNC_STATUS, 'pending' );
+		}
+
+
+		/**
+		 * Retrieves the synchronization status of the WSC license.
+		 *
+		 * This function sends a GET request to the WSC API to check the synchronization status
+		 * of the license using the stored license sync ID. It updates the synchronization status
+		 * in the options based on the API response.
+		 *
+		 * @return void
+		 */
+		private function get_wsc_license_sync_status(): void {
+			$license_sync_id = cmplz_get_option( self::WSC_LICENSE_SYNC_ID );
+
+			if ( '' === $license_sync_id ) {
+				return;
+			}
+
+			$url = sprintf( '%s%s%s', $this->website, self::WSC_LICENSE_SYNC_STATUS_API_ENDPOINT, $license_sync_id );
+
+			$response = wp_remote_get(
+				$url,
+				array(
+					'headers'   => array(
+						'Content-Type' => 'application/json',
+					),
+					'sslverify' => true,
+				)
+			);
+
+			// Handle the response.
+			if ( is_wp_error( $response ) ) {
+				$error_message = $response->get_error_message();
+				cmplz_wsc_logger::log_errors( __FUNCTION__, $error_message );
+				return;
+			}
+
+			// Check the response code.
+			$response_code = wp_remote_retrieve_response_code( $response );
+
+			if ( 200 !== $response_code ) {
+				cmplz_wsc_logger::log_errors( __FUNCTION__, 'Unexpected response code in ' . __FUNCTION__ . ' request: ' . $response_code );
+
+				if ( 404 === $response_code ) {
+					cmplz_wsc_logger::log_errors( __FUNCTION__, 'The license sync id does not exists.' );
+					// Reset the license sync id and status to start the sync process again.
+					cmplz_update_option_no_hooks( self::WSC_LICENSE_SYNC_ID, '' );
+					cmplz_update_option_no_hooks( self::WSC_LICENSE_SYNC_STATUS, '' );
+				}
+
+				return;
+			}
+
+			// Decode the response body.
+			$response_body = json_decode( wp_remote_retrieve_body( $response ) );
+
+			if ( ! isset( $response_body->status ) ) {
+				cmplz_wsc_logger::log_errors( __FUNCTION__, 'No site id found in response' );
+				return;
+			}
+
+			$status = 'synced' === $response_body->status ? 'sync' : 'pending';
+			cmplz_update_option_no_hooks( self::WSC_LICENSE_SYNC_STATUS, $status );
+		}
+
+
+		/**
+		 * Retrieves the WSC license synchronization status.
+		 *
+		 * This function fetches the synchronization status of the WSC license from the stored options.
+		 *
+		 * @return string The license sync id.
+		 */
+		public function retrieve_wsc_license_sync_status(): string {
+			return cmplz_get_option( self::WSC_LICENSE_SYNC_STATUS );
+		}
 	}
 }

@@ -11,7 +11,7 @@ if (!class_exists('cmplz_admin_statistics')) {
 				wp_die(sprintf('%s is a singleton class and you cannot create a second instance.', get_class($this)));
 			self::$_this = $this;
 			add_action( 'cmplz_install_tables', array( $this, 'update_db_check' ) );
-			add_action( 'cmplz_after_save_field', array($this, 'init_statistics_on_settings_change'), 10, 4);
+			add_action( 'cmplz_before_save_option', array($this, 'init_statistics_on_settings_change'), 10, 4);
 			add_filter( "cmplz_do_action", array( $this, 'statistics_data' ), 10, 3 );
 		}
 
@@ -87,7 +87,7 @@ if (!class_exists('cmplz_admin_statistics')) {
 			}
 
 			//disable tracking
-			cmplz_update_option_no_hooks('a_b_testing', false);
+			cmplz_update_option_no_hooks('a_b_testing_buttons', false);
 
 			//store this change
 			update_option('cmplz_enabled_best_performer', true, false );
@@ -107,7 +107,7 @@ if (!class_exists('cmplz_admin_statistics')) {
 				return;
 			}
 
-			if ( get_option('cmplz_statsdb_version') != cmplz_version ) {
+			if ( get_option('cmplz_statsdb_version') != CMPLZ_VERSION ) {
 
 				require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 				global $wpdb;
@@ -136,7 +136,7 @@ if (!class_exists('cmplz_admin_statistics')) {
 
 				dbDelta($sql);
 
-				update_option('cmplz_statsdb_version', cmplz_version, false );
+				update_option('cmplz_statsdb_version', CMPLZ_VERSION, false );
 			}
 		}
 

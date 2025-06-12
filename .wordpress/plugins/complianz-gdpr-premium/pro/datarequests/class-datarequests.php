@@ -213,7 +213,7 @@ if ( ! class_exists( "cmplz_datarequest" ) ) {
 				return;
 			}
 
-			if ( get_option( 'cmplz_datarequests_db_version' ) != cmplz_version ) {
+			if ( get_option( 'cmplz_datarequests_db_version' ) != CMPLZ_VERSION ) {
 				require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 				global $wpdb;
 				$charset_collate = $wpdb->get_charset_collate();
@@ -226,7 +226,7 @@ if ( ! class_exists( "cmplz_datarequest" ) ) {
 				  PRIMARY KEY  (ID)
 				) $charset_collate;";
 				dbDelta( $sql );
-				update_option( 'cmplz_datarequests_db_version', cmplz_version, false );
+				update_option( 'cmplz_datarequests_db_version', CMPLZ_VERSION, false );
 			}
 		}
 	} //class closure

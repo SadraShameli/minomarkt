@@ -124,7 +124,7 @@ function cmplz_tcf_warnings_types($warnings)
 		$auto_updates = get_option('auto_update_plugins');
 	}
 
-	if ( !is_array($auto_updates) || !in_array( cmplz_plugin, $auto_updates )){
+	if ( !is_array($auto_updates) || !in_array( CMPLZ_PLUGIN, $auto_updates )){
 		$warnings += array(
 			'auto-updates-not-enabled1' => array(
 				'plus_one' => true,
@@ -292,19 +292,19 @@ function cmplz_tcf_change_settings( $options=[], $field_id = false, $field_value
 		 * but only once
 		 */
 
-		if ( !get_option('cmplz_tcf_mail_sent') ) {
-			$from = get_option('admin_email');
-			$site_url = site_url();
-			$subject = "TCF enabled on ".$site_url;
-			$to      = "tcf@really-simple-plugins.com";
-			$headers = array();
-			$message = "TCF was enabled on $site_url";
-			add_filter( 'wp_mail_content_type', function ( $content_type ) {return 'text/html';} );
-			$headers[] = "Reply-To: $from <$from>" . "\r\n";
-			wp_mail( $to, $subject, $message, $headers );
-			remove_filter( 'wp_mail_content_type', 'set_html_content_type' );
-			update_option( 'cmplz_tcf_mail_sent', true, false );
-		}
+//		if ( !get_option('cmplz_tcf_mail_sent') ) {
+//			$from = get_option('admin_email');
+//			$site_url = site_url();
+//			$subject = "TCF enabled on ".$site_url;
+//			$to      = "tcf@really-simple-plugins.com";
+//			$headers = array();
+//			$message = "TCF was enabled on $site_url";
+//			add_filter( 'wp_mail_content_type', function ( $content_type ) {return 'text/html';} );
+//			$headers[] = "Reply-To: $from <$from>" . "\r\n";
+//			wp_mail( $to, $subject, $message, $headers );
+//			remove_filter( 'wp_mail_content_type', 'set_html_content_type' );
+//			update_option( 'cmplz_tcf_mail_sent', true, false );
+//		}
 	}
 	return $options;
 }
@@ -319,7 +319,7 @@ function cmplz_tcf_change_settings( $options=[], $field_id = false, $field_value
  */
 
 function cmplz_tcf_get( string $fieldname, bool $default_on = false){
-	if (!cmplz_is_logged_in_rest()) {
+	if ( !cmplz_is_logged_in_rest() ) {
 		return [];
 	}
 	//user locale
@@ -360,6 +360,7 @@ function cmplz_tcf_get( string $fieldname, bool $default_on = false){
 				}
 			}
 		}
+		delete_option('cmplz_clear_tcf_purposes_after_upgrade');
 		set_transient("cmplz_tcf_".$locale."_".$fieldname, $items, MONTH_IN_SECONDS);
 	}
 

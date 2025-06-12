@@ -130,6 +130,7 @@ $this->pages ['all']['impressum']['document_elements'] = array(
 		'title'   => _x('The following information is mandatory according to German law.', 'Legal document', 'complianz-gdpr'),
 		'condition' => array(
 			'german_imprint_appendix' => 'yes',
+			'eu_consent_regions' => 'yes',
 		),
 	),
 

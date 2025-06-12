@@ -37,7 +37,7 @@ function cmplz_pro_security_consent_fields($fields){
 				'options' => array(
 					'1' => __('No, provide a general explanation', 'complianz-gdpr'),
 					'2' => __('Yes, manually', 'complianz-gdpr'),
-					'3' => __('Yes, based on my configuration of Really Simple SSL & Security', 'complianz-gdpr'),
+					'3' => __('Yes, based on my configuration of Really Simple Security', 'complianz-gdpr'),
 				),
 				'react_conditions' => [
 					'relation' => 'AND',
@@ -50,7 +50,7 @@ function cmplz_pro_security_consent_fields($fields){
 				'id'       => 'install-really-simple-ssl',
 				'type'     => 'install-plugin',
 				'plugin_data' => [
-					'title' => "Really Simple SSL & Security",
+					'title' => "Really Simple Security",
 					'summary' => __("Lightweight plugin. Heavyweight security features.", 'complianz-gdpr'),
 					'slug' => 'really-simple-ssl',
 					'description' => __("Leverage your SSL certificate to the fullest, with health checks, security headers, hardening, vulnerability detection and more.", 'complianz-gdpr'),
@@ -88,8 +88,8 @@ function cmplz_pro_security_consent_fields($fields){
 				),
 				'help'     => [
 					'label' => 'default',
-					'title' => __( 'Easily secure your website with Really Simple SSL & Security', 'complianz-gdpr' ),
-					'text'  => __( "The easiest way to implement all recommended security features is with Really Simple SSL Pro", "complianz-gdpr" ),
+					'title' => __( 'Easily secure your website with Really Simple Security', 'complianz-gdpr' ),
+					'text'  => __( "The easiest way to implement all recommended security features is with Really Simple Security Pro", "complianz-gdpr" ),
 					'url'   => 'https://really-simple-ssl.com/pro/',
 				],
 				'react_conditions' => [

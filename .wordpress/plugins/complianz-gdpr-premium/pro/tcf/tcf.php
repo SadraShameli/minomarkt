@@ -42,7 +42,7 @@ function cmplz_tcf_init() {
  */
 function cmplz_banner_after_categories( )
 {
-	echo cmplz_get_template( "tcf-categories.php", array(), trailingslashit( cmplz_path ) . 'pro/templates/');
+	echo cmplz_get_template( "tcf-categories.php", array(), trailingslashit( CMPLZ_PATH ) . 'pro/templates/');
 }
 
 /**
@@ -124,8 +124,8 @@ function cmplz_tcf_get_selected_array_keys( $fieldname ): array {
  */
 
 function cmplz_tcf_enqueue_stub( $hook ) {
-	$v = filemtime(cmplz_path . "pro/tcf-stub/build/index.js");
-	wp_enqueue_script( 'cmplz-tcf-stub', cmplz_url . "pro/tcf-stub/build/index.js", array(), $v, false );
+	$v = filemtime(CMPLZ_PATH . "pro/tcf-stub/build/index.js");
+	wp_enqueue_script( 'cmplz-tcf-stub', CMPLZ_URL . "pro/tcf-stub/build/index.js", array(), $v, false );
 }
 
 /**
@@ -137,7 +137,7 @@ function cmplz_tcf_enqueue_assets( $hook ) {
 	$asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');
 	wp_enqueue_script(
 		'cmplz-tcf',
-		cmplz_url . 'pro/tcf/build/index.js',
+		CMPLZ_URL . 'pro/tcf/build/index.js',
 		$asset_file['dependencies'],
 		$asset_file['version'],
 		false
@@ -180,7 +180,7 @@ function cmplz_tcf_get_publisher_country_code() {
 }
 
 function cmplz_tcf_us_vendors($atts = array(), $content = null, $tag = ''){
-	$html = cmplz_get_template( "vendorlist-us.php", [], trailingslashit( cmplz_path ) . 'pro/tcf/templates');
+	$html = cmplz_get_template( "vendorlist-us.php", [], trailingslashit( CMPLZ_PATH ) . 'pro/tcf/templates');
 	return apply_filters('cmplz_tcf_us_container', $html);
 }
 
@@ -254,10 +254,10 @@ function cmplz_tcf_get_excluded_vendors(): array {
 
 function cmplz_tcf_vendors( $atts = array(), $content = null, $tag = '' ) {
 	$args = [
-		'checkbox' => cmplz_get_template( "checkbox.php", array(), trailingslashit( cmplz_path ) . 'pro/tcf/templates'),
-		'vendor_template' => cmplz_get_template( "vendor.php", array(), trailingslashit( cmplz_path ) . 'pro/tcf/templates'),
+		'checkbox' => cmplz_get_template( "checkbox.php", array(), trailingslashit( CMPLZ_PATH ) . 'pro/tcf/templates'),
+		'vendor_template' => cmplz_get_template( "vendor.php", array(), trailingslashit( CMPLZ_PATH ) . 'pro/tcf/templates'),
 	];
-	$html = cmplz_get_template( "vendorlist.php", $args, trailingslashit( cmplz_path ) . 'pro/tcf/templates');
+	$html = cmplz_get_template( "vendorlist.php", $args, trailingslashit( CMPLZ_PATH ) . 'pro/tcf/templates');
 	return apply_filters('cmplz_tcf_container', $html);
 }
 

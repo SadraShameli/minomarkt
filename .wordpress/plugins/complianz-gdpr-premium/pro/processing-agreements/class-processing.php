@@ -26,6 +26,7 @@ if (!class_exists("cmplz_processing")) {
 
 		public function get_document_elements($region){
 			$elements = array();
+			$region = strtoupper($region);
 			require_once( __DIR__ . "/$region/processing-agreement.php" );
 			return $elements;
 		}
@@ -239,7 +240,7 @@ if (!class_exists("cmplz_processing")) {
 				return cmplz_upload_url("processing-agreements/$random").'/'.$cmplz_uploaded_file.'?token=' . time();
 			}
 
-			return cmplz_url . 'pro/pdf.php?nonce=' . wp_create_nonce("cmplz_pdf_nonce") .'&region=' . $this->get_region($post_id). '&post_id=' . $post_id . '&token=' . time();
+			return CMPLZ_URL . 'pro/pdf.php?nonce=' . wp_create_nonce("cmplz_pdf_nonce") .'&region=' . $this->get_region($post_id). '&post_id=' . $post_id . '&token=' . time();
 		}
 
 	    /**

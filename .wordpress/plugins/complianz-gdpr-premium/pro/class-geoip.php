@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') or die("you do not have access to this page!");
 //https://dev.maxmind.com/geoip/geoip2/geolite2/
-if ( !defined('GEOIP_DETECT_VERSION') ) require cmplz_path . 'pro/assets/vendor/autoload.php';
+if ( !defined('GEOIP_DETECT_VERSION') ) require CMPLZ_PATH . 'pro/assets/vendor/autoload.php';
 use GeoIp2\Database\Reader;
 /*
  * http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz
@@ -22,15 +22,22 @@ if (!class_exists("cmplz_geoip")) {
 	            wp_die(sprintf('%s is a singleton class and you cannot create a second instance.', get_class($this)));
 
             self::$_this = $this;
-            $this->initialize();
+
             add_action('cmplz_before_save_options', array($this, 'before_save_general_settings_option'), 10, 5);
             add_filter('cmplz_geoip_enabled', array($this, 'geoip_enabled'));
+            add_filter('shutdown', array($this, 'close'));
         }
 
         static function this()
         {
             return self::$_this;
         }
+
+		public function close(){
+			if ( $this->initialized ) {
+				$this->reader->close();
+			}
+		}
 
         /**
          * Runs on saving of a field, to check if geoip was enabled. If so, import the library
@@ -128,9 +135,16 @@ if (!class_exists("cmplz_geoip")) {
 
         public function initialize()
         {
-            if (!$this->geoip_enabled()) return;
+			if ( $this->initialized ) {
+				return true;
+			}
+
+            if ( !$this->geoip_enabled() ) {
+				return false;
+            }
+
 	        if ( cmplz_is_logged_in_rest() ) {
-                if (get_option('cmplz_import_geoip_on_activation')) {
+                if ( get_option('cmplz_import_geoip_on_activation') ) {
                     $this->get_geo_ip_database_file();
                     update_option('cmplz_import_geoip_on_activation', false, false );
                 }
@@ -158,6 +172,7 @@ if (!class_exists("cmplz_geoip")) {
 	            delete_option("cmplz_geo_ip_file");
 	            delete_option('cmplz_last_update_geoip');
             }
+			return $this->initialized;
         }
 
         /**
@@ -196,7 +211,7 @@ if (!class_exists("cmplz_geoip")) {
         public function get_country_code()
         {
             //if we don't have the geo ip database yet, we return default.
-            if (!$this->initialized) {
+            if ( !$this->initialize() ) {
 				if (defined('WP_DEBUG') && WP_DEBUG) error_log("geo ip not initialized");
 				return cmplz_get_option('country_company');
             }
@@ -227,7 +242,9 @@ if (!class_exists("cmplz_geoip")) {
 
         public function get_current_ip()
         {
-            if (!$this->initialized) return false;
+            if (!$this->initialize()) {
+				return false;
+            }
 
             //localhost testing
             if (strpos(home_url(), apply_filters("cmplz_debug_domain","localhost")) !== false) {
@@ -335,7 +352,7 @@ if (!class_exists("cmplz_geoip")) {
          * @param bool $renew
          */
 
-        private function get_geo_ip_database_file($renew=false)
+        public function get_geo_ip_database_file($renew=false)
         {
             if ( !wp_doing_cron() && !cmplz_user_can_manage() ) {
 				return;

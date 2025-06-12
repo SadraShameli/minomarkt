@@ -3,9 +3,9 @@ Contributors: RogierLankhorst
 Tags: GDPR, CCPA, AVG, E-Privacy
 Requires at least: 5.8
 License: Complianz Terms of Use (Premium, see pro/license.txt), and where applicable GPL 2 (Free)
-Requires PHP: 7.2
-Tested up to: 6.5
-Stable tag: 7.0.7
+Requires PHP: 7.4
+Tested up to: 6.8
+Stable tag: 7.5.3.1
 
 Complianz Privacy Suite with a Cookie Consentbanner and customized Cookie Policy based on the results of the built in Cookie Scan.
 
@@ -23,6 +23,130 @@ IMPORTANT! Complianz Privacy Suite can help you meet compliance requirements, bu
 == Frequently Asked Questions ==
 
 == Change log ==
+= 7.5.3.1 =
+* June 12th, 2025
+* Fix: Small adjustments to the notifications system.
+
+= 7.5.3 =
+* June 10th, 2025
+* New: Notifications system.
+* Update: Other plugins suggestion component.
+* Improvement: TCF updates.
+
+= 7.5.2 =
+* May 13th, 2025
+* Improvement: Website Scan, added site creation.
+* Improvement: Dailymotion integration.
+* Security update: Authenticated (Translator+) Stored XSS.
+* Fix: Prevent A/B testing cronjob to disable consent statistics.
+
+= 7.5.1 =
+* April 14th, 2025
+* Improvement: Tested up to WordPress 6.8.
+
+= 7.5.0.1 =
+* Apr 7th, 2025
+* Fix: Fixed missing "Details Per Purposes" section.
+
+= 7.5.0 =
+* Mar 26th, 2025
+* Improvement: refactored translations of Complianz due to Function _load_textdomain_just_in_time notice
+* Improvement: updated translations
+* Improvement: onboarding to authenticate website scan trigger changed
+
+= 7.4.2 =
+* March 4th, 2025
+* Enhancement: Add support for New Jersey, Iowa, Delaware, New Hampshire, Nebraska state privacy laws.
+* Enhancement: Email obfuscation now uses HTML entities and CSS to prevent spam bots from reading the email address.
+* Enhancement: Google Tag Manager script placement can now be dynamically set to load in the header or footer based on user preference, addressing Google Diagnostics warnings.
+* Small labels and descriptions adjustments.
+
+= 7.4.1 =
+* February 10th, 2025
+* Fix: small fixes and adjustments.
+
+= 7.4.0 =
+* January 28th, 2025
+* Enhancement: Website Scan, added services detection.
+* Enhancement: Improved Omnisnippet compatibility.
+* Enhancement: Removed "BETA" references on Google Consent Mode V2 to reflect its finalized status.
+* Enhancement: Removed the soft cookie wall preview functionality and updated its description.
+* Enhancement: Added new Tips & Tricks.
+* Enhancement: Updated email field validation to allow the use of certain special characters.
+* Fix: Resolved issues with vendor links by improving the parsing logic to handle commas in vendor names or URLs correctly.
+* Fix: Triggered GeoIP database installation to ensure proper functionality during upgrades.
+
+= 7.3.2 =
+* December 16th, 2024
+* Fix: translations https://complianz.io/doing-it-wrong-notice
+
+= 7.3.1 =
+* November 25th, 2024
+* Enhancement: Improved translation loading to ensure compatibility with WordPress 6.7
+* Enhancement: Fixed TCF banner reappearing after modifying consent purposes
+* Enhancement: Introduced the cmplz_after_css_generation hook to improve CSS file management
+
+= 7.3.0 =
+* November 5th, 2024
+* Tested up to 6.6
+* Enhancement: Website Scan
+
+= 7.2.1 =
+* October 21th, 2024
+* Tested up to 6.6
+* Enhancement: Added a new logger for improved debugging
+* Enhancement: External services are now managed via scheduled events
+* Various minor bug fixes
+
+= 7.2.0 =
+* September 19th, 2024
+* Tested up to 6.6
+* Feature: Website Scan
+
+= 7.1.4 =
+* September 16th, 2024
+* Tested up to 6.6
+* Improvement: Add support for Montana, Oregon, and Texas state privacy laws enhancement (1878)
+* Improvement: Add support for Microsoft Ads UET consent mode (1881)
+* Fix: mPDF custom tempdir cache cleanup (1877)
+* Fix: Correct cmplz_transients handling in post save process (1879)
+* Fix: Ensure complete data removal on Complianz uninstall (1880)
+* Fix: Update email validation for longer TLDs (1882)
+* Fix: Label adjustment (1883 - 1884)
+
+= 7.1.3 =
+* July 29th, 2024
+* Tested up to 6.6
+* Improvement: close maxmind on shutdown
+* Improvement: several TCF updates
+* Improvement: consent mode updates
+
+= 7.1.2 =
+* June 11th, 2024
+* Fix: Download of Processing agreement causing PHP error
+
+= 7.1.1 =
+* May 28th, 2024
+* Fix: TCF removeEventListener not returning true
+
+= 7.1.0 =
+* May 7th, 2024
+* Improvement: delete free translations files when premium is active
+* Improvement: Updated Google Site Kit integration
+* Improvement: Detection of pages with shortcode query improved for sites with a lot of pages
+* Fix: get_required_pages not existing for documents rest_api endpoint, causing a fatal error
+* Fix: Data is shared with this service not saving in cookies overview
+
+= 7.0.9 =
+* Fix: compatibility with Meta Slider plugin
+* Fix: unexpected behaviour when editing a new, unsaved script block in the script center
+* Fix: TCF banner not recognizing nb_NO as Norso Bokmal
+* Fix: Detection of Really Simple SSL pro in other plugins section
+* Fix: Database upgrade for Data Requests not running when Data Requests are enabled
+* Fix: don't replace style src with #, as this reloads the entire page as style src, props @smerriman
+* Fix: prefill administrator email in onboarding email
+* Fix: undefined array key placeholderContent in Block Editor block
+
 = 7.0.8 =
 * March 5th, 2024
 * Improvement: clean up MPDF temp directory after pdf generation

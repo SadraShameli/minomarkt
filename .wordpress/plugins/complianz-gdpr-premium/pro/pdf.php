@@ -35,7 +35,7 @@ $post_id = isset($_GET['post_id']) ? (int) $_GET['post_id'] : 0;
 $post_type = get_post_type($post_id);
 $type = str_replace('cmplz-', '', $post_type);
 if ($type==='dataleak') {
-	require_once( cmplz_path . '/pro/dataleak/functions.php' );
+	require_once( CMPLZ_PATH . '/pro/dataleak/functions.php' );
 }
 $region = isset($_GET['region']) ? sanitize_title($_GET['region']) : 'eu';
 COMPLIANZ::$document->generate_pdf($type, $region, $post_id, $save_to_file);

@@ -17,92 +17,6 @@ add_filter('cmplz_sync_interval', 'cmplz_premium_sync_interval');
 add_filter('cmplz_scan_interval', 'cmplz_premium_sync_interval');
 
 /**
- * Do remote cookie scan for third party cookies
- * @return void
- */
-function cmplz_remote_cookie_scan(){
-	if (strpos( site_url(), 'localhost')!==false) {
-		if (defined('WP_DEBUG') && WP_DEBUG) error_log("The third party site scan does not support localhost environments!");
-		return;
-	}
-
-	if ( !function_exists('curl_init') ) {
-		if (defined('WP_DEBUG') && WP_DEBUG) error_log("missing CURL");
-		return;
-	}
-
-	if ( !cmplz_get_option('use_hybrid_scan') ) {
-		return;
-	}
-
-	$url = COMPLIANZ::$scan->get_remote_scan_url();
-	$data = [
-		'is_manual' => !wp_doing_cron(),
-		'urls' => [$url],
-	];
-	$data = apply_filters('cmplz_api_data', $data);
-	$eta = 0;
-	if (function_exists('hrtime')) $eta=-hrtime(true);
-	$json = json_encode($data);
-	$ch = curl_init();
-	curl_setopt( $ch, CURLOPT_URL, 'https://scan.cookiedatabase.org/cookies/' );
-	curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, "POST" );
-	curl_setopt( $ch, CURLOPT_POST, 1 );
-	curl_setopt( $ch, CURLOPT_POSTFIELDS, $json );
-	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-	curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
-			'Content-Type: application/json',
-			'Content-Length: ' . strlen( $json )
-		)
-	);
-	$result = curl_exec( $ch );
-	//check if is json
-	$data = json_decode($result);
-
-	if (function_exists('hrtime')) $eta+=hrtime(true);
-	if ( defined('WP_DEBUG') && WP_DEBUG ) {
-		error_log("remote url to scan " .$url);
-		$time_passed = $eta/1e+6;
-		error_log("remote scan took " .$time_passed ." milliseconds");
-		error_log("remote scan results");
-		error_log(print_r($data,true));
-	}
-
-	if ( $data) {
-		//add to database
-		if (isset($data->storage) ) {
-			$localstorage = $data->storage;
-			if ( is_array( $localstorage ) ) {
-				$localstorage = array_column( $localstorage, 'name' );
-				//add local storage data
-				foreach ( $localstorage as $key => $name ) {
-					$cookie         = new CMPLZ_COOKIE();
-					$cookie->type   = 'localstorage';
-					$cookie->domain = 'self';
-					$cookie->add( $name, COMPLIANZ::$banner_loader->get_supported_languages() );
-					$cookie->save( true );
-				}
-			}
-		}
-
-		if ( isset($data->cookies) ) {
-			$cookies = $data->cookies;
-			if ( is_array( $cookies ) ) {
-				foreach ( $cookies as $key => $c ) {
-					$cookie         = new CMPLZ_COOKIE();
-					$cookie->type   = 'cookie';
-					$cookie->domain = $c->domain;
-					$cookie->add( $c->name, COMPLIANZ::$banner_loader->get_supported_languages() );
-					$cookie->save( true );
-				}
-			}
-		}
-	}
-}
-add_action('cmplz_remote_cookie_scan', 'cmplz_remote_cookie_scan');
-
-/**
  * Conditionally add information about records of consent to the privacy policy
  *
  * @param string $content
@@ -260,7 +174,7 @@ add_filter('cmplz_api_data', 'cmplz_api_data');
  */
 function cmplz_pro_template_file( $file, $filename ){
 	if ( !file_exists( $file ) ) {
-		$pro_file = trailingslashit( cmplz_path ) . 'pro/templates/' . $filename;
+		$pro_file = trailingslashit( CMPLZ_PATH ) . 'pro/templates/' . $filename;
 
 		if ( file_exists($pro_file) ) {
 			return $pro_file;
@@ -353,29 +267,36 @@ function cmplz_check_upgrade_from_free(){
 		} else {
 			deactivate_plugins( $free );
 		}
-		require_once cmplz_path . 'pro/tcf/tcf-admin.php';
+		require_once CMPLZ_PATH . 'pro/tcf/tcf-admin.php';
 		cmplz_update_json_files();
 		delete_option('cmplz_run_premium_upgrade');
 	}
 
 	//we need to ensure that free is not active, because older free versions can cause errors here.
 	//if premium is just activated, free can still be active, with incompatible functions as a result.
-    if ( !defined('cmplz_free') && get_option('cmplz_run_premium_install' ) === 'start' ){
-	    //enable GEO IP
-	    cmplz_update_option( 'use_country', true);
+	if ( !defined('cmplz_free') && get_option('cmplz_run_premium_install' ) === 'start' ){
+		// use update_option here.
+		$options = get_option('cmplz_options');
+		if ( ! is_array($options) ) $options = array();
 
-        //set the region as the new array type
-	    $options = get_option('cmplz_options');
-        $regions = isset($options['regions']) ? $options['regions'] : array();
-        if (!empty($regions) && !is_array($regions)) {
-            $regions = array($regions => 1);
-	        cmplz_update_option( 'regions', $regions);
-        }
+		// Enable GEO IP
+		if ( empty($options['use_country']) ) {
+			$options['use_country'] = true;
+		}
 
-	    //start download of geo db.
-	    update_option('cmplz_import_geoip_on_activation', true, false );
-        update_option('cmplz_run_premium_install' , 'completed' , false );
-    }
+		// Ensure regions is an array
+		if ( isset($options['regions']) && !is_array($options['regions']) ) {
+			$regions = array($options['regions'] => 1);
+			$options['regions'] = $regions;
+		}
+
+		update_option('cmplz_options', $options, false);
+
+		//start download of geo db.
+		update_option('cmplz_import_geoip_on_activation', true, false );
+		COMPLIANZ::$geoip->get_geo_ip_database_file();
+		update_option('cmplz_run_premium_install' , 'completed' , false );
+	}
 }
 add_action( 'cmplz_install_tables', 'cmplz_check_upgrade_from_free', 10, 2 );
 
